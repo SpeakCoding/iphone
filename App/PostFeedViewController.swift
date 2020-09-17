@@ -20,6 +20,8 @@ class PostFeedViewController: UITableViewController {
                 self.posts.append(contentsOf: morePosts)
                 self.totalPostCount = self.posts.count
                 self.tableView.reloadData()
+            } else {
+                self.report(error: error)
             }
         }
     }

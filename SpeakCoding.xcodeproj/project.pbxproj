@@ -22,6 +22,7 @@
 		9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */; };
 		9EB6DBD32507A16A00C60EBF /* TestData in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD22507A16A00C60EBF /* TestData */; };
 		9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */; };
+		9EBB247F250F603300DC7B33 /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBB247E250F603300DC7B33 /* ErrorReporting.swift */; };
 		9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A1924EE976900902B93 /* AppDelegate.swift */; };
 		9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC2A2224EE976B00902B93 /* Assets.xcassets */; };
 		9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC2A2424EE976B00902B93 /* LaunchScreen.storyboard */; };
@@ -56,6 +57,7 @@
 		9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewController.swift; sourceTree = "<group>"; };
 		9EB6DBD22507A16A00C60EBF /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServerAPI.swift; sourceTree = "<group>"; };
+		9EBB247E250F603300DC7B33 /* ErrorReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporting.swift; sourceTree = "<group>"; };
 		9EDC2A1624EE976900902B93 /* SpeakCoding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakCoding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EDC2A1924EE976900902B93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9EDC2A2224EE976B00902B93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
 				9E11AD08250A5C3900275489 /* PostComposerView.xib */,
+				9EBB247E250F603300DC7B33 /* ErrorReporting.swift */,
 				9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */,
 				9EDC2A2224EE976B00902B93 /* Assets.xcassets */,
 				9EDC2A2424EE976B00902B93 /* LaunchScreen.storyboard */,
@@ -236,6 +239,7 @@
 				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
+				9EBB247F250F603300DC7B33 /* ErrorReporting.swift in Sources */,
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
