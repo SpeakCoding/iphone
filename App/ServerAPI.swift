@@ -25,9 +25,22 @@ class ServerAPI {
     func signUp(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
         let requestParameters = ["user": ["email": emailAddress, "password": password]]
         let request = makeRequest(method: .POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
-        performRequest(request: request) { (authResponse: ServerResponse<User>?, response: HTTPURLResponse?, error: Error?) in
+        performRequest(request: request) { (authResponse: APIResult<User>?, response: HTTPURLResponse?, error: Error?) in
             if let authResponse = authResponse {
-                self.accessToken = authResponse.metadata
+                self.accessToken = authResponse.metadata?["authentication_token"]
+                completion(authResponse.data, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func logIn(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
+        let requestParameters = ["user": ["email": emailAddress, "password": password]]
+        let request = makeRequest(method: .POST, endpoint: "/users/authenticate.json", authorized: false, parameters: requestParameters)
+        performRequest(request: request) { (authResponse: APIResult<User>?, response: HTTPURLResponse?, error: Error?) in
+            if let authResponse = authResponse {
+                self.accessToken = authResponse.metadata?["authentication_token"]
                 completion(authResponse.data, nil)
             } else {
                 completion(nil, error)
@@ -42,14 +55,14 @@ class ServerAPI {
      */
     func getFeedPosts(startPostIndex: UInt, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: .GET, endpoint: "/posts", authorized: false, parameters: nil)
-        performRequest(request: request) { (posts: ServerResponse<[Post]>?, response: HTTPURLResponse?, error: Error?) in
+        performRequest(request: request) { (posts: APIResult<[Post]>?, response: HTTPURLResponse?, error: Error?) in
             completion(posts?.data, error)
         }
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: .GET, endpoint: "/users/\(user.id)/posts", authorized: false, parameters: nil)
-        performRequest(request: request) { (posts: ServerResponse<[Post]>?, response: HTTPURLResponse?, error: Error?) in
+        performRequest(request: request) { (posts: APIResult<[Post]>?, response: HTTPURLResponse?, error: Error?) in
             completion(posts?.data, error)
         }
     }
@@ -70,19 +83,6 @@ class ServerAPI {
         case TRACE
         case CONNECT
         case PATCH
-    }
-    
-    /**
-     This structure represents a server response.
-     */
-    struct ServerResponse<T: Decodable>: Decodable {
-        var data: T
-        var metadata: String?
-        
-        private enum CodingKeys: String, CodingKey {
-            case data
-            case metadata = "meta"
-        }
     }
     
     private let baseURLString: String
@@ -154,22 +154,80 @@ class ServerAPI {
     /**
      Perform a network request and process a server's response
      */
-    private func performRequest<T: Decodable>(request: URLRequest, completion: @escaping ((T?, HTTPURLResponse?, Error?) -> Void)) {
-        let task = session.dataTask(with: request) { (jsonData: Data?, response: URLResponse?, requestError: Error?) in
+    private func performRequest<T: Decodable>(request: URLRequest, completion: @escaping ((APIResult<T>?, HTTPURLResponse?, Error?) -> Void)) {
+        let task = session.dataTask(with: request) { (jsonData: Data?, urlResponse: URLResponse?, requestError: Error?) in
             var reportedError = requestError
-            var json: T?
+            var result: APIResult<T>?
             if requestError == nil && jsonData != nil {
                 do {
-                    try json = JSONDecoder().decode(T.self, from: jsonData!)
+                    if let rawJSON = try? JSONSerialization.jsonObject(with: jsonData!, options: []) {
+                        if let formattedJSONData = try? JSONSerialization.data(withJSONObject: rawJSON, options: [.prettyPrinted, .withoutEscapingSlashes]) {
+                            if let formattedJSONString = String(data: formattedJSONData, encoding: .utf8) {
+                                print("\(request.httpMethod!) \(request.url!) returned status code \((urlResponse as! HTTPURLResponse).statusCode) \(formattedJSONString)")
+                            }
+                        }
+                    }
+                    
+                    let apiResponse = try JSONDecoder().decode(APIResponse<T>.self, from: jsonData!)
+                    if let nonErrorResult = apiResponse.result {
+                        result = nonErrorResult
+                    } else {
+                        reportedError = apiResponse.error
+                    }
                 } catch {
                     print("Could not decode JSON: \(error)")
                     reportedError = error
                 }
             }
             DispatchQueue.main.async {
-                completion(json, response as? HTTPURLResponse, reportedError)
+                completion(result, urlResponse as? HTTPURLResponse, reportedError)
             }
         }
         task.resume()
+    }
+    
+    /**
+     These structures represent a server response.
+     */
+    struct APIResponse<T: Decodable>: Decodable {
+        var data: T?
+        var metadata: [String: String]?
+        var error: Error?
+        
+        var result: APIResult<T>? {
+            get {
+                if let data = self.data {
+                    return APIResult(data: data, metadata: metadata)
+                }
+                return nil
+            }
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            if let data = try? values.decode(T.self, forKey: .data) {
+                self.data = data
+            } else {
+                let errors = try? values.decode([APIError].self, forKey: .errors)
+                self.error = NSError(domain: "API", code: 1, userInfo: [NSLocalizedDescriptionKey: errors?.first?.detail ?? "Unknown"])
+            }
+            self.metadata = try? values.decode([String: String].self, forKey: .metadata)
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case data
+            case metadata = "meta"
+            case errors
+        }
+    }
+    
+    struct APIResult<T: Decodable>: Decodable {
+        var data: T
+        var metadata: [String: String]?
+    }
+    
+    struct APIError: Decodable {
+        var detail: String
+        var source: [String: String]?
     }
 }

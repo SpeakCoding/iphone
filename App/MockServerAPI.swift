@@ -125,7 +125,7 @@ class MockURLProtocol: URLProtocol {
                     "name": "John Doe",
                     "avatar": ["url": "mock://sc.com/avatar.1.jpg"]
                 ],
-                "meta": "test-access-token"
+                "meta": ["authentication_token": "test-access-token"]
             ]
         }
         return []

@@ -48,10 +48,15 @@ class LoginViewController: UIViewController {
         self.view.isUserInteractionEnabled = false
         errorLabel.isHidden = true
         
-        #warning("Login is not implemented")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            User.current = User(name: "John Doe")
-            self.completion()
+            ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+                if let user = user {
+                    User.current = user
+                    self.completion()
+                } else {
+                    self.report(error: error)
+                }
+            }
         }
     }
     
