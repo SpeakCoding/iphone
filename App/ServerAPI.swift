@@ -22,6 +22,19 @@ class ServerAPI {
     static let shared = ServerAPI()
     
     
+    func signUp(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
+        let requestParameters = ["user": ["email": emailAddress, "password": password]]
+        let request = makeRequest(method: .POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
+        performRequest(request: request) { (authResponse: ServerResponse<User>?, response: HTTPURLResponse?, error: Error?) in
+            if let authResponse = authResponse {
+                self.accessToken = authResponse.metadata
+                completion(authResponse.data, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     /**
      Get a batch of `Post` objects in the feed after the last `Post` object we received earlier.
      This method is supposed to be called repeatedly as the user scrolls the feed
@@ -29,15 +42,15 @@ class ServerAPI {
      */
     func getFeedPosts(startPostIndex: UInt, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: .GET, endpoint: "/posts", authorized: false, parameters: nil)
-        performRequest(request: request) { (posts: [Post]?, response: HTTPURLResponse?, error: Error?) in
-            completion(posts, error)
+        performRequest(request: request) { (posts: ServerResponse<[Post]>?, response: HTTPURLResponse?, error: Error?) in
+            completion(posts?.data, error)
         }
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: .GET, endpoint: "/users/\(user.id)/posts", authorized: false, parameters: nil)
-        performRequest(request: request) { (posts: [Post]?, response: HTTPURLResponse?, error: Error?) in
-            completion(posts, error)
+        performRequest(request: request) { (posts: ServerResponse<[Post]>?, response: HTTPURLResponse?, error: Error?) in
+            completion(posts?.data, error)
         }
     }
     
@@ -59,9 +72,26 @@ class ServerAPI {
         case PATCH
     }
     
-    #warning("Real API URL is not known yet")
-    private let baseURLString = "mock://api.example.com"
+    /**
+     This structure represents a server response.
+     */
+    struct ServerResponse<T: Decodable>: Decodable {
+        var data: T
+        var metadata: String?
+        
+        private enum CodingKeys: String, CodingKey {
+            case data
+            case metadata = "meta"
+        }
+    }
+    
+    private let baseURLString: String
     private var session: URLSession
+    private var accessToken: String? {
+        didSet {
+            UserDefaults.standard.set(accessToken, forKey: "access token")
+        }
+    }
     
     private init() {
         // It is always a good idea to provide a meaningful 'User-Agent' HTTP header value
@@ -85,20 +115,26 @@ class ServerAPI {
         config.httpMaximumConnectionsPerHost = 1
         config.httpCookieStorage = nil
         config.urlCache = nil
-        #warning("Remove the mock")
-        config.protocolClasses = [MockURLProtocol.self]
+        if ProcessInfo().arguments.contains("mock-api") {
+            config.protocolClasses = [MockURLProtocol.self]
+            baseURLString = "mock://api.example.com"
+        } else {
+            baseURLString = "http://130.193.56.58:3000"
+        }
         
         let sessionDelegateQueue = OperationQueue()
         sessionDelegateQueue.name = "API.HTTP"
         sessionDelegateQueue.maxConcurrentOperationCount = 1
         
         session = URLSession(configuration: config, delegate: nil, delegateQueue: sessionDelegateQueue)
+        
+        accessToken = UserDefaults.standard.string(forKey: "access token")
     }
     
     /**
      Compose a URLRequest object
      */
-    private func makeRequest(method: HTTPMethod, endpoint: String, authorized: Bool, parameters: [String: AnyObject]?) -> URLRequest {
+    private func makeRequest(method: HTTPMethod, endpoint: String, authorized: Bool, parameters: [String: Any]?) -> URLRequest {
         guard let url = URL(string: baseURLString + endpoint) else {
             fatalError("Invalid endpoint: \(endpoint)")
         }
@@ -109,9 +145,8 @@ class ServerAPI {
             request.httpBody = try! JSONSerialization.data(withJSONObject: json, options: [])
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-        if authorized {
-            #warning("Authorized requests are not implemented")
-//            request.setValue("BEARER \(accessToken!)", forHTTPHeaderField: "Authorization")
+        if authorized && accessToken != nil {
+            request.setValue(accessToken!, forHTTPHeaderField: "Authentication-Token")
         }
         return request
     }

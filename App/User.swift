@@ -17,7 +17,7 @@ class User: ModelObject, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let name = try values.decode(String.self, forKey: .name)
         self.init(name: name)
-        avatar = try values.decode(Image.self, forKey: .avatar)
+        avatar = try? values.decode(Image.self, forKey: .avatar)
         id = try values.decode(Int.self, forKey: .id)
     }
     

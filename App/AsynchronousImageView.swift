@@ -55,11 +55,13 @@ class AsynchronousImageView: UIImageView {
         imageDownloadTask?.resume()
     }
     
-    #warning("Refactor this!")
     static let session = initSession()
     private class func initSession() -> URLSession {
-        let sharedSessionConfig = URLSessionConfiguration.default;
-        sharedSessionConfig.protocolClasses = [MockURLProtocol.self]
-        return URLSession(configuration: sharedSessionConfig)
+        if ProcessInfo().arguments.contains("mock-api") {
+            let sharedSessionConfig = URLSessionConfiguration.default;
+            sharedSessionConfig.protocolClasses = [MockURLProtocol.self]
+            return URLSession(configuration: sharedSessionConfig)
+        }
+        return URLSession.shared
     }
 }

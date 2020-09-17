@@ -1,7 +1,7 @@
 import Foundation
 
 
-class Post: Codable {
+class Post: ModelObject, Codable {
     
     var date: Date
     var user: User
@@ -21,28 +21,32 @@ class Post: Codable {
     
     required convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        #warning("Not quite implemented")
-//        id = try values.decode(Int.self, forKey: .id)
-        let dateString = try values.decode(String.self, forKey: .date)
-        let date = ISO8601DateFormatter().date(from: dateString)!
+        let date = Date(timeIntervalSince1970: TimeInterval(try values.decode(Int.self, forKey: .date)))
         let user = try values.decode(User.self, forKey: .user)
         let text = try values.decode(String.self, forKey: .text)
-        let images = try values.decode([Image].self, forKey: .images)
+        var images: [Image]?
+        if let imageURL = URL(string: try values.decode(String.self, forKey: .image)) {
+            images = [Image(url: imageURL)]
+        }
         self.init(date: date, author: user, text: text, images: images, video: nil)
+        id = try values.decode(Int.self, forKey: .id)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        #warning("Not quite implemented")
-        try container.encode(ISO8601DateFormatter().string(from: date), forKey: .date)
+        try container.encode(date.timeIntervalSince1970, forKey: .date)
+        try container.encode(user, forKey: .user)
         try container.encode(text, forKey: .text)
+        try container.encode(images?.first, forKey: .image)
+        try container.encode(id, forKey: .id)
     }
     
     private enum CodingKeys: String, CodingKey {
-        case date
+        case id
+        case date = "created_at"
         case user
-        case text
-        case images
-        case video
+        case text = "description"
+        case image
+//        case video
     }
 }
