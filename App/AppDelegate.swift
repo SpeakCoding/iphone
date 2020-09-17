@@ -43,6 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.rootViewController = tabBarViewController
         self.window!.makeKeyAndVisible()
+        
+        replaceLoginViewControllers()
         return true
     }
     
@@ -111,6 +113,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 //        }
 //        try? FileManager().removeItem(atPath: dbPath)
 //        let _ = Post(date: Date(), author: User(name: "Jon"), text: "Hello world!", images: nil, video: nil)
+    }
+    
+    private func replaceLoginViewControllers() {
+        let tabBarController = self.window!.rootViewController! as! UITabBarController
+        for navigationController in tabBarController.viewControllers! where navigationController is UINavigationController {
+            let navigationController = navigationController as! UINavigationController
+            if let rootViewController = navigationController.viewControllers.first {
+                if rootViewController is LoginViewController {
+                    switch navigationController.tabBarItem.tag {
+                    case TabBarItemTag.likedPosts.rawValue:
+                        navigationController.setViewControllers([LikedPostsViewController()], animated: false)
+                    case TabBarItemTag.profile.rawValue:
+                        navigationController.setViewControllers([UserProfileViewController(user: User.current!)], animated: false)
+                    default:
+                        break
+                    }
+                }
+            }
+        }
     }
     
     private func showImagePickerSourceSelection() {
@@ -190,6 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             } else {
                 let loginViewController = LoginViewController(completion: {
                     if User.current != nil {
+                        self.replaceLoginViewControllers()
                         tabBarController.dismiss(animated: true) {
                             self.showImagePickerSourceSelection()
                         }
