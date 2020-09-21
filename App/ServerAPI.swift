@@ -81,6 +81,22 @@ class ServerAPI {
         }
     }
     
+    func create(post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        let requestParameters = ["post": [
+            "location": nil,
+            "description": post.text,
+            "image": post.images!.first?.url.absoluteString,
+            ]]
+        let request = makeRequest(method: .POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSON = result as? [String: Any] {
+                completion(Post(json: postJSON), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     // MARK: - Private stuff
     
     /**
@@ -133,7 +149,7 @@ class ServerAPI {
             config.protocolClasses = [MockURLProtocol.self]
             baseURLString = "mock://api.example.com"
         } else {
-            baseURLString = "http://130.193.56.58:3000"
+            baseURLString = "http://130.193.44.149:3000"
         }
         
         let sessionDelegateQueue = OperationQueue()
@@ -176,6 +192,12 @@ class ServerAPI {
             if requestError == nil && jsonData != nil {
                 do {
                     let json = try JSONSerialization.jsonObject(with: jsonData!, options: [])
+                    if let formattedJSONData = try? JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted, .withoutEscapingSlashes]) {
+                        if let formattedJSONString = String(data: formattedJSONData, encoding: .utf8) {
+                            print("\(request.httpMethod!) \(request.url!) returned status code \((urlResponse as! HTTPURLResponse).statusCode) \(formattedJSONString)")
+                        }
+                    }
+                    
                     if let responseJSON = (json as? [String: Any]) {
                         result = responseJSON["data"]
                         metadata = responseJSON["meta"] as? [String: String]
@@ -204,16 +226,17 @@ class ServerAPI {
 
 extension User {
     convenience init(json: [String: Any]) {
-        let userName = json["name"] as! String
-        self.init(name: userName)
+        #warning("Remove the default name")
+        let userName = json["full_name"] as? String ?? "NO NAME"
+        let emailAddress = json["email"] as! String
+        self.init(name: userName, emailAddress: emailAddress)
         id = json["id"] as! Int
-        if let userAvatarInfo = json["avatar"] as? [String: Any] {
-            if let userAvatarURI = userAvatarInfo["url"] as? String {
-                if let userAvatarURL = URL(string: userAvatarURI) {
-                    avatar = Image(url: userAvatarURL)
-                }
+        if let userAvatarURI = json["portrait"] as? String {
+            if let userAvatarURL = URL(string: userAvatarURI) {
+                self.avatar = Image(url: userAvatarURL)
             }
         }
+        self.bio = json["bio"] as? String
     }
 }
 

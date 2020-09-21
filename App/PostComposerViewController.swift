@@ -49,13 +49,13 @@ class PostComposerViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
         spinner.startAnimating()
         
-        #warning("Post creation is not implemented")
-        User.current = User(name: "John Doe")
         let newPost = Post(date: Date(), author: User.current!, text: textView.text, images: nil, video: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton
-            self.completion(newPost)
+            if let createdPost = createdPost {
+                self.completion(createdPost)
+            }
         }
     }
     
