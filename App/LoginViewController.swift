@@ -6,9 +6,11 @@ class LoginViewController: UIViewController {
     @IBOutlet private var emailTextField: TextField!
     @IBOutlet private var passwordTextField: TextField!
     @IBOutlet private var errorLabel: UILabel!
+    private var emailAddress: String?
     private var completion: () -> Void
     
-    init(completion: @escaping () -> Void) {
+    init(emailAddress: String?, completion: @escaping () -> Void) {
+        self.emailAddress = emailAddress
         self.completion = completion
         super.init(nibName: "LoginView", bundle: nil)
     }
@@ -20,6 +22,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emailTextField.text = emailAddress
         errorLabel.isHidden = true
     }
     

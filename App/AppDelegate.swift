@@ -44,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window!.rootViewController = tabBarViewController
         self.window!.makeKeyAndVisible()
         
-        replaceLoginViewControllers()
         return true
     }
     
@@ -115,23 +114,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 //        let _ = Post(date: Date(), author: User(name: "Jon"), text: "Hello world!", images: nil, video: nil)
     }
     
-    private func replaceLoginViewControllers() {
-        let tabBarController = self.window!.rootViewController! as! UITabBarController
-        for navigationController in tabBarController.viewControllers! where navigationController is UINavigationController {
-            let navigationController = navigationController as! UINavigationController
-            if let rootViewController = navigationController.viewControllers.first {
-                if rootViewController is LoginViewController {
-                    switch navigationController.tabBarItem.tag {
-                    case TabBarItemTag.likedPosts.rawValue:
-                        navigationController.setViewControllers([LikedPostsViewController()], animated: false)
-                    case TabBarItemTag.profile.rawValue:
-                        navigationController.setViewControllers([UserProfileViewController(user: User.current!)], animated: false)
-                    default:
-                        break
-                    }
-                }
-            }
-        }
+    private func presentLoginFlow(completion: @escaping () -> Void) {
+        let loginViewController = LoginViewController(emailAddress: nil, completion: completion)
+        let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
+        loginFlowNavigationController.isNavigationBarHidden = true
+        self.window?.rootViewController?.present(loginFlowNavigationController, animated: true, completion: nil)
     }
     
     private func showImagePickerSourceSelection() {
@@ -209,57 +196,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             if User.current != nil {
                 self.showImagePickerSourceSelection()
             } else {
-                let loginViewController = LoginViewController(completion: {
-                    if User.current != nil {
-                        self.replaceLoginViewControllers()
-                        tabBarController.dismiss(animated: true) {
-                            self.showImagePickerSourceSelection()
-                        }
+                presentLoginFlow(completion: {
+                    tabBarController.dismiss(animated: true) {
+                        self.showImagePickerSourceSelection()
                     }
                 })
-                tabBarController.present(loginViewController, animated: true, completion: nil)
             }
             return false
             
         case .likedPosts:
             // The user has to log in to see their liked posts
             let navigationController = viewController as! UINavigationController
-            if let rootViewController = navigationController.viewControllers.first {
-                if User.current != nil && rootViewController is LoginViewController {
-                    navigationController.setViewControllers([LikedPostsViewController()], animated: false)
-                }
-            } else {
-                if User.current != nil {
+            let rootViewController = navigationController.viewControllers.first
+            if User.current != nil {
+                if rootViewController == nil {
                     navigationController.pushViewController(LikedPostsViewController(), animated: false)
-                } else {
-                    navigationController.pushViewController(LoginViewController(completion: {
-                        if User.current != nil {
-                            navigationController.setViewControllers([LikedPostsViewController()], animated: true)
-                        }
-                    }), animated: false)
                 }
+                return true
             }
-            return true
+            
+            presentLoginFlow(completion: {
+                navigationController.setViewControllers([LikedPostsViewController()], animated: false)
+                tabBarController.selectedIndex = TabBarItemTag.likedPosts.rawValue
+                tabBarController.dismiss(animated: true, completion: nil)
+            })
+            return false
             
         case .profile:
             // The user has to log in to see their profile
             let navigationController = viewController as! UINavigationController
-            if let rootViewController = navigationController.viewControllers.first {
-                if let currentUser = User.current, rootViewController is LoginViewController {
-                    navigationController.setViewControllers([UserProfileViewController(user: currentUser)], animated: false)
-                }
-            } else {
-                if let currentUser = User.current {
+            let rootViewController = navigationController.viewControllers.first
+            if let currentUser = User.current {
+                if rootViewController == nil {
                     navigationController.pushViewController(UserProfileViewController(user: currentUser), animated: false)
-                } else {
-                    navigationController.pushViewController(LoginViewController(completion: {
-                        if let currentUser = User.current {
-                            navigationController.setViewControllers([UserProfileViewController(user: currentUser)], animated: true)
-                        }
-                    }), animated: false)
                 }
+                return true
             }
-            return true
+            
+            presentLoginFlow(completion: {
+                navigationController.setViewControllers([UserProfileViewController(user: User.current!)], animated: false)
+                tabBarController.selectedIndex = TabBarItemTag.profile.rawValue
+                tabBarController.dismiss(animated: true, completion: nil)
+            })
+            return false
         }
     }
 }
