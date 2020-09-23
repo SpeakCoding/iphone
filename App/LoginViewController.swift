@@ -13,10 +13,15 @@ class LoginViewController: UIViewController {
         self.emailAddress = emailAddress
         self.completion = completion
         super.init(nibName: "LoginView", bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -24,6 +29,20 @@ class LoginViewController: UIViewController {
         
         emailTextField.text = emailAddress
         errorLabel.isHidden = true
+    }
+    
+    @objc private func keyboardWillChangeFrame(notification: Notification) {
+        let animationDuration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
+        let keyboardFrameInWindow = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardTopOffset = self.view.bounds.maxY - self.view.convert(keyboardFrameInWindow, from: nil).minY
+        self.view.layoutMargins.bottom = max(keyboardTopOffset, 0)
+        UIView.animate(withDuration: animationDuration) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    // This function is called when the Sign Up button is pressed
+    @IBAction private func signUp() {
     }
     
     // This function is called when the Log In button is pressed
