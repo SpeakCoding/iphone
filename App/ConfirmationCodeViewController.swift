@@ -1,17 +1,18 @@
 import UIKit
 
 
-class SignupViewController: UIViewController {
+class ConfirmationCodeViewController: UIViewController {
     
-    @IBOutlet private var emailTextField: TextField!
+    @IBOutlet private var hintLabel: UILabel!
+    @IBOutlet private var codeTextField: TextField!
     @IBOutlet private var errorLabel: UILabel!
-    private var emailAddress: String?
+    private var emailAddress: String
     private var completion: () -> Void
     
-    init(emailAddress: String?, completion: @escaping () -> Void) {
+    init(emailAddress: String, completion: @escaping () -> Void) {
         self.emailAddress = emailAddress
         self.completion = completion
-        super.init(nibName: "SignupView", bundle: nil)
+        super.init(nibName: "ConfirmationCodeView", bundle: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
@@ -26,7 +27,13 @@ class SignupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.text = emailAddress
+        let plainHint = "Enter the confirmation code we’ve sent to <email>"
+        let font = hintLabel.font!
+        let formattedHint = NSMutableAttributedString(string: plainHint, attributes: [NSAttributedString.Key.font: font])
+        let placeholderRange = (plainHint as NSString).range(of: "<email>")
+        formattedHint.replaceCharacters(in: placeholderRange, with: NSAttributedString(string: emailAddress, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize:  font.pointSize)]))
+        hintLabel.attributedText = formattedHint
+        
         errorLabel.isHidden = true
     }
     
@@ -40,33 +47,29 @@ class SignupViewController: UIViewController {
         }
     }
     
-    @IBAction private func logIn() {
-        self.navigationController?.setViewControllers([LoginViewController(emailAddress: emailTextField.text, completion: completion)], animated: true)
+    @IBAction private func returnToPreviousStep() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction private func proceedToNextStep() {
         self.view.endEditing(true)
         
-        emailAddress = emailTextField.text
-        if let errorMessage = validate(emailAddress: emailAddress) {
-            emailTextField.indicatesError = true
+        let confirmationCode = codeTextField.text
+        if let errorMessage = validate(code: confirmationCode) {
+            codeTextField.indicatesError = true
             errorLabel.text = errorMessage
             errorLabel.isHidden = false
             return
         }
-        emailTextField.indicatesError = false
+        codeTextField.indicatesError = false
         
-        #warning("Proceed to code confirmation")
-        self.navigationController?.pushViewController(ConfirmationCodeViewController(emailAddress: emailAddress!, completion: completion), animated: true)
+        #warning("Verify code and proceed")
     }
     
     // This function performs input validation and returns an error message if any
-    private func validate(emailAddress: String?) -> String? {
-        if emailAddress == nil || emailAddress!.count == 0 {
-            return "Please enter your email address"
-        }
-        if emailAddress!.count < 6 || !emailAddress!.contains("@") {
-            return "Please enter a valid email address"
+    private func validate(code: String?) -> String? {
+        if code == nil || code!.count == 0 {
+            return "Please enter the confirmation code"
         }
         return nil
     }

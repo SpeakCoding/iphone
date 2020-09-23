@@ -14,6 +14,8 @@
 		9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* PostFeedViewController.swift */; };
 		9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A3251B672D00D5703A /* SignupViewController.swift */; };
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
+		9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */; };
+		9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -51,6 +53,8 @@
 		9E772B8524FE21B40044E328 /* PostFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedViewController.swift; sourceTree = "<group>"; };
 		9EA023A3251B672D00D5703A /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
+		9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCodeViewController.swift; sourceTree = "<group>"; };
+		9EA023AB251B81B500D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConfirmationCodeView.xib; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				9EB6DB82250368C300C60EBF /* LoginView.xib */,
 				9EA023A3251B672D00D5703A /* SignupViewController.swift */,
 				9EA023A5251B681C00D5703A /* SignupView.xib */,
+				9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */,
+				9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */,
 				9E772B8524FE21B40044E328 /* PostFeedViewController.swift */,
 				9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */,
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
@@ -211,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EA023A7251B681C00D5703A /* SignupView.xib in Resources */,
+				9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */,
 				9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */,
 				9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */,
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
@@ -229,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EB6DB922504D6C700C60EBF /* SeparatorView.swift in Sources */,
+				9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */,
 				9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */,
 				9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */,
 				9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */,
@@ -274,6 +282,14 @@
 				9EA023A6251B681C00D5703A /* Base */,
 			);
 			name = SignupView.xib;
+			sourceTree = "<group>";
+		};
+		9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EA023AB251B81B500D5703A /* Base */,
+			);
+			name = ConfirmationCodeView.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {

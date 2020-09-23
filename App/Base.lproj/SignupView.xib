@@ -37,7 +37,7 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
-                        <action selector="goNext" destination="-1" eventType="touchUpInside" id="Fmg-ZK-vde"/>
+                        <action selector="proceedToNextStep" destination="-1" eventType="touchUpInside" id="Fmg-ZK-vde"/>
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="CyP-k6-jkd">
