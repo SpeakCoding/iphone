@@ -12,6 +12,8 @@
 		9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E11AD08250A5C3900275489 /* PostComposerView.xib */; };
 		9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2478A62503658C007EBBEB /* LoginViewController.swift */; };
 		9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* PostFeedViewController.swift */; };
+		9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A3251B672D00D5703A /* SignupViewController.swift */; };
+		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -47,6 +49,8 @@
 		9E11AD09250A5C3900275489 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostComposerView.xib; sourceTree = "<group>"; };
 		9E2478A62503658C007EBBEB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9E772B8524FE21B40044E328 /* PostFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedViewController.swift; sourceTree = "<group>"; };
+		9EA023A3251B672D00D5703A /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 				9EB6DB8525036BFC00C60EBF /* TextField.swift */,
 				9E2478A62503658C007EBBEB /* LoginViewController.swift */,
 				9EB6DB82250368C300C60EBF /* LoginView.xib */,
+				9EA023A3251B672D00D5703A /* SignupViewController.swift */,
+				9EA023A5251B681C00D5703A /* SignupView.xib */,
 				9E772B8524FE21B40044E328 /* PostFeedViewController.swift */,
 				9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */,
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
@@ -204,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EA023A7251B681C00D5703A /* SignupView.xib in Resources */,
 				9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */,
 				9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */,
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
@@ -243,6 +250,7 @@
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
+				9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */,
 				9EDC2A3024EE9AD500902B93 /* Post.swift in Sources */,
 				9EDC2A4224EEBE4000902B93 /* AsynchronousImageView.swift in Sources */,
 				9E11AD00250A415B00275489 /* PhotoPickerPreviewController.swift in Sources */,
@@ -258,6 +266,14 @@
 				9E11AD09250A5C3900275489 /* Base */,
 			);
 			name = PostComposerView.xib;
+			sourceTree = "<group>";
+		};
+		9EA023A5251B681C00D5703A /* SignupView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EA023A6251B681C00D5703A /* Base */,
+			);
+			name = SignupView.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {
