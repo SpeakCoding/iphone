@@ -39,7 +39,7 @@ class PostFeedViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedCell
-        postCell.post = posts[indexPath.row]
+        postCell.setPost(posts[indexPath.row])
         postCell.actionDelegate = self
         return postCell
     }

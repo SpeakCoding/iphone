@@ -84,7 +84,7 @@ class ServerAPI {
     func create(post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
             "location": nil,
-            "description": post.text,
+            "description": post.caption,
             "image": post.images!.first?.url.absoluteString,
             ]]
         let request = makeRequest(method: .POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
@@ -228,8 +228,7 @@ extension User {
     convenience init(json: [String: Any]) {
         #warning("Remove the default name")
         let userName = json["full_name"] as? String ?? "NO NAME"
-        let emailAddress = json["email"] as! String
-        self.init(name: userName, emailAddress: emailAddress)
+        self.init(userName: userName)
         id = json["id"] as! Int
         if let userAvatarURI = json["portrait"] as? String {
             if let userAvatarURL = URL(string: userAvatarURI) {
@@ -250,7 +249,7 @@ extension Post {
         if let imageURL = URL(string: json["image"] as! String) {
             images = [Image(url: imageURL)]
         }
-        self.init(date: date, author: user, text: text, images: images, video: nil)
+        self.init(creationDate: date, author: user, text: text, images: images, video: nil)
         id = json["id"] as! Int
     }
 }

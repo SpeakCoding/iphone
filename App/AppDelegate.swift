@@ -14,6 +14,7 @@ enum TabBarItemTag: Int {
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var window: UIWindow?
+    var tabBarController: UITabBarController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         initCacheDatabase()
@@ -36,13 +37,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         profileTabViewController.tabBarItem.tag = TabBarItemTag.profile.rawValue
         
         // Set up the tab bar controller and display it in the app's window
-        let tabBarViewController = UITabBarController(nibName: nil, bundle: nil)
-        tabBarViewController.viewControllers = [homeTabViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
-        tabBarViewController.delegate = self
+        tabBarController = UITabBarController(nibName: nil, bundle: nil)
+        tabBarController.viewControllers = [homeTabViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
+        tabBarController.delegate = self
         
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window!.rootViewController = tabBarViewController
-        self.window!.makeKeyAndVisible()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window!.rootViewController = tabBarController
+        window!.makeKeyAndVisible()
         
         return true
     }
@@ -118,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let loginViewController = LoginViewController(emailAddress: nil, completion: completion)
         let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
         loginFlowNavigationController.isNavigationBarHidden = true
-        self.window?.rootViewController?.present(loginFlowNavigationController, animated: true, completion: nil)
+        tabBarController.present(loginFlowNavigationController, animated: true, completion: nil)
     }
     
     private func showImagePickerSourceSelection() {
@@ -144,12 +145,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 self.showImagePicker(source: .photoLibrary)
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            let tabBarController = self.window!.rootViewController!
             tabBarController.present(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: nil, message: "Sorry neither the camera nor the photo library is available.", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            let tabBarController = self.window!.rootViewController!
             tabBarController.present(alert, animated: true, completion: nil)
         }
     }
@@ -163,7 +162,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
         imagePicker.modalPresentationStyle = .fullScreen
         imagePicker.delegate = self
-        let tabBarController = self.window!.rootViewController!
         tabBarController.present(imagePicker, animated: true, completion: nil)
     }
     
@@ -194,7 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             // The tab cannot be actually selected.
             // Instead ask the user to log in before they can select the image source.
             if User.current != nil {
-                self.showImagePickerSourceSelection()
+                showImagePickerSourceSelection()
             } else {
                 presentLoginFlow(completion: {
                     tabBarController.dismiss(animated: true) {

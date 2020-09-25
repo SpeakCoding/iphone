@@ -7,7 +7,7 @@ class TextField: UITextField {
     var indicatesError: Bool = false {
         didSet {
             let backgroundImageName = indicatesError ? "text-field-background-error" : "text-field-background"
-            self.background = UIImage(named: backgroundImageName, in: Bundle(for: TextField.self), compatibleWith: nil)
+            background = UIImage(named: backgroundImageName, in: Bundle(for: TextField.self), compatibleWith: nil)
         }
     }
     

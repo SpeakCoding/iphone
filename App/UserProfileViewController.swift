@@ -8,6 +8,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBOutlet private var followerCountLabel: UILabel!
     @IBOutlet private var followedCountLabel: UILabel!
     @IBOutlet private var userNameLabel: UILabel!
+    @IBOutlet private var bioLabel: UILabel!
     @IBOutlet private var followButton: UIButton!
     @IBOutlet private var editProfileButton: UIButton!
     @IBOutlet private var gridView: UICollectionView!
@@ -34,6 +35,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         followerCountLabel.text = "\(0)"
         followedCountLabel.text = "\(0)"
         userNameLabel.text = user.name
+        bioLabel.text = user.bio
         
         if user == User.current {
             followButton.isHidden = true
@@ -96,7 +98,7 @@ fileprivate class PostTileCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         super.init(frame: frame)
-        self.contentView.addSubview(imageView)
+        contentView.addSubview(imageView)
     }
     
     required init?(coder: NSCoder) {
@@ -106,6 +108,6 @@ fileprivate class PostTileCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = self.contentView.bounds
+        imageView.frame = contentView.bounds
     }
 }

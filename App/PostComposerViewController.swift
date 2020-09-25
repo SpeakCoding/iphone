@@ -49,7 +49,7 @@ class PostComposerViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
         spinner.startAnimating()
         
-        let newPost = Post(date: Date(), author: User.current!, text: textView.text, images: nil, video: nil)
+        let newPost = Post(creationDate: Date(), author: User.current!, text: textView.text, images: nil, video: nil)
         ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton

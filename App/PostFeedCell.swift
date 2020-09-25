@@ -16,25 +16,25 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var postDateLabel: UILabel!
     weak var actionDelegate: PostFeedCellDelegate?
     
-    var post: Post! {
-        didSet {
-            posterAvatarView.showImageAsynchronously(image: post.user.avatar)
-            postImageView.showImageAsynchronously(image: post.images?.first)
-            
-            #warning("Not quite implemented")
-            posterNameLabel.text = post.user.name
-            posterLocationLabel.isHidden = true
-            likeButton.isSelected = false
-            bookmarkButton.isSelected = false
-            likeCountLabel.text = "\(0) likes"
-            postTextLabel.text = post.text
-            commentCountLabel.text = "View all \(0) comments"
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .short
-            postDateLabel.text = dateFormatter.string(from: post.date)
-        }
+    var post: Post!
+    func setPost(_ newPost: Post) {
+        post = newPost
+        posterAvatarView.showImageAsynchronously(image: post.user.avatar)
+        postImageView.showImageAsynchronously(image: post.images?.first)
+        
+        #warning("Not quite implemented")
+        posterNameLabel.text = post.user.name
+        posterLocationLabel.isHidden = true
+        likeButton.isSelected = false
+        bookmarkButton.isSelected = false
+        likeCountLabel.text = "\(0) likes"
+        postTextLabel.text = post.caption
+        commentCountLabel.text = "View all \(0) comments"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        postDateLabel.text = dateFormatter.string(from: post.date)
     }
     
     @IBAction private func showUserProfile() {
