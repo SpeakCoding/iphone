@@ -19,12 +19,12 @@ class PostFeedCell: UITableViewCell {
     var post: Post!
     func setPost(_ newPost: Post) {
         post = newPost
-        posterAvatarView.showImageAsynchronously(image: post.user.avatar)
-        postImageView.showImageAsynchronously(image: post.images?.first)
+        posterAvatarView.showImageAsynchronously(imageURL: post.user.avatarURL)
+        postImageView.showImageAsynchronously(imageURL: post.images?.first?.url)
         
-        #warning("Not quite implemented")
         posterNameLabel.text = post.user.name
-        posterLocationLabel.isHidden = true
+        posterLocationLabel.text = post.location
+        #warning("Not quite implemented")
         likeButton.isSelected = false
         bookmarkButton.isSelected = false
         likeCountLabel.text = "\(0) likes"
@@ -34,7 +34,7 @@ class PostFeedCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
-        postDateLabel.text = dateFormatter.string(from: post.date)
+        postDateLabel.text = dateFormatter.string(from: post.time)
     }
     
     @IBAction private func showUserProfile() {

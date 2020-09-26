@@ -3,19 +3,21 @@ import Foundation
 
 class Post: ModelObject {
     
-    var date: Date
+    var time: Date
     var user: User
     var caption: String
     var images: [Image]?
     var video: Video?
-    var comments = [Comment]()
+    var location: String?
     var likes = [Like]()
+    var comments = [Comment]()
     
-    init(creationDate: Date, author: User, text: String, images: [Image]?, video: Video?) {
-        date = creationDate
+    init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
+        time = creationDate
         user = author
-        caption = text
-        self.images = images
-        self.video = video
+        caption = postCaption
+        images = postImages
+        video = postVideo
+        location = postLocation
     }
 }

@@ -4,7 +4,7 @@ import Foundation
 class User: ModelObject {
     
     var name: String
-    var avatar: Image?
+    var avatarURL: URL?
     var bio: String?
     
     init(userName: String) {

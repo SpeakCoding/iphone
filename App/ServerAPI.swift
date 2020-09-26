@@ -21,7 +21,6 @@ class ServerAPI {
     
     static let shared = ServerAPI()
     
-    
     func signUp(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
         let requestParameters = ["user": ["email": emailAddress, "password": password]]
         let request = makeRequest(method: .POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
@@ -42,6 +41,30 @@ class ServerAPI {
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
                 completion(User(json: userJSON), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func updateProfile(name: String?, bio: String?, avatarURL: URL?, completion: @escaping ((User?, Error?) -> Void)) {
+        var userInfo = [String: String]()
+        if name != nil {
+            userInfo["full_name"] = name!
+        }
+        if bio != nil {
+            userInfo["bio"] = bio!
+        }
+        if avatarURL != nil {
+            userInfo["portrait"] = avatarURL!.absoluteString
+        }
+        let requestParameters = ["user": userInfo]
+        let request = makeRequest(method: .PUT, endpoint: "/users/\(User.current!.id).json", authorized: false, parameters: requestParameters)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSON = result as? [String: Any] {
+                let updatedUser = User(json: userJSON)
+                User.current = updatedUser
+                completion(updatedUser, nil)
             } else {
                 completion(nil, error)
             }
@@ -231,9 +254,7 @@ extension User {
         self.init(userName: userName)
         id = json["id"] as! Int
         if let userAvatarURI = json["portrait"] as? String {
-            if let userAvatarURL = URL(string: userAvatarURI) {
-                self.avatar = Image(url: userAvatarURL)
-            }
+            self.avatarURL = URL(string: userAvatarURI)
         }
         self.bio = json["bio"] as? String
     }
@@ -249,7 +270,8 @@ extension Post {
         if let imageURL = URL(string: json["image"] as! String) {
             images = [Image(url: imageURL)]
         }
-        self.init(creationDate: date, author: user, text: text, images: images, video: nil)
+        let location = json["location"] as? String
+        self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         id = json["id"] as! Int
     }
 }

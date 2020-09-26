@@ -49,12 +49,15 @@ class PostComposerViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
         spinner.startAnimating()
         
-        let newPost = Post(creationDate: Date(), author: User.current!, text: textView.text, images: nil, video: nil)
+        #warning("Get location")
+        let newPost = Post(creationDate: Date(), author: User.current!, postCaption: textView.text, postImages: nil, postVideo: nil, postLocation: nil)
         ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton
-            if let createdPost = createdPost {
-                self.completion(createdPost)
+            if createdPost != nil {
+                self.completion(createdPost!)
+            } else {
+                self.report(error: error)
             }
         }
     }

@@ -30,7 +30,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         super.viewDidLoad()
         
         #warning("Not implemented")
-        avatarView.showImageAsynchronously(image: user.avatar)
+        avatarView.showImageAsynchronously(imageURL: user.avatarURL)
         postCountLabel.text = "\(0)"
         followerCountLabel.text = "\(0)"
         followedCountLabel.text = "\(0)"
@@ -83,7 +83,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Post cell", for: indexPath) as! PostTileCell
-        cell.imageView.showImageAsynchronously(image: posts[indexPath.item].images?.first)
+        cell.imageView.showImageAsynchronously(imageURL: posts[indexPath.item].images?.first?.url)
         return cell
     }
 }

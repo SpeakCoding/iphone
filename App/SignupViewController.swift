@@ -4,6 +4,7 @@ import UIKit
 class SignupViewController: UIViewController {
     
     @IBOutlet private var emailTextField: TextField!
+    @IBOutlet private var passwordTextField: TextField!
     @IBOutlet private var errorLabel: UILabel!
     private var emailAddress: String?
     private var completion: () -> Void
@@ -44,10 +45,11 @@ class SignupViewController: UIViewController {
         self.navigationController?.setViewControllers([LoginViewController(emailAddress: emailTextField.text, completion: completion)], animated: true)
     }
     
+    // This function is called when the Next button is pressed
     @IBAction private func proceedToNextStep() {
         self.view.endEditing(true)
         
-        emailAddress = emailTextField.text
+        let emailAddress = emailTextField.text
         if let errorMessage = validate(emailAddress: emailAddress) {
             emailTextField.indicatesError = true
             errorLabel.text = errorMessage
@@ -56,17 +58,47 @@ class SignupViewController: UIViewController {
         }
         emailTextField.indicatesError = false
         
-        #warning("Proceed to code confirmation")
-        self.navigationController?.pushViewController(ConfirmationCodeViewController(emailAddress: emailAddress!, completion: completion), animated: true)
+        let password = passwordTextField.text
+        if let errorMessage = validate(password: password) {
+            passwordTextField.indicatesError = true
+            errorLabel.text = errorMessage
+            errorLabel.isHidden = false
+            return
+        }
+        passwordTextField.indicatesError = false
+        
+        self.view.isUserInteractionEnabled = false
+        errorLabel.isHidden = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+                if let user = user {
+                    User.current = user
+                    self.navigationController?.setViewControllers([ConfirmationCodeViewController(emailAddress: emailAddress!, completion: self.completion)], animated: true)
+                } else {
+                    self.report(error: error)
+                }
+            }
+        }
     }
     
-    // This function performs input validation and returns an error message if any
+    // These functions perform input validation and return an error message if any
     private func validate(emailAddress: String?) -> String? {
         if emailAddress == nil || emailAddress!.count == 0 {
             return "Please enter your email address"
         }
         if emailAddress!.count < 6 || !emailAddress!.contains("@") {
             return "Please enter a valid email address"
+        }
+        return nil
+    }
+    
+    private func validate(password: String?) -> String? {
+        if password == nil || password!.count == 0 {
+            return "Please enter your password"
+        }
+        if password!.count < 3 {
+            return "A password must contain at least 3 characters"
         }
         return nil
     }

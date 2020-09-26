@@ -14,11 +14,10 @@ class AsynchronousImageView: UIImageView {
     private var currentImageURL: URL?
     private var imageDownloadTask: URLSessionDataTask?
     
-    
-    func showImageAsynchronously(image: Image?) {
+    func showImageAsynchronously(imageURL: URL?) {
         // If the new image is nil, cancel the image download in progress and reset the displayed image
-        guard let image = image else {
-            self.image = nil
+        guard let imageURL = imageURL else {
+            image = nil
             currentImageURL = nil
             imageDownloadTask?.cancel()
             imageDownloadTask = nil
@@ -26,13 +25,13 @@ class AsynchronousImageView: UIImageView {
         }
         
         // If the new image has the same URL as the current image, we don't have to do anything
-        if currentImageURL != nil && currentImageURL == image.url {
+        if currentImageURL == imageURL {
             return
         }
-        currentImageURL = image.url
+        currentImageURL = imageURL
         
         // Reset the displayed image while we download the new one
-        self.image = nil
+        image = nil
         
         // Cancel the image download in progress we might have
         imageDownloadTask?.cancel()
@@ -42,7 +41,7 @@ class AsynchronousImageView: UIImageView {
             // The completion closure is called on a secondary thread,
             // make sure we assign the image on the main thread
             DispatchQueue.main.async {
-                if self.currentImageURL == image.url {
+                if self.currentImageURL == imageURL {
                     if (downloadedData != nil) {
                         if let uiImage = UIImage(data: downloadedData!) {
                             self.image = uiImage
