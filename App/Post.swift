@@ -13,11 +13,11 @@ class Post: ModelObject {
     var comments = [Comment]()
     
     init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
-        time = creationDate
-        user = author
-        caption = postCaption
-        images = postImages
-        video = postVideo
-        location = postLocation
+        self.time = creationDate
+        self.user = author
+        self.caption = postCaption
+        self.images = postImages
+        self.video = postVideo
+        self.location = postLocation
     }
 }

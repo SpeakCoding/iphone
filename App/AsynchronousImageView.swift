@@ -17,27 +17,27 @@ class AsynchronousImageView: UIImageView {
     func showImageAsynchronously(imageURL: URL?) {
         // If the new image is nil, cancel the image download in progress and reset the displayed image
         guard let imageURL = imageURL else {
-            image = nil
-            currentImageURL = nil
-            imageDownloadTask?.cancel()
-            imageDownloadTask = nil
+            self.image = nil
+            self.currentImageURL = nil
+            self.imageDownloadTask?.cancel()
+            self.imageDownloadTask = nil
             return
         }
         
         // If the new image has the same URL as the current image, we don't have to do anything
-        if currentImageURL == imageURL {
+        if self.currentImageURL == imageURL {
             return
         }
-        currentImageURL = imageURL
+        self.currentImageURL = imageURL
         
         // Reset the displayed image while we download the new one
-        image = nil
+        self.image = nil
         
         // Cancel the image download in progress we might have
-        imageDownloadTask?.cancel()
+        self.imageDownloadTask?.cancel()
         
         // Start downloading the new image
-        imageDownloadTask = AsynchronousImageView.session.dataTask(with: currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
+        self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
             // The completion closure is called on a secondary thread,
             // make sure we assign the image on the main thread
             DispatchQueue.main.async {
@@ -51,7 +51,7 @@ class AsynchronousImageView: UIImageView {
                 } // else showImageAsynchronously() was called again while a previous image was still being downloaded
             }
         }
-        imageDownloadTask?.resume()
+        self.imageDownloadTask?.resume()
     }
     
     static let session = initSession()

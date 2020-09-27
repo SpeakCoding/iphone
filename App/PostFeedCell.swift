@@ -18,43 +18,44 @@ class PostFeedCell: UITableViewCell {
     
     var post: Post!
     func setPost(_ newPost: Post) {
-        post = newPost
-        posterAvatarView.showImageAsynchronously(imageURL: post.user.avatarURL)
-        postImageView.showImageAsynchronously(imageURL: post.images?.first?.url)
+        self.post = newPost
         
-        posterNameLabel.text = post.user.name
-        posterLocationLabel.text = post.location
+        self.posterAvatarView.showImageAsynchronously(imageURL: newPost.user.avatarURL)
+        self.postImageView.showImageAsynchronously(imageURL: newPost.images?.first?.url)
+        
+        self.posterNameLabel.text = newPost.user.name
+        self.posterLocationLabel.text = newPost.location
         #warning("Not quite implemented")
-        likeButton.isSelected = false
-        bookmarkButton.isSelected = false
-        likeCountLabel.text = "\(0) likes"
-        postTextLabel.text = post.caption
-        commentCountLabel.text = "View all \(0) comments"
+        self.likeButton.isSelected = false
+        self.bookmarkButton.isSelected = false
+        self.likeCountLabel.text = "\(0) likes"
+        self.postTextLabel.text = newPost.caption
+        self.commentCountLabel.text = "View all \(0) comments"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
-        postDateLabel.text = dateFormatter.string(from: post.time)
+        self.postDateLabel.text = dateFormatter.string(from: newPost.time)
     }
     
     @IBAction private func showUserProfile() {
-        actionDelegate?.showUserProfile(post.user)
+        self.actionDelegate?.showUserProfile(post.user)
     }
     
     @IBAction private func toggleLike() {
-        actionDelegate?.toggleLike(post: post)
+        self.actionDelegate?.toggleLike(post: post)
     }
     
     @IBAction private func addComment() {
-        actionDelegate?.addComment(post: post)
+        self.actionDelegate?.addComment(post: post)
     }
     
     @IBAction private func toggleBookmark() {
-        actionDelegate?.toggleBookmark(post: post)
+        self.actionDelegate?.toggleBookmark(post: post)
     }
     
     @IBAction private func showAllComments() {
-        actionDelegate?.showAllComments(post: post)
+        self.actionDelegate?.showAllComments(post: post)
     }
 }
 

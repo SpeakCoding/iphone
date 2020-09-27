@@ -30,26 +30,26 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         super.viewDidLoad()
         
         #warning("Not implemented")
-        avatarView.showImageAsynchronously(imageURL: user.avatarURL)
-        postCountLabel.text = "\(0)"
-        followerCountLabel.text = "\(0)"
-        followedCountLabel.text = "\(0)"
-        userNameLabel.text = user.name
-        bioLabel.text = user.bio
+        self.avatarView.showImageAsynchronously(imageURL: self.user.avatarURL)
+        self.postCountLabel.text = "\(0)"
+        self.followerCountLabel.text = "\(0)"
+        self.followedCountLabel.text = "\(0)"
+        self.userNameLabel.text = self.user.name
+        self.bioLabel.text = self.user.bio
         
-        if user == User.current {
-            followButton.isHidden = true
+        if self.user == User.current {
+            self.followButton.isHidden = true
         } else {
-            editProfileButton.isHidden = true
-            followButton.setTitleColor(UIColor.white, for: .selected)
-            followButton.setTitleColor(UIColor.white, for: [.selected, .highlighted])
-            followButton.setTitle("Unfollow", for: .selected)
-            followButton.setTitle("Unfollow", for: [.selected, .highlighted])
+            self.editProfileButton.isHidden = true
+            self.followButton.setTitleColor(UIColor.white, for: .selected)
+            self.followButton.setTitleColor(UIColor.white, for: [.selected, .highlighted])
+            self.followButton.setTitle("Unfollow", for: .selected)
+            self.followButton.setTitle("Unfollow", for: [.selected, .highlighted])
         }
         
         gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
         let cellWidth = UIScreen.main.bounds.size.width / 3.0
-        let layout = gridView.collectionViewLayout as! UICollectionViewFlowLayout
+        let layout = self.gridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         
         ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
@@ -67,8 +67,8 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     @IBAction private func toggleFollow() {
         #warning("Not implemented")
-        followButton.isSelected = !followButton.isSelected
-        followButton.setBackgroundImage(UIImage(named: followButton.isSelected ? "small-button-on" : "small-button-off"), for: .normal)
+        self.followButton.isSelected = !self.followButton.isSelected
+        self.followButton.setBackgroundImage(UIImage(named: self.followButton.isSelected ? "small-button-on" : "small-button-off"), for: .normal)
     }
     
     @IBAction private func editProfile() {
@@ -94,11 +94,11 @@ fileprivate class PostTileCell: UICollectionViewCell {
     var imageView: AsynchronousImageView
     
     override init(frame: CGRect) {
-        imageView = AsynchronousImageView(frame: frame)
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
+        self.imageView = AsynchronousImageView(frame: frame)
+        self.imageView.contentMode = .scaleAspectFill
+        self.imageView.clipsToBounds = true
         super.init(frame: frame)
-        contentView.addSubview(imageView)
+        contentView.addSubview(self.imageView)
     }
     
     required init?(coder: NSCoder) {
@@ -108,6 +108,6 @@ fileprivate class PostTileCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = contentView.bounds
+        self.imageView.frame = contentView.bounds
     }
 }

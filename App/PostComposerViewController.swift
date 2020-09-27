@@ -20,22 +20,22 @@ class PostComposerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        postImageView.image = image
+        self.postImageView.image = self.image
         
-        textView.textContainerInset = .zero
-        placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: textView.contentInset.left + textView.textContainer.lineFragmentPadding).isActive = true
-        placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: textView.contentInset.top).isActive = true
+        self.textView.textContainerInset = .zero
+        self.placeholderLabel.leadingAnchor.constraint(equalTo: self.textView.leadingAnchor, constant: self.textView.contentInset.left + self.textView.textContainer.lineFragmentPadding).isActive = true
+        self.placeholderLabel.topAnchor.constraint(equalTo: self.textView.topAnchor, constant: self.textView.contentInset.top).isActive = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        textView.becomeFirstResponder()
+        self.textView.becomeFirstResponder()
     }
     
     @objc func textViewDidChange(_ textView: UITextView) {
         let textHasBeenEntered = textView.text.count > 0
-        placeholderLabel.isHidden = textHasBeenEntered
+        self.placeholderLabel.isHidden = textHasBeenEntered
         self.navigationItem.rightBarButtonItem!.isEnabled = textHasBeenEntered
     }
     
@@ -50,7 +50,7 @@ class PostComposerViewController: UIViewController {
         spinner.startAnimating()
         
         #warning("Get location")
-        let newPost = Post(creationDate: Date(), author: User.current!, postCaption: textView.text, postImages: nil, postVideo: nil, postLocation: nil)
+        let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: nil)
         ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton

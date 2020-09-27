@@ -10,6 +10,6 @@ extension UIViewController {
         let errorDetails = (error as NSError).localizedFailureReason
         let alert = UIAlertController(title: error.localizedDescription, message: errorDetails, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 }

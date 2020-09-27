@@ -37,89 +37,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         profileTabViewController.tabBarItem.tag = TabBarItemTag.profile.rawValue
         
         // Set up the tab bar controller and display it in the app's window
-        tabBarController = UITabBarController(nibName: nil, bundle: nil)
-        tabBarController.viewControllers = [homeTabViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
-        tabBarController.delegate = self
+        self.tabBarController = UITabBarController(nibName: nil, bundle: nil)
+        self.tabBarController.viewControllers = [homeTabViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
+        self.tabBarController.delegate = self
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window!.rootViewController = tabBarController
-        window!.makeKeyAndVisible()
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window!.rootViewController = self.tabBarController
+        self.window!.makeKeyAndVisible()
         
         return true
     }
     
     private func initCacheDatabase() {
-        #warning("Remove test code")
-        /*
-        let path = "/users/123/posts/9"
-        // Parse routes in format "/users/:user_id/posts/:post_id"
-        // and construct a regular expression like "/users/([0-9]+)/posts/([0-9]+)",
-        // storing identifier placeholders in an array like ["user_id", "post_id"].
-        var pattern = "/users/:user_id/posts/:post_id"
-        guard pattern.starts(with: "/") else {
-            fatalError("The pattern must start with '/'")
-        }
-        pattern.replaceSubrange(pattern.range(of: "/")!, with: "")
-        
-        var regexPattern = ""
-        var placeholders = [String]()
-        for component in pattern.components(separatedBy: "/") {
-            print("Component = \"\(component)\"")
-            regexPattern.append("/")
-            if component.starts(with: ":") {
-                regexPattern.append("([0-9]+)")
-                let placeholder = String(component[component.index(component.startIndex, offsetBy: 1)...])
-                placeholders.append(placeholder)
-            } else {
-                regexPattern.append(contentsOf: component)
-            }
-        }
-        print("Regex = \(regexPattern), placeholders = \(placeholders)")
-        
-        let regex = try! NSRegularExpression(pattern: regexPattern)
-        let result = regex.firstMatch(in: path, options: [], range: NSRange(location: 0, length: path.count))
-        // The range at index 0 corresponds to the whole regex, the rest are capture groups
-        if result!.numberOfRanges > 1 {
-            var identifierTable = [String: Int]()
-            for rangeIndex in 1..<result!.numberOfRanges {
-                identifierTable[placeholders[rangeIndex - 1]] = Int((path as NSString).substring(with: result!.range(at: rangeIndex)))
-            }
-            print("Matched: \(identifierTable)")
-        }
-        */
-        
-//        print("\(NSHomeDirectory())")
-//        let cachesURL = FileManager().urls(for: .cachesDirectory, in: .userDomainMask).first!
-//        let dbPath = cachesURL.appendingPathComponent("AppCache.sqlite").path
-//        try? FileManager().removeItem(atPath: dbPath)
-//        let db = SQLiteDatabase(filePath: dbPath)
-//        if db.open() {
-//            let query1 = """
-//            CREATE TABLE users (
-//            "id" INTEGER PRIMARY KEY NOT NULL,
-//            "name" TEXT,
-//            "height" REAL
-//            )
-//            """
-//            db.executeUpdate(sqlQuery: query1, values: nil)
-//            db.executeUpdate(sqlQuery: "INSERT INTO users (id,name,height) VALUES (?,?,?)", values: [123, "John Doe", 175.5])
-//            db.executeUpdate(sqlQuery: "INSERT INTO users (id,name,height) VALUES (?,?,?)", values: [456, "Jon Snow", 180.5])
-//            db.executeUpdate(sqlQuery: "INSERT INTO users (id,name,height) VALUES (?,?,?)", values: [789, "Ann Glow", 178.1])
-//            let allUsers = db.executeQuery(sqlQuery: "SELECT * FROM users", parameters: nil)
-//            print("All users: \(allUsers)")
-//            let jon = db.executeQuery(sqlQuery: "SELECT id,name FROM users WHERE id=?", parameters: [456])
-//            print("Jon only: \(jon)")
-//            db.close()
-//        }
-//        try? FileManager().removeItem(atPath: dbPath)
-//        let _ = Post(date: Date(), author: User(name: "Jon"), text: "Hello world!", images: nil, video: nil)
+        #warning("Not implemented")
     }
     
     private func presentLoginFlow(completion: @escaping () -> Void) {
         let loginViewController = LoginViewController(emailAddress: nil, completion: completion)
         let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
         loginFlowNavigationController.isNavigationBarHidden = true
-        tabBarController.present(loginFlowNavigationController, animated: true, completion: nil)
+        self.tabBarController.present(loginFlowNavigationController, animated: true, completion: nil)
     }
     
     private func showImagePickerSourceSelection() {
@@ -128,11 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if cameraIsAvailable || libraryIsAvailable {
             // Show the image picker/camera immediately if only one of them is available
             if cameraIsAvailable && !libraryIsAvailable {
-                showImagePicker(source: .camera)
+                self.showImagePicker(source: .camera)
                 return
             }
             if libraryIsAvailable && !cameraIsAvailable {
-                showImagePicker(source: .photoLibrary)
+                self.showImagePicker(source: .photoLibrary)
                 return
             }
             
@@ -145,11 +82,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 self.showImagePicker(source: .photoLibrary)
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            tabBarController.present(alert, animated: true, completion: nil)
+            self.tabBarController.present(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: nil, message: "Sorry neither the camera nor the photo library is available.", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            tabBarController.present(alert, animated: true, completion: nil)
+            self.tabBarController.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -162,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
         imagePicker.modalPresentationStyle = .fullScreen
         imagePicker.delegate = self
-        tabBarController.present(imagePicker, animated: true, completion: nil)
+        self.tabBarController.present(imagePicker, animated: true, completion: nil)
     }
     
     // MARK: - UIImagePickerControllerDelegate
@@ -192,9 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             // The tab cannot be actually selected.
             // Instead ask the user to log in before they can select the image source.
             if User.current != nil {
-                showImagePickerSourceSelection()
+                self.showImagePickerSourceSelection()
             } else {
-                presentLoginFlow(completion: {
+                self.presentLoginFlow(completion: {
                     tabBarController.dismiss(animated: true) {
                         self.showImagePickerSourceSelection()
                     }
@@ -213,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 return true
             }
             
-            presentLoginFlow(completion: {
+            self.presentLoginFlow(completion: {
                 navigationController.setViewControllers([LikedPostsViewController()], animated: false)
                 tabBarController.selectedIndex = TabBarItemTag.likedPosts.rawValue
                 tabBarController.dismiss(animated: true, completion: nil)
@@ -231,7 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 return true
             }
             
-            presentLoginFlow(completion: {
+            self.presentLoginFlow(completion: {
                 navigationController.setViewControllers([UserProfileViewController(user: User.current!)], animated: false)
                 tabBarController.selectedIndex = TabBarItemTag.profile.rawValue
                 tabBarController.dismiss(animated: true, completion: nil)

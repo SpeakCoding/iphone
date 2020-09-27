@@ -20,23 +20,23 @@ class AvatarView: AsynchronousImageView {
         super.layoutSubviews()
         
         // Create a circle mask to trim image corners, unless we've already created it
-        if clipMask == nil {
-            clipMask = CAShapeLayer()
-            layer.mask = clipMask!
+        if self.clipMask == nil {
+            self.clipMask = CAShapeLayer()
+            self.layer.mask = self.clipMask!
             // Display the initial placeholder image
-            if image == nil {
-                image = placeholderImage
+            if self.image == nil {
+                self.image = self.placeholderImage
             }
         }
         // Adjust the mask's size to fill the view if needed
-        if clipMask!.frame.size != bounds.size {
+        if self.clipMask!.frame.size != self.bounds.size {
             // Make sure the clip mask is a perfect circle
-            let clipMaskDiameter = min(bounds.size.width, bounds.size.height)
+            let clipMaskDiameter = min(self.bounds.size.width, self.bounds.size.height)
             let clipMaskFrame = CGRect(x: 0, y: 0, width: clipMaskDiameter, height: clipMaskDiameter)
-            clipMask!.frame = clipMaskFrame
-            clipMask!.path = UIBezierPath(ovalIn: clipMaskFrame).cgPath
+            self.clipMask!.frame = clipMaskFrame
+            self.clipMask!.path = UIBezierPath(ovalIn: clipMaskFrame).cgPath
             // Enforce proportional image scaling
-            contentMode = .scaleAspectFill
+            self.contentMode = .scaleAspectFill
         }
     }
     
@@ -45,7 +45,7 @@ class AvatarView: AsynchronousImageView {
             return super.image
         }
         set(newImage) {
-            super.image = newImage ?? placeholderImage
+            super.image = newImage ?? self.placeholderImage
         }
     }
 }

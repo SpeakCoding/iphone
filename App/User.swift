@@ -8,7 +8,7 @@ class User: ModelObject {
     var bio: String?
     
     init(userName: String) {
-        name = userName
+        self.name = userName
     }
     
     static var current: User? = nil

@@ -28,13 +28,13 @@ class ConfirmationCodeViewController: UIViewController {
         super.viewDidLoad()
         
         let plainHint = "Enter the confirmation code we’ve sent to <email>"
-        let font = hintLabel.font!
+        let font = self.hintLabel.font!
         let formattedHint = NSMutableAttributedString(string: plainHint, attributes: [NSAttributedString.Key.font: font])
         let placeholderRange = (plainHint as NSString).range(of: "<email>")
-        formattedHint.replaceCharacters(in: placeholderRange, with: NSAttributedString(string: emailAddress, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize:  font.pointSize)]))
-        hintLabel.attributedText = formattedHint
+        formattedHint.replaceCharacters(in: placeholderRange, with: NSAttributedString(string: self.emailAddress, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize:  font.pointSize)]))
+        self.hintLabel.attributedText = formattedHint
         
-        errorLabel.isHidden = true
+        self.errorLabel.isHidden = true
     }
     
     @objc private func keyboardWillChangeFrame(notification: Notification) {
@@ -54,14 +54,14 @@ class ConfirmationCodeViewController: UIViewController {
     @IBAction private func proceedToNextStep() {
         self.view.endEditing(true)
         
-        let confirmationCode = codeTextField.text
+        let confirmationCode = self.codeTextField.text
         if let errorMessage = validate(code: confirmationCode) {
-            codeTextField.indicatesError = true
-            errorLabel.text = errorMessage
-            errorLabel.isHidden = false
+            self.codeTextField.indicatesError = true
+            self.errorLabel.text = errorMessage
+            self.errorLabel.isHidden = false
             return
         }
-        codeTextField.indicatesError = false
+        self.codeTextField.indicatesError = false
         
         #warning("Verify code and proceed")
     }

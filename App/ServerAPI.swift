@@ -170,25 +170,25 @@ class ServerAPI {
         config.urlCache = nil
         if ProcessInfo().arguments.contains("mock-api") {
             config.protocolClasses = [MockURLProtocol.self]
-            baseURLString = "mock://api.example.com"
+            self.baseURLString = "mock://api.example.com"
         } else {
-            baseURLString = "http://130.193.44.149:3000"
+            self.baseURLString = "http://130.193.44.149:3000"
         }
         
         let sessionDelegateQueue = OperationQueue()
         sessionDelegateQueue.name = "API.HTTP"
         sessionDelegateQueue.maxConcurrentOperationCount = 1
         
-        session = URLSession(configuration: config, delegate: nil, delegateQueue: sessionDelegateQueue)
+        self.session = URLSession(configuration: config, delegate: nil, delegateQueue: sessionDelegateQueue)
         
-        accessToken = UserDefaults.standard.string(forKey: "access token")
+        self.accessToken = UserDefaults.standard.string(forKey: "access token")
     }
     
     /**
      Compose a URLRequest object
      */
     private func makeRequest(method: HTTPMethod, endpoint: String, authorized: Bool, parameters: [String: Any]?) -> URLRequest {
-        guard let url = URL(string: baseURLString + endpoint) else {
+        guard let url = URL(string: self.baseURLString + endpoint) else {
             fatalError("Invalid endpoint: \(endpoint)")
         }
         
@@ -198,8 +198,8 @@ class ServerAPI {
             request.httpBody = try! JSONSerialization.data(withJSONObject: json, options: [])
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-        if authorized && accessToken != nil {
-            request.setValue(accessToken!, forHTTPHeaderField: "Authentication-Token")
+        if authorized && self.accessToken != nil {
+            request.setValue(self.accessToken!, forHTTPHeaderField: "Authentication-Token")
         }
         return request
     }
@@ -208,7 +208,7 @@ class ServerAPI {
      Perform a network request and process a server's response
      */
     private func performRequest(request: URLRequest, completion: @escaping ((_ data: Any?, _ metadata: [String: String]?, _ error: Error?) -> Void)) {
-        let task = session.dataTask(with: request) { (jsonData: Data?, urlResponse: URLResponse?, requestError: Error?) in
+        let task = self.session.dataTask(with: request) { (jsonData: Data?, urlResponse: URLResponse?, requestError: Error?) in
             var result: Any?
             var metadata: [String: String]?
             var reportedError = requestError
@@ -252,7 +252,7 @@ extension User {
         #warning("Remove the default name")
         let userName = json["full_name"] as? String ?? "NO NAME"
         self.init(userName: userName)
-        id = json["id"] as! Int
+        self.id = json["id"] as! Int
         if let userAvatarURI = json["portrait"] as? String {
             self.avatarURL = URL(string: userAvatarURI)
         }
@@ -272,7 +272,7 @@ extension Post {
         }
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
-        id = json["id"] as! Int
+        self.id = json["id"] as! Int
     }
 }
 

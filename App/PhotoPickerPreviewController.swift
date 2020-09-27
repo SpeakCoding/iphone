@@ -17,16 +17,16 @@ class PhotoPickerPreviewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
+        self.imageView = UIImageView(image: self.image)
+        self.imageView.contentMode = .scaleAspectFit
         self.view.backgroundColor = UIColor.white
-        self.view.addSubview(imageView)
+        self.view.addSubview(self.imageView)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        imageView.frame = self.view.bounds
+        self.imageView.frame = self.view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +44,7 @@ class PhotoPickerPreviewController: UIViewController {
     }
     
     @objc private func showPostComposer() {
-        let postComposer = PostComposerViewController(image: imageView.image!, completion: completion)
+        let postComposer = PostComposerViewController(image: self.imageView.image!, completion: self.completion)
         self.navigationController?.pushViewController(postComposer, animated: true)
     }
     

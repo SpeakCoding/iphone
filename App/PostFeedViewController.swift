@@ -8,11 +8,11 @@ class PostFeedViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "SpeakCoding"
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationItem.title = "SpeakCoding"
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        tableView.estimatedRowHeight = 503
+        self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView.estimatedRowHeight = 503
         
         ServerAPI.shared.getFeedPosts(startPostIndex: 0) { (posts: [Post]?, error: Error?) in
             if let posts = posts {
@@ -29,12 +29,12 @@ class PostFeedViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feed.posts.count
+        return self.feed.posts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedCell
-        postCell.setPost(feed.posts[indexPath.row])
+        postCell.setPost(self.feed.posts[indexPath.row])
         postCell.actionDelegate = self
         return postCell
     }
@@ -43,7 +43,7 @@ class PostFeedViewController: UITableViewController {
 
 extension PostFeedViewController: PostFeedCellDelegate {
     func showUserProfile(_ user: User) {
-        navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
+        self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
     }
     
     func toggleLike(post: Post) {

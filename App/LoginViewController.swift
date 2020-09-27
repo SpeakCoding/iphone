@@ -27,8 +27,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.text = emailAddress
-        errorLabel.isHidden = true
+        self.emailTextField.text = self.emailAddress
+        self.errorLabel.isHidden = true
     }
     
     @objc private func keyboardWillChangeFrame(notification: Notification) {
@@ -43,33 +43,33 @@ class LoginViewController: UIViewController {
     
     // This function is called when the Sign Up button is pressed
     @IBAction private func signUp() {
-        self.navigationController?.setViewControllers([SignupViewController(emailAddress: emailTextField.text, completion: completion)], animated: true)
+        self.navigationController?.setViewControllers([SignupViewController(emailAddress: self.emailTextField.text, completion: self.completion)], animated: true)
     }
     
     // This function is called when the Log In button is pressed
     @IBAction private func logIn() {
         self.view.endEditing(true)
         
-        let emailAddress = emailTextField.text
+        let emailAddress = self.emailTextField.text
         if let errorMessage = validate(emailAddress: emailAddress) {
-            emailTextField.indicatesError = true
-            errorLabel.text = errorMessage
-            errorLabel.isHidden = false
+            self.emailTextField.indicatesError = true
+            self.errorLabel.text = errorMessage
+            self.errorLabel.isHidden = false
             return
         }
-        emailTextField.indicatesError = false
+        self.emailTextField.indicatesError = false
         
-        let password = passwordTextField.text
+        let password = self.passwordTextField.text
         if let errorMessage = validate(password: password) {
-            passwordTextField.indicatesError = true
-            errorLabel.text = errorMessage
-            errorLabel.isHidden = false
+            self.passwordTextField.indicatesError = true
+            self.errorLabel.text = errorMessage
+            self.errorLabel.isHidden = false
             return
         }
-        passwordTextField.indicatesError = false
+        self.passwordTextField.indicatesError = false
         
         self.view.isUserInteractionEnabled = false
-        errorLabel.isHidden = true
+        self.errorLabel.isHidden = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
