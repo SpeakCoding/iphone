@@ -19,7 +19,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     init(user: User) {
         self.user = user
         super.init(nibName: "UserProfileView", bundle: nil)
-        self.navigationItem.title = user.name
     }
     
     required init?(coder: NSCoder) {
@@ -28,14 +27,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        #warning("Not implemented")
-        self.avatarView.showImageAsynchronously(imageURL: self.user.avatarURL)
-        self.postCountLabel.text = "\(0)"
-        self.followerCountLabel.text = "\(0)"
-        self.followedCountLabel.text = "\(0)"
-        self.userNameLabel.text = self.user.name
-        self.bioLabel.text = self.user.bio
         
         if self.user == User.current {
             self.followButton.isHidden = true
@@ -52,6 +43,20 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         let layout = self.gridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         
+        self.displayUserInformation()
+        self.fetchUserAndPosts()
+    }
+    
+    private func fetchUserAndPosts() {
+        ServerAPI.shared.getUser(id: self.user.id) { (user: User?, error: Error?) in
+            if user != nil {
+                self.user = user!
+                self.displayUserInformation()
+            } else {
+                self.report(error: error)
+            }
+        }
+        
         ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
             if let posts = posts {
                 if posts.count > 0 {
@@ -63,6 +68,17 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             }
             self.placeholderLabel.isHidden = false
         }
+    }
+    
+    private func displayUserInformation() {
+        self.navigationItem.title = self.user.name
+        #warning("Not implemented")
+        self.avatarView.showImageAsynchronously(imageURL: self.user.avatarURL)
+        self.postCountLabel.text = "\(0)"
+        self.followerCountLabel.text = "\(0)"
+        self.followedCountLabel.text = "\(0)"
+        self.userNameLabel.text = self.user.name
+        self.bioLabel.text = self.user.bio
     }
     
     @IBAction private func toggleFollow() {

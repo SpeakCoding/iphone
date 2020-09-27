@@ -71,6 +71,17 @@ class ServerAPI {
         }
     }
     
+    func getUser(id: Int, completion: @escaping ((User?, Error?) -> Void)) {
+        let request = makeRequest(method: .GET, endpoint: "/users/\(id).json", authorized: false, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSON = result as? [String: Any] {
+                completion(User(json: userJSON), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     /**
      Get a batch of `Post` objects in the feed after the last `Post` object we received earlier.
      This method is supposed to be called repeatedly as the user scrolls the feed

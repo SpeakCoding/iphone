@@ -55,11 +55,16 @@ class MockURLProtocol: URLProtocol {
             case "/posts" where request.httpMethod == "GET":
                 json = getPosts()
             default:
+                if let objectIDs = matchRoute(pattern: "/users/:user_id.json", path: requestURL.path) {
+                    json = getUser(userIdentifier: objectIDs["user_id"]!)
+                    break
+                }
                 if let objectIDs = matchRoute(pattern: "/users/:user_id/posts", path: requestURL.path) {
                     json = getPostsOfUser(userIdentifier: objectIDs["user_id"]!)
-                } else {
-                    json = []
+                    break
                 }
+                
+                json = []
             }
             data = try! JSONSerialization.data(withJSONObject: json, options: [])
             response = HTTPURLResponse(url: requestURL, statusCode: 200, httpVersion: "1.1", headerFields: nil)!
@@ -96,7 +101,13 @@ class MockURLProtocol: URLProtocol {
             regexPattern.append("/")
             if component.starts(with: ":") {
                 regexPattern.append("([0-9]+)")
-                let placeholder = String(component[component.index(component.startIndex, offsetBy: 1)...])
+                
+                var placeholder = component
+                placeholder.removeFirst(1)
+                if component.hasSuffix(".json") {
+                    placeholder.removeLast(5)
+                    regexPattern.append("\\.json")
+                }
                 placeholders.append(placeholder)
             } else {
                 regexPattern.append(contentsOf: component)
@@ -119,14 +130,12 @@ class MockURLProtocol: URLProtocol {
     }
     
     private func signUp(jsonData: Data) -> Any {
-        if let userJSON = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: String]] {
+        if (try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? [String: [String: String]] != nil {
+            let userID = 123
+            var user = users[userID]!
+            user["id"] = userID
             return [
-                "data": [
-                    "id": 123,
-                    "full_name": "John Doe",
-                    "email": userJSON["user"]?["email"] ?? "email@example.com",
-                    "portrait": "mock://sc.com/avatar.1.jpg"
-                ],
+                "data": user,
                 "meta": ["authentication_token": "test-access-token"]
             ]
         }
@@ -161,6 +170,15 @@ class MockURLProtocol: URLProtocol {
             (a["created_at"] as! TimeInterval) > (b["created_at"] as! TimeInterval)
         }
         return ["data": result]
+    }
+    
+    private func getUser(userIdentifier: Int) -> Any {
+        var user = users[userIdentifier]
+        if user != nil {
+            user!["id"] = userIdentifier
+            return ["data": user]
+        }
+        return []
     }
     
     // MARK: -
@@ -264,6 +282,7 @@ class MockURLProtocol: URLProtocol {
         7: ["full_name": "Peter Waters", "portrait": "mock://sc.com/avatar.7.jpg", "email": "pw@example.com"],
         8: ["full_name": "Tiffany MacDowell", "portrait": "mock://sc.com/avatar.8.jpg", "email": "tiff@example.com"],
         9: ["full_name": "Robert Stoughton", "portrait": "mock://sc.com/avatar.9.jpg", "email": "rob@example.com"],
-        10: ["full_name": "Kate Benedict", "portrait": "mock://sc.com/avatar.10.jpg", "email": "kate@example.com"]
+        10: ["full_name": "Kate Benedict", "portrait": "mock://sc.com/avatar.10.jpg", "email": "kate@example.com"],
+        123: ["full_name": "John Doe", "portrait": "mock://sc.com/avatar.1.jpg", "email": "john@doe.com"],
     ]
 }

@@ -50,6 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     private func initCacheDatabase() {
         #warning("Not implemented")
+        
+        #warning("Fetch current user from DB")
+        let currentUserID = UserDefaults.standard.integer(forKey: "Current user ID")
+        if currentUserID != 0 {
+            let currentUser = User(userName: "")
+            currentUser.id = currentUserID
+            User.current = currentUser
+        }
     }
     
     private func presentLoginFlow(completion: @escaping () -> Void) {

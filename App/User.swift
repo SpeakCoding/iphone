@@ -11,5 +11,10 @@ class User: ModelObject {
         self.name = userName
     }
     
-    static var current: User? = nil
+    static var current: User? = nil {
+        didSet {
+            #warning("Refactor with 'current' column in DB")
+            UserDefaults.standard.set(current?.id, forKey: "Current user ID")
+        }
+    }
 }
