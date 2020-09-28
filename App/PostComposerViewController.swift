@@ -8,6 +8,7 @@ class PostComposerViewController: UIViewController {
     @IBOutlet private var postImageView: UIImageView!
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
+    @IBOutlet private var locationField: TextField!
     
     init(image: UIImage , completion: @escaping (_ newPost: Post) -> Void) {
         self.image = image
@@ -49,8 +50,8 @@ class PostComposerViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
         spinner.startAnimating()
         
-        #warning("Get location")
-        let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: nil)
+        let location = self.locationField.text
+        let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: location)
         ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton

@@ -7,8 +7,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostComposerViewController" customModule="Instacarat" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostComposerViewController" customModule="SpeakCoding" customModuleProvider="target">
             <connections>
+                <outlet property="locationField" destination="7GE-Td-0iX" id="aUX-8O-5j6"/>
                 <outlet property="placeholderLabel" destination="RDb-RY-c19" id="Snh-GP-6aE"/>
                 <outlet property="postImageView" destination="3Et-FV-1Oe" id="DLd-Jf-f9Z"/>
                 <outlet property="textView" destination="cue-FX-6Jx" id="FcD-jg-bvk"/>
@@ -44,14 +45,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="095-44-d1t" userLabel="Separator">
-                    <rect key="frame" x="0.0" y="140" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="200" width="375" height="1"/>
                     <color key="backgroundColor" red="0.92941176469999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="hw8-TO-bOD"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13X-d4-6ke">
-                    <rect key="frame" x="0.0" y="141" width="375" height="48"/>
+                    <rect key="frame" x="0.0" y="201" width="375" height="48"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="l4c-pA-JXN"/>
                     </constraints>
@@ -65,27 +66,37 @@
                     </connections>
                 </button>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-icon" translatesAutoresizingMaskIntoConstraints="NO" id="kVL-ps-VUQ">
-                    <rect key="frame" x="351" y="158.66666666666666" width="8" height="13"/>
+                    <rect key="frame" x="351" y="218.66666666666666" width="8" height="13"/>
                 </imageView>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KA7-1A-eYy" userLabel="Separator">
-                    <rect key="frame" x="0.0" y="189" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="249" width="375" height="1"/>
                     <color key="backgroundColor" red="0.92941176469999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="9nE-Mf-l3K"/>
                     </constraints>
                 </view>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="16" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="7GE-Td-0iX" customClass="TextField" customModule="SpeakCoding" customModuleProvider="target">
+                    <rect key="frame" x="16" y="140" width="343" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Wyp-DL-5fa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="username"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="height" secondItem="3Et-FV-1Oe" secondAttribute="height" priority="250" id="9DP-4g-N10"/>
                 <constraint firstItem="KA7-1A-eYy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BCu-Hu-BQZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="7GE-Td-0iX" secondAttribute="trailing" constant="16" id="EYy-PL-HHA"/>
                 <constraint firstItem="3Et-FV-1Oe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="G3J-jo-0Fs"/>
                 <constraint firstItem="kVL-ps-VUQ" firstAttribute="centerY" secondItem="13X-d4-6ke" secondAttribute="centerY" id="Noa-z5-Raw"/>
+                <constraint firstItem="7GE-Td-0iX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="RUU-gN-ose"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kVL-ps-VUQ" secondAttribute="trailing" constant="16" id="US8-Sv-cOW"/>
                 <constraint firstItem="KA7-1A-eYy" firstAttribute="top" secondItem="13X-d4-6ke" secondAttribute="bottom" id="V8u-wm-WQC"/>
+                <constraint firstItem="095-44-d1t" firstAttribute="top" secondItem="7GE-Td-0iX" secondAttribute="bottom" constant="16" id="WYD-Kv-kIc"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="leading" secondItem="3Et-FV-1Oe" secondAttribute="trailing" constant="12" id="X3j-sm-9G4"/>
                 <constraint firstAttribute="trailing" secondItem="095-44-d1t" secondAttribute="trailing" id="X87-At-1e8"/>
-                <constraint firstItem="095-44-d1t" firstAttribute="top" secondItem="cue-FX-6Jx" secondAttribute="bottom" constant="16" id="ZW7-kf-X2t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cue-FX-6Jx" secondAttribute="trailing" constant="16" id="a9q-Du-p91"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="top" secondItem="3Et-FV-1Oe" secondAttribute="top" id="d13-7Y-X0j"/>
                 <constraint firstItem="RDb-RY-c19" firstAttribute="top" secondItem="cue-FX-6Jx" secondAttribute="top" constant="8" placeholder="YES" id="fqU-NL-Tto"/>
@@ -97,11 +108,12 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13X-d4-6ke" secondAttribute="trailing" id="wWU-in-zcL"/>
                 <constraint firstItem="095-44-d1t" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xXl-N9-kQ2"/>
                 <constraint firstItem="13X-d4-6ke" firstAttribute="top" secondItem="095-44-d1t" secondAttribute="bottom" id="zaM-z2-4tO"/>
+                <constraint firstItem="7GE-Td-0iX" firstAttribute="top" secondItem="cue-FX-6Jx" secondAttribute="bottom" constant="16" id="zto-m4-nsg"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="130" y="112"/>
+            <point key="canvasLocation" x="128.80000000000001" y="111.57635467980296"/>
         </view>
     </objects>
     <resources>

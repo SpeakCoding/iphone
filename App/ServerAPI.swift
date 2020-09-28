@@ -117,9 +117,9 @@ class ServerAPI {
     
     func create(post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
-            "location": nil,
+            "location": post.location,
             "description": post.caption,
-            "image": post.images!.first?.url.absoluteString,
+            "image": post.images?.first?.url.absoluteString,
             ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
