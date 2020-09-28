@@ -11,14 +11,14 @@ class PhotoPickerPreviewController: UIViewController {
         self.image = image
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(showPostComposer))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: UIBarButtonItem.Style.plain, target: self, action: #selector(showPostComposer))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.imageView = UIImageView(image: self.image)
-        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.contentMode = UIView.ContentMode.scaleAspectFit
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.imageView)
     }

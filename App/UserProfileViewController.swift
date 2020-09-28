@@ -32,10 +32,10 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             self.followButton.isHidden = true
         } else {
             self.editProfileButton.isHidden = true
-            self.followButton.setTitleColor(UIColor.white, for: .selected)
-            self.followButton.setTitleColor(UIColor.white, for: [.selected, .highlighted])
-            self.followButton.setTitle("Unfollow", for: .selected)
-            self.followButton.setTitle("Unfollow", for: [.selected, .highlighted])
+            self.followButton.setTitleColor(UIColor.white, for: UIControl.State.selected)
+            self.followButton.setTitleColor(UIColor.white, for: [UIControl.State.selected, UIControl.State.highlighted])
+            self.followButton.setTitle("Unfollow", for: UIControl.State.selected)
+            self.followButton.setTitle("Unfollow", for: [UIControl.State.selected, UIControl.State.highlighted])
         }
         
         gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
@@ -84,7 +84,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBAction private func toggleFollow() {
         #warning("Not implemented")
         self.followButton.isSelected = !self.followButton.isSelected
-        self.followButton.setBackgroundImage(UIImage(named: self.followButton.isSelected ? "small-button-on" : "small-button-off"), for: .normal)
+        self.followButton.setBackgroundImage(UIImage(named: self.followButton.isSelected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
     }
     
     @IBAction private func editProfile() {
@@ -111,7 +111,7 @@ fileprivate class PostTileCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         self.imageView = AsynchronousImageView(frame: frame)
-        self.imageView.contentMode = .scaleAspectFill
+        self.imageView.contentMode = UIView.ContentMode.scaleAspectFill
         self.imageView.clipsToBounds = true
         super.init(frame: frame)
         contentView.addSubview(self.imageView)

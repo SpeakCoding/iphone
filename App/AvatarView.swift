@@ -36,7 +36,7 @@ class AvatarView: AsynchronousImageView {
             self.clipMask!.frame = clipMaskFrame
             self.clipMask!.path = UIBezierPath(ovalIn: clipMaskFrame).cgPath
             // Enforce proportional image scaling
-            self.contentMode = .scaleAspectFill
+            self.contentMode = UIView.ContentMode.scaleAspectFill
         }
     }
     

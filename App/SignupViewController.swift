@@ -67,17 +67,15 @@ class SignupViewController: UIViewController {
         }
         self.passwordTextField.indicatesError = false
         
-        self.view.isUserInteractionEnabled = false
         self.errorLabel.isHidden = true
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
-                if let user = user {
-                    User.current = user
-                    self.navigationController?.setViewControllers([ConfirmationCodeViewController(emailAddress: emailAddress!, completion: self.completion)], animated: true)
-                } else {
-                    self.report(error: error)
-                }
+        self.view.isUserInteractionEnabled = false
+        ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+            self.view.isUserInteractionEnabled = true
+            if let user = user {
+                User.current = user
+                self.navigationController?.setViewControllers([ConfirmationCodeViewController(emailAddress: emailAddress!, completion: self.completion)], animated: true)
+            } else {
+                self.report(error: error)
             }
         }
     }

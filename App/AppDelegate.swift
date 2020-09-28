@@ -68,32 +68,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     private func showImagePickerSourceSelection() {
-        let cameraIsAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
-        let libraryIsAvailable = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
+        let cameraIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
+        let libraryIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary)
         if cameraIsAvailable || libraryIsAvailable {
             // Show the image picker/camera immediately if only one of them is available
             if cameraIsAvailable && !libraryIsAvailable {
-                self.showImagePicker(source: .camera)
+                self.showImagePicker(source: UIImagePickerController.SourceType.camera)
                 return
             }
             if libraryIsAvailable && !cameraIsAvailable {
-                self.showImagePicker(source: .photoLibrary)
+                self.showImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
                 return
             }
             
             // Ask the user what to show, the image picker or the camera
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Take a photo", style: .default, handler: { (UIAlertAction) in
-                self.showImagePicker(source: .camera)
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+            alert.addAction(UIAlertAction(title: "Take a photo", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+                self.showImagePicker(source: UIImagePickerController.SourceType.camera)
             }))
-            alert.addAction(UIAlertAction(title: "Upload from library", style: .default, handler: { (UIAlertAction) in
-                self.showImagePicker(source: .photoLibrary)
+            alert.addAction(UIAlertAction(title: "Upload from library", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+                self.showImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
             self.tabBarController.present(alert, animated: true, completion: nil)
         } else {
-            let alert = UIAlertController(title: nil, message: "Sorry neither the camera nor the photo library is available.", preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            let alert = UIAlertController(title: nil, message: "Sorry neither the camera nor the photo library is available.", preferredStyle: UIAlertController.Style.actionSheet)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil))
             self.tabBarController.present(alert, animated: true, completion: nil)
         }
     }
@@ -102,10 +102,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
         imagePicker.mediaTypes = [kUTTypeImage as String]
-        if source == .camera {
-            imagePicker.cameraCaptureMode = .photo
+        if source == UIImagePickerController.SourceType.camera {
+            imagePicker.cameraCaptureMode = UIImagePickerController.CameraCaptureMode.photo
         }
-        imagePicker.modalPresentationStyle = .fullScreen
+        imagePicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         imagePicker.delegate = self
         self.tabBarController.present(imagePicker, animated: true, completion: nil)
     }

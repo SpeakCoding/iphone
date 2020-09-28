@@ -8,8 +8,8 @@ extension UIViewController {
         }
         
         let errorDetails = (error as NSError).localizedFailureReason
-        let alert = UIAlertController(title: error.localizedDescription, message: errorDetails, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(title: error.localizedDescription, message: errorDetails, preferredStyle: UIAlertController.Style.actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 }

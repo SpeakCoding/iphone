@@ -68,17 +68,15 @@ class LoginViewController: UIViewController {
         }
         self.passwordTextField.indicatesError = false
         
-        self.view.isUserInteractionEnabled = false
         self.errorLabel.isHidden = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
-                if let user = user {
-                    User.current = user
-                    self.completion()
-                } else {
-                    self.report(error: error)
-                }
+        self.view.isUserInteractionEnabled = false
+        ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+            self.view.isUserInteractionEnabled = true
+            if let user = user {
+                User.current = user
+                self.completion()
+            } else {
+                self.report(error: error)
             }
         }
     }

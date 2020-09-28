@@ -43,7 +43,7 @@ class SQLiteDatabase {
             fatalError("Call open() first")
         }
         var statement: OpaquePointer?
-        guard sqlite3_prepare_v2(db!, sqlQuery.cString(using: .utf8), -1, &statement, nil) == SQLITE_OK else {
+        guard sqlite3_prepare_v2(db!, sqlQuery.cString(using: String.Encoding.utf8), -1, &statement, nil) == SQLITE_OK else {
             reportFatalError(message: "Invalid query", sqlQuery: sqlQuery)
         }
         let numberOfValues = values?.count ?? 0
@@ -72,7 +72,7 @@ class SQLiteDatabase {
             fatalError("Call open() first")
         }
         var statement: OpaquePointer?
-        guard sqlite3_prepare_v2(db!, sqlQuery.cString(using: .utf8), -1, &statement, nil) == SQLITE_OK else {
+        guard sqlite3_prepare_v2(db!, sqlQuery.cString(using: String.Encoding.utf8), -1, &statement, nil) == SQLITE_OK else {
             reportFatalError(message: "Invalid query", sqlQuery: sqlQuery)
         }
         let numberOfValues = parameters?.count ?? 0
@@ -138,7 +138,7 @@ class SQLiteDatabase {
             } else if let value = value as? Bool {
                 sqlite3_bind_int(statement, argumentIndex, value ? 1 : 0)
             } else if let value = value as? String {
-                sqlite3_bind_text(statement, argumentIndex, value.cString(using: .utf8), -1, SQLITE_TRANSIENT)
+                sqlite3_bind_text(statement, argumentIndex, value.cString(using: String.Encoding.utf8), -1, SQLITE_TRANSIENT)
             } else if let value = value as? Data {
                 sqlite3_bind_blob(statement, argumentIndex, (value as NSData).bytes, Int32(value.count), SQLITE_TRANSIENT)
             }

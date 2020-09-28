@@ -9,7 +9,7 @@ class PostFeedViewController: UITableViewController {
         super.viewDidLoad()
         
         self.navigationItem.title = "SpeakCoding"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         
         self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
         self.tableView.estimatedRowHeight = 503

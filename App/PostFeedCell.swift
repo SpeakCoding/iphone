@@ -33,8 +33,8 @@ class PostFeedCell: UITableViewCell {
         self.commentCountLabel.text = "View all \(0) comments"
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
         self.postDateLabel.text = dateFormatter.string(from: newPost.time)
     }
     

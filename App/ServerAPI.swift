@@ -23,7 +23,7 @@ class ServerAPI {
     
     func signUp(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
         let requestParameters = ["user": ["email": emailAddress, "password": password]]
-        let request = makeRequest(method: .POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
@@ -36,7 +36,7 @@ class ServerAPI {
     
     func logIn(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
         let requestParameters = ["user": ["email": emailAddress, "password": password]]
-        let request = makeRequest(method: .POST, endpoint: "/users/authenticate.json", authorized: false, parameters: requestParameters)
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/authenticate.json", authorized: false, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
@@ -59,7 +59,7 @@ class ServerAPI {
             userInfo["portrait"] = avatarURL!.absoluteString
         }
         let requestParameters = ["user": userInfo]
-        let request = makeRequest(method: .PUT, endpoint: "/users/\(User.current!.id).json", authorized: false, parameters: requestParameters)
+        let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: false, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 let updatedUser = User(json: userJSON)
@@ -72,7 +72,7 @@ class ServerAPI {
     }
     
     func getUser(id: Int, completion: @escaping ((User?, Error?) -> Void)) {
-        let request = makeRequest(method: .GET, endpoint: "/users/\(id).json", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: false, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 completion(User(json: userJSON), nil)
@@ -88,7 +88,7 @@ class ServerAPI {
      until they reach the last `Post`.
      */
     func getFeedPosts(startPostIndex: UInt, completion: @escaping (([Post]?, Error?) -> Void)) {
-        let request = makeRequest(method: .GET, endpoint: "/posts", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: false, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -102,7 +102,7 @@ class ServerAPI {
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
-        let request = makeRequest(method: .GET, endpoint: "/users/\(user.id)/posts", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts", authorized: false, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -121,7 +121,7 @@ class ServerAPI {
             "description": post.caption,
             "image": post.images!.first?.url.absoluteString,
             ]]
-        let request = makeRequest(method: .POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 completion(Post(json: postJSON), nil)
@@ -165,16 +165,16 @@ class ServerAPI {
         let userAgentString = "\(appName)/\(appVersion) iOS/\(ProcessInfo().operatingSystemVersionString)"
         
         let config = URLSessionConfiguration.ephemeral
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.requestCachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
         config.timeoutIntervalForRequest = 30
         config.timeoutIntervalForResource = 300
-        config.networkServiceType = .default
+        config.networkServiceType = URLRequest.NetworkServiceType.default
         config.allowsCellularAccess = true
         config.connectionProxyDictionary = CFNetworkCopySystemProxySettings()?.takeRetainedValue() as [NSObject : AnyObject]?
-        config.tlsMinimumSupportedProtocolVersion = .TLSv12
+        config.tlsMinimumSupportedProtocolVersion = tls_protocol_version_t.TLSv12
         config.httpShouldUsePipelining = true
         config.httpShouldSetCookies = false
-        config.httpCookieAcceptPolicy = .never
+        config.httpCookieAcceptPolicy = HTTPCookie.AcceptPolicy.never
         config.httpAdditionalHeaders = ["User-Agent": userAgentString, "Accept": "application/json"]
         config.httpMaximumConnectionsPerHost = 1
         config.httpCookieStorage = nil
@@ -226,12 +226,14 @@ class ServerAPI {
             if requestError == nil && jsonData != nil {
                 do {
                     let json = try JSONSerialization.jsonObject(with: jsonData!, options: [])
+                    #warning("Remove after debugging API")
+                    /*
                     if let formattedJSONData = try? JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted, .withoutEscapingSlashes]) {
                         if let formattedJSONString = String(data: formattedJSONData, encoding: .utf8) {
                             print("\(request.httpMethod!) \(request.url!) returned status code \((urlResponse as! HTTPURLResponse).statusCode) \(formattedJSONString)")
                         }
                     }
-                    
+                    */
                     if let responseJSON = (json as? [String: Any]) {
                         result = responseJSON["data"]
                         metadata = responseJSON["meta"] as? [String: String]
