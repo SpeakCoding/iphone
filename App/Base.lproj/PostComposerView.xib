@@ -10,7 +10,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostComposerViewController" customModule="SpeakCoding" customModuleProvider="target">
             <connections>
                 <outlet property="locationField" destination="7GE-Td-0iX" id="aUX-8O-5j6"/>
-                <outlet property="placeholderLabel" destination="RDb-RY-c19" id="Snh-GP-6aE"/>
                 <outlet property="postImageView" destination="3Et-FV-1Oe" id="DLd-Jf-f9Z"/>
                 <outlet property="textView" destination="cue-FX-6Jx" id="FcD-jg-bvk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="8gE-U8-PyY"/>
@@ -28,22 +27,19 @@
                         <constraint firstAttribute="width" secondItem="3Et-FV-1Oe" secondAttribute="height" multiplier="1:1" id="AZM-0e-qHo"/>
                     </constraints>
                 </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cue-FX-6Jx">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cue-FX-6Jx" customClass="TextView" customModule="SpeakCoding" customModuleProvider="target">
                     <rect key="frame" x="92" y="60" width="267" height="64"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes" returnKeyType="go"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Write a caption…"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="delegate" destination="-1" id="lOf-CW-UN5"/>
                     </connections>
                 </textView>
-                <label opaque="NO" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write a caption…" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDb-RY-c19">
-                    <rect key="frame" x="97" y="68" width="122" height="20"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="095-44-d1t" userLabel="Separator">
                     <rect key="frame" x="0.0" y="200" width="375" height="1"/>
                     <color key="backgroundColor" red="0.92941176469999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -99,10 +95,8 @@
                 <constraint firstAttribute="trailing" secondItem="095-44-d1t" secondAttribute="trailing" id="X87-At-1e8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cue-FX-6Jx" secondAttribute="trailing" constant="16" id="a9q-Du-p91"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="top" secondItem="3Et-FV-1Oe" secondAttribute="top" id="d13-7Y-X0j"/>
-                <constraint firstItem="RDb-RY-c19" firstAttribute="top" secondItem="cue-FX-6Jx" secondAttribute="top" constant="8" placeholder="YES" id="fqU-NL-Tto"/>
                 <constraint firstItem="13X-d4-6ke" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="gSV-gL-mtF"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="height" relation="greaterThanOrEqual" secondItem="3Et-FV-1Oe" secondAttribute="height" id="gjh-Dq-7Gq"/>
-                <constraint firstItem="RDb-RY-c19" firstAttribute="leading" secondItem="cue-FX-6Jx" secondAttribute="leading" constant="5" placeholder="YES" id="iQ8-sQ-6ec"/>
                 <constraint firstAttribute="trailing" secondItem="KA7-1A-eYy" secondAttribute="trailing" id="lJQ-eT-uVS"/>
                 <constraint firstItem="3Et-FV-1Oe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="qQX-OD-bt2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13X-d4-6ke" secondAttribute="trailing" id="wWU-in-zcL"/>

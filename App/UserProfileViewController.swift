@@ -88,7 +88,11 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func editProfile() {
-        #warning("Not implemented")
+        let profileEditor = UserProfileEditor(user: self.user) { (user: User) in
+            self.user = user
+            self.displayUserInformation()
+        }
+        self.present(profileEditor, animated: true, completion: nil)
     }
     
     // MARK: - UICollectionViewDataSource

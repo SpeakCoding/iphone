@@ -16,6 +16,9 @@
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
 		9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */; };
 		9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */; };
+		9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditor.swift */; };
+		9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditor.xib */; };
+		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -55,6 +58,9 @@
 		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
 		9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCodeViewController.swift; sourceTree = "<group>"; };
 		9EA023AB251B81B500D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConfirmationCodeView.xib; sourceTree = "<group>"; };
+		9EA2590C2521E8610056047B /* UserProfileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditor.swift; sourceTree = "<group>"; };
+		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditor.xib; sourceTree = "<group>"; };
+		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 				9EDC2A3F24EEB4AB00902B93 /* AvatarView.swift */,
 				9EB6DB912504D6C700C60EBF /* SeparatorView.swift */,
 				9EB6DB8525036BFC00C60EBF /* TextField.swift */,
+				9EA259112521EEBD0056047B /* TextView.swift */,
 				9E2478A62503658C007EBBEB /* LoginViewController.swift */,
 				9EB6DB82250368C300C60EBF /* LoginView.xib */,
 				9EA023A3251B672D00D5703A /* SignupViewController.swift */,
@@ -144,6 +151,8 @@
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
 				9EB6DB8C2504CCC200C60EBF /* UserProfileViewController.swift */,
 				9EB6DB8E2504CCEE00C60EBF /* UserProfileView.xib */,
+				9EA2590C2521E8610056047B /* UserProfileEditor.swift */,
+				9EA2590E2521E9230056047B /* UserProfileEditor.xib */,
 				9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */,
 				9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
@@ -221,6 +230,7 @@
 				9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */,
 				9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */,
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
+				9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */,
 				9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */,
 				9EB6DBD32507A16A00C60EBF /* TestData in Resources */,
 				9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */,
@@ -254,8 +264,10 @@
 				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
+				9EA259122521EEBD0056047B /* TextView.swift in Sources */,
 				9EBB247F250F603300DC7B33 /* ErrorReporting.swift in Sources */,
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
+				9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
 				9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */,
@@ -290,6 +302,14 @@
 				9EA023AB251B81B500D5703A /* Base */,
 			);
 			name = ConfirmationCodeView.xib;
+			sourceTree = "<group>";
+		};
+		9EA2590E2521E9230056047B /* UserProfileEditor.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EA2590F2521E9230056047B /* Base */,
+			);
+			name = UserProfileEditor.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {

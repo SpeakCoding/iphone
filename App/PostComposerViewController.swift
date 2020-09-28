@@ -7,7 +7,6 @@ class PostComposerViewController: UIViewController {
     private var completion: (_ newPost: Post) -> Void
     @IBOutlet private var postImageView: UIImageView!
     @IBOutlet private var textView: UITextView!
-    @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var locationField: TextField!
     
     init(image: UIImage , completion: @escaping (_ newPost: Post) -> Void) {
@@ -24,8 +23,6 @@ class PostComposerViewController: UIViewController {
         self.postImageView.image = self.image
         
         self.textView.textContainerInset = UIEdgeInsets.zero
-        self.placeholderLabel.leadingAnchor.constraint(equalTo: self.textView.leadingAnchor, constant: self.textView.contentInset.left + self.textView.textContainer.lineFragmentPadding).isActive = true
-        self.placeholderLabel.topAnchor.constraint(equalTo: self.textView.topAnchor, constant: self.textView.contentInset.top).isActive = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,7 +33,6 @@ class PostComposerViewController: UIViewController {
     
     @objc func textViewDidChange(_ textView: UITextView) {
         let textHasBeenEntered = textView.text.count > 0
-        self.placeholderLabel.isHidden = textHasBeenEntered
         self.navigationItem.rightBarButtonItem!.isEnabled = textHasBeenEntered
     }
     
