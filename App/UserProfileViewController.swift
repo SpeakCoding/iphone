@@ -51,6 +51,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         ServerAPI.shared.getUser(id: self.user.id) { (user: User?, error: Error?) in
             if user != nil {
                 self.user = user!
+                if user == User.current {
+                    User.current = user
+                }
                 self.displayUserInformation()
             } else {
                 self.report(error: error)

@@ -19,6 +19,7 @@
 		9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditor.swift */; };
 		9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditor.xib */; };
 		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
+		9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2591525231D550056047B /* UIViewController+Extensions.swift */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -29,7 +30,6 @@
 		9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */; };
 		9EB6DBD32507A16A00C60EBF /* TestData in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD22507A16A00C60EBF /* TestData */; };
 		9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */; };
-		9EBB247F250F603300DC7B33 /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBB247E250F603300DC7B33 /* ErrorReporting.swift */; };
 		9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A1924EE976900902B93 /* AppDelegate.swift */; };
 		9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC2A2224EE976B00902B93 /* Assets.xcassets */; };
 		9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC2A2424EE976B00902B93 /* LaunchScreen.storyboard */; };
@@ -61,6 +61,7 @@
 		9EA2590C2521E8610056047B /* UserProfileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditor.swift; sourceTree = "<group>"; };
 		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditor.xib; sourceTree = "<group>"; };
 		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		9EA2591525231D550056047B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewController.swift; sourceTree = "<group>"; };
 		9EB6DBD22507A16A00C60EBF /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServerAPI.swift; sourceTree = "<group>"; };
-		9EBB247E250F603300DC7B33 /* ErrorReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporting.swift; sourceTree = "<group>"; };
 		9EDC2A1624EE976900902B93 /* SpeakCoding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakCoding.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EDC2A1924EE976900902B93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9EDC2A2224EE976B00902B93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 				9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
 				9E11AD08250A5C3900275489 /* PostComposerView.xib */,
-				9EBB247E250F603300DC7B33 /* ErrorReporting.swift */,
+				9EA2591525231D550056047B /* UIViewController+Extensions.swift */,
 				9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */,
 				9EDC2A2224EE976B00902B93 /* Assets.xcassets */,
 				9EDC2A2424EE976B00902B93 /* LaunchScreen.storyboard */,
@@ -249,6 +249,7 @@
 				9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */,
 				9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */,
 				9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */,
+				9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */,
 				9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */,
 				9EDC2A3624EE9C5300902B93 /* Image.swift in Sources */,
 				9EDC2A2E24EE9A5400902B93 /* Feed.swift in Sources */,
@@ -265,7 +266,6 @@
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
 				9EA259122521EEBD0056047B /* TextView.swift in Sources */,
-				9EBB247F250F603300DC7B33 /* ErrorReporting.swift in Sources */,
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
 				9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,

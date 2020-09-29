@@ -1,5 +1,4 @@
 import UIKit
-import MobileCoreServices
 
 
 enum TabBarItemTag: Int {
@@ -11,7 +10,7 @@ enum TabBarItemTag: Int {
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
     
     var window: UIWindow?
     var tabBarController: UITabBarController!
@@ -67,64 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.tabBarController.present(loginFlowNavigationController, animated: true, completion: nil)
     }
     
-    private func showImagePickerSourceSelection() {
-        let cameraIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
-        let libraryIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary)
-        if cameraIsAvailable || libraryIsAvailable {
-            // Show the image picker/camera immediately if only one of them is available
-            if cameraIsAvailable && !libraryIsAvailable {
-                self.showImagePicker(source: UIImagePickerController.SourceType.camera)
-                return
-            }
-            if libraryIsAvailable && !cameraIsAvailable {
-                self.showImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
-                return
-            }
-            
-            // Ask the user what to show, the image picker or the camera
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-            alert.addAction(UIAlertAction(title: "Take a photo", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                self.showImagePicker(source: UIImagePickerController.SourceType.camera)
-            }))
-            alert.addAction(UIAlertAction(title: "Upload from library", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                self.showImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-            self.tabBarController.present(alert, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertController(title: nil, message: "Sorry neither the camera nor the photo library is available.", preferredStyle: UIAlertController.Style.actionSheet)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil))
-            self.tabBarController.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    private func showImagePicker(source: UIImagePickerController.SourceType) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = source
-        imagePicker.mediaTypes = [kUTTypeImage as String]
-        if source == UIImagePickerController.SourceType.camera {
-            imagePicker.cameraCaptureMode = UIImagePickerController.CameraCaptureMode.photo
-        }
-        imagePicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-        imagePicker.delegate = self
-        self.tabBarController.present(imagePicker, animated: true, completion: nil)
-    }
-    
-    // MARK: - UIImagePickerControllerDelegate
-    
-    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        let vc = PhotoPickerPreviewController(image: image) { (newPost: Post) in
-            print("New post: \(newPost)")
-            picker.presentingViewController?.dismiss(animated: true, completion: nil)
-        }
-        picker.pushViewController(vc, animated: true)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    
     // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
@@ -137,11 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             // The tab cannot be actually selected.
             // Instead ask the user to log in before they can select the image source.
             if User.current != nil {
-                self.showImagePickerSourceSelection()
+                tabBarController.presentImagePicker(completion: nil)
             } else {
                 self.presentLoginFlow(completion: {
                     tabBarController.dismiss(animated: true) {
-                        self.showImagePickerSourceSelection()
+                        tabBarController.presentImagePicker(completion: nil)
                     }
                 })
             }

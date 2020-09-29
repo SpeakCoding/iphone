@@ -29,7 +29,9 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
     }
     
     @IBAction func setAvatar() {
-        
+        self.presentImagePicker { (image: UIImage) in
+            self.avatarView.image = image
+        }
     }
     
     @IBAction func save() {
