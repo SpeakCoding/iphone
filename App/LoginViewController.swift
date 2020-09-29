@@ -72,8 +72,7 @@ class LoginViewController: UIViewController {
         self.view.isUserInteractionEnabled = false
         ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
             self.view.isUserInteractionEnabled = true
-            if let user = user {
-                User.current = user
+            if user != nil {
                 self.completion()
             } else {
                 self.report(error: error)

@@ -71,9 +71,10 @@ class SignupViewController: UIViewController {
         self.view.isUserInteractionEnabled = false
         ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
             self.view.isUserInteractionEnabled = true
-            if let user = user {
-                User.current = user
-                self.navigationController?.setViewControllers([ConfirmationCodeViewController(emailAddress: emailAddress!, completion: self.completion)], animated: true)
+            if user != nil {
+                let profileEditor = UserProfileEditor(completion: self.completion)
+                self.navigationController?.presentationController?.delegate = profileEditor
+                self.navigationController?.setViewControllers([profileEditor], animated: true)
             } else {
                 self.report(error: error)
             }

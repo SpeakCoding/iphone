@@ -27,7 +27,9 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
-                completion(User(json: userJSON), nil)
+                let currentUser = User(json: userJSON)
+                User.current = currentUser
+                completion(currentUser, nil)
             } else {
                 completion(nil, error)
             }
@@ -40,7 +42,9 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
-                completion(User(json: userJSON), nil)
+                let currentUser = User(json: userJSON)
+                User.current = currentUser
+                completion(currentUser, nil)
             } else {
                 completion(nil, error)
             }

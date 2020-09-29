@@ -88,8 +88,8 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func editProfile() {
-        let profileEditor = UserProfileEditor(user: self.user) { (user: User) in
-            self.user = user
+        let profileEditor = UserProfileEditor() {
+            self.user = User.current!
             self.displayUserInformation()
         }
         self.present(profileEditor, animated: true, completion: nil)

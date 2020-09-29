@@ -1,16 +1,14 @@
 import UIKit
 
 
-class UserProfileEditor: UIViewController {
+class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDelegate {
     
     @IBOutlet private var avatarView: AvatarView!
     @IBOutlet private var nameField: TextField!
     @IBOutlet private var bioField: TextView!
-    private var user: User
-    private var completion: (_ user: User) -> Void
+    private var completion: () -> Void
     
-    init(user: User, completion: @escaping (_ user: User) -> Void) {
-        self.user = user
+    init(completion: @escaping () -> Void) {
         self.completion = completion
         super.init(nibName: "UserProfileEditor", bundle: nil)
     }
@@ -22,11 +20,12 @@ class UserProfileEditor: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let avatarURL = self.user.avatarURL {
+        let currentUser = User.current!
+        if let avatarURL = currentUser.avatarURL {
             self.avatarView.showImageAsynchronously(imageURL: avatarURL)
         }
-        self.nameField.text = self.user.name
-        self.bioField.text = self.user.bio
+        self.nameField.text = currentUser.name
+        self.bioField.text = currentUser.bio
     }
     
     @IBAction func setAvatar() {
@@ -36,14 +35,19 @@ class UserProfileEditor: UIViewController {
     @IBAction func save() {
         self.view.isUserInteractionEnabled = false
         #warning("Upload the avatar first")
-        let avatarURL = self.user.avatarURL
+        let avatarURL: URL? = nil
         ServerAPI.shared.updateProfile(name: self.nameField.text, bio: self.bioField.text, avatarURL: avatarURL) { (user: User?, error: Error?) in
-             self.view.isUserInteractionEnabled = true
+            self.view.isUserInteractionEnabled = true
             if user != nil {
-                self.completion(user!)
+                self.completion()
             } else {
                 self.report(error: error)
             }
         }
+    }
+    
+    // This is called when the user swipes down to dismiss the login flow view controller after signing up
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.completion()
     }
 }
