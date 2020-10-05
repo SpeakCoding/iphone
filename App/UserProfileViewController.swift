@@ -77,7 +77,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.navigationItem.title = self.user.name
         #warning("Not implemented")
         self.avatarView.showImageAsynchronously(imageURL: self.user.avatarURL)
-        self.postCountLabel.text = "\(0)"
+        self.postCountLabel.text = "\(self.user.postCount)"
         self.followerCountLabel.text = "\(0)"
         self.followedCountLabel.text = "\(0)"
         self.userNameLabel.text = self.user.name

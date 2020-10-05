@@ -47,7 +47,36 @@ extension PostFeedViewController: PostFeedCellDelegate {
     }
     
     func toggleLike(post: Post) {
-        #warning("Not implemented")
+        // The user must be authorized to like/unlike posts
+        if User.current == nil {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.presentLoginFlow {
+                self.toggleLike(post: post)
+            }
+            return
+        }
+        
+        if post.isLiked {
+            ServerAPI.shared.unlikePost(post) { (updatedPost: Post?, error: Error?) in
+                updatePost(updatedPost, error: error)
+            }
+        } else {
+            ServerAPI.shared.likePost(post) { (updatedPost: Post?, error: Error?) in
+                updatePost(updatedPost, error: error)
+            }
+        }
+        
+        func updatePost(_ updatedPost: Post?, error: Error?) {
+            if updatedPost != nil {
+                let postIndex = self.feed.posts.firstIndex(of: post)
+                if postIndex != nil {
+                    self.feed.posts[postIndex!] = updatedPost!
+                    self.tableView.reloadRows(at: [IndexPath(row: postIndex!, section: 0)], with: UITableView.RowAnimation.automatic)
+                }
+            } else {
+                self.report(error: error)
+            }
+        }
     }
     
     func addComment(post: Post) {

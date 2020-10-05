@@ -106,7 +106,7 @@ class ServerAPI {
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: false, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -119,13 +119,35 @@ class ServerAPI {
         }
     }
     
-    func create(post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+    func createPost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
             "location": post.location,
             "description": post.caption,
             "image": post.images?.first?.url.absoluteString,
             ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSON = result as? [String: Any] {
+                completion(Post(json: postJSON), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func likePost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/like.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSON = result as? [String: Any] {
+                completion(Post(json: postJSON), nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func unlikePost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/unlike.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 completion(Post(json: postJSON), nil)
@@ -274,6 +296,7 @@ extension User {
             self.avatarURL = URL(string: userAvatarURI)
         }
         self.bio = json["bio"] as? String
+        self.postCount = json["posts_count"] as! Int
     }
 }
 
@@ -290,6 +313,8 @@ extension Post {
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         self.id = json["id"] as! Int
+        self.likeCount = json["likes_count"] as! Int
+        self.isLiked = json["liked"] as! Bool
     }
 }
 

@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
     }
     
-    private func presentLoginFlow(completion: @escaping () -> Void) {
+    func presentLoginFlow(completion: @escaping () -> Void) {
         let loginViewController = LoginViewController(emailAddress: nil, completion: completion)
         let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
         loginFlowNavigationController.isNavigationBarHidden = true

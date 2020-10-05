@@ -26,9 +26,9 @@ class PostFeedCell: UITableViewCell {
         self.posterNameLabel.text = newPost.user.name
         self.posterLocationLabel.text = newPost.location
         #warning("Not quite implemented")
-        self.likeButton.isSelected = false
+        self.likeButton.isSelected = newPost.isLiked
         self.bookmarkButton.isSelected = false
-        self.likeCountLabel.text = "\(0) likes"
+        self.likeCountLabel.text = "\(newPost.likeCount) likes"
         self.postTextLabel.text = newPost.caption
         self.commentCountLabel.text = "View all \(0) comments"
         

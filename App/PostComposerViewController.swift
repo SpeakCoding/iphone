@@ -48,7 +48,7 @@ class PostComposerViewController: UIViewController {
         
         let location = self.locationField.text
         let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: location)
-        ServerAPI.shared.create(post: newPost) { (createdPost: Post?, error: Error?) in
+        ServerAPI.shared.createPost(newPost) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton
             if createdPost != nil {

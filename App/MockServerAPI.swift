@@ -59,7 +59,7 @@ class MockURLProtocol: URLProtocol {
                     json = getUser(userIdentifier: objectIDs["user_id"]!)
                     break
                 }
-                if let objectIDs = matchRoute(pattern: "/users/:user_id/posts", path: requestURL.path) {
+                if let objectIDs = matchRoute(pattern: "/users/:user_id/posts.json", path: requestURL.path) {
                     json = getPostsOfUser(userIdentifier: objectIDs["user_id"]!)
                     break
                 }
@@ -196,93 +196,175 @@ class MockURLProtocol: URLProtocol {
         1: ["date": "2020-09-01T12:30:07Z",
             "location": "Art gallery",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "image": "mock://sc.com/pic.1.jpg"],
+            "image": "mock://sc.com/pic.1.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         2: ["date": "2020-08-25T22:57:07Z",
             "location": "New York",
             "description": "Megapolis, here I come! 🤲😻❤️",
-            "image": "mock://sc.com/pic.2.jpg"],
+            "image": "mock://sc.com/pic.2.jpg",
+            "liked": true,
+            "likes_count": 2
+        ],
         3: ["date": "2020-08-20T20:20:07Z",
             "location": "Hawaii",
             "description": "Such a beautiful night on a beach with friends, wine and dogs!",
-            "image": "mock://sc.com/pic.3.jpg"],
+            "image": "mock://sc.com/pic.3.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         4: ["date": "2020-08-15T12:40:07Z",
             "location": "Abandoned house basement",
             "description": "I made a cool wallpaper. Gonna sell it for a billion bucks at Sotheby's. OK, just donate something please.",
-            "image": "mock://sc.com/pic.4.jpg"],
+            "image": "mock://sc.com/pic.4.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         5: ["date": "2020-08-10T15:50:07Z",
             "location": "Alps",
             "description": "I went skiing on a hot summer night hoping to see a Big Foot or a Small Paw. Shot this instead.",
-            "image": "mock://sc.com/pic.5.jpg"],
+            "image": "mock://sc.com/pic.5.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         6: ["date": "2020-08-05T23:54:07Z",
             "description": "Happy New Year everyone!",
-            "image": "mock://sc.com/pic.6.jpg"],
+            "image": "mock://sc.com/pic.6.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         7: ["date": "2020-07-31T12:46:07Z",
             "location": "Pacific Ocean, Somewhere",
             "description": "I bought myself an island on Craigslist after getting rich on r/WallstreetBets.",
-            "image": "mock://sc.com/pic.7.jpg"],
+            "image": "mock://sc.com/pic.7.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         8: ["date": "2020-07-26T13:12:07Z",
             "location": "Springfield",
             "description": "This was the best picnic this week, BBQ FTW!",
-            "image": "mock://sc.com/pic.8.jpg"],
+            "image": "mock://sc.com/pic.8.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         9: ["date": "2020-07-21T09:24:07Z",
             "location": "National Park",
             "description": "Walking my dog in the park in the morning",
-            "image": "mock://sc.com/pic.9.jpg"],
+            "image": "mock://sc.com/pic.9.jpg",
+            "liked": false,
+            "likes_count": 0
+        ],
         10: ["date": "2020-07-11T13:31:07Z",
              "location": "In the woods",
              "description": "I was hunting with my grandfather for my 19th birthday about a year ago and we both watched a deer slam its head into a rock shatter its head. We saved a bunch of them bullets.",
-             "image": "mock://sc.com/pic.10.jpg"],
+             "image": "mock://sc.com/pic.10.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         11: ["date": "2020-07-06T15:10:07Z",
              "description": "Comrades, I got my PhD in Photoshop!",
-             "image": "mock://sc.com/pic.11.jpg"],
+             "image": "mock://sc.com/pic.11.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         12: ["date": "2020-07-01T14:40:07Z",
              "location": "Pray, Wisconsin",
              "description": "I love driving my van in the middle of nowhere until I run out of gas. Then I go looking for another van. Movin' is livin' ✊🏿",
-             "image": "mock://sc.com/pic.12.jpg"],
+             "image": "mock://sc.com/pic.12.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         13: ["date": "2020-06-25T02:16:07Z",
              "location": "Backyard",
              "description": "I stitched together 65535 images of the Milky Way to create the most detailed photograph of our galaxy I have ever created. Enjoy!",
-             "image": "mock://sc.com/pic.13.jpg"],
+             "image": "mock://sc.com/pic.13.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         14: ["date": "2020-06-20T12:21:07Z",
              "location": "GPS error, code -11793",
              "description": "Help! I lost my way, somebody please extract geo tags from this photo and tell me where I am! PLEASE!!!",
-             "image": "mock://sc.com/pic.14.jpg"],
+             "image": "mock://sc.com/pic.14.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         15: ["date": "2020-06-15T11:06:07Z",
              "location": "Andes",
              "description": "Alps are great! This is Alps, right?",
-             "image": "mock://sc.com/pic.15.jpg"],
+             "image": "mock://sc.com/pic.15.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         16: ["date": "2020-06-10T14:37:07Z",
              "location": "Bratislava",
              "description": "Chilling in Bratislava…",
-             "image": "mock://sc.com/pic.16.jpg"],
+             "image": "mock://sc.com/pic.16.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         17: ["date": "2020-06-09T16:49:07Z",
              "location": "Paris",
              "description": "This is my new office. The plaza is mine too. Actually, I got the whole city at a discount, that's why it looks a bit empty.",
-             "image": "mock://sc.com/pic.17.jpg"],
+             "image": "mock://sc.com/pic.17.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         18: ["date": "2020-06-06T14:51:07Z",
              "location": "Rome",
              "description": "The best view of the Eye Fall tower you can get",
-             "image": "mock://sc.com/pic.18.jpg"],
+             "image": "mock://sc.com/pic.18.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         19: ["date": "2020-06-02T10:20:07Z",
              "location": "Hilton",
              "description": "What a view outside my hotel room! I ❤️ it!",
-             "image": "mock://sc.com/pic.19.jpg"],
+             "image": "mock://sc.com/pic.19.jpg",
+             "liked": false,
+             "likes_count": 0
+        ],
         20: ["date": "2020-06-01T16:26:07Z",
              "location": "Košice",
              "description": "Košice is incredibly beautiful in June!",
-             "image": "mock://sc.com/pic.20.jpg"]
+             "image": "mock://sc.com/pic.20.jpg",
+             "liked": false,
+             "likes_count": 0
+        ]
     ]
     private let users: [Int: [String: Any]] = [
-        1: ["full_name": "Albert Johnson", "portrait": "mock://sc.com/avatar.1.jpg", "email": "a.johnson@example.com", "bio": "My name is Albert, but I'm not Einstein"],
-        2: ["full_name": "Beth Lee", "portrait": "mock://sc.com/avatar.2.jpg", "email": "bethlee@example.com", "bio": "Photographer, blogger"],
-        3: ["full_name": "David Charter", "portrait": "mock://sc.com/avatar.3.jpg", "email": "charter@example.com"],
-        4: ["full_name": "Mary Goldsmith", "portrait": "mock://sc.com/avatar.4.jpg", "email": "mary@example.com"],
-        5: ["full_name": "Simon Rochester", "portrait": "mock://sc.com/avatar.5.jpg", "email": "junior.janitor@bighedgefund.com", "bio": "Aspiring quadrillionaire"],
-        6: ["full_name": "Chau Nguyen", "portrait": "mock://sc.com/avatar.6.jpg", "email": "chau@example.com"],
-        7: ["full_name": "Peter Waters", "portrait": "mock://sc.com/avatar.7.jpg", "email": "pw@example.com"],
-        8: ["full_name": "Tiffany MacDowell", "portrait": "mock://sc.com/avatar.8.jpg", "email": "tiff@example.com"],
-        9: ["full_name": "Robert Stoughton", "portrait": "mock://sc.com/avatar.9.jpg", "email": "rob@example.com"],
-        10: ["full_name": "Kate Benedict", "portrait": "mock://sc.com/avatar.10.jpg", "email": "kate@example.com"],
-        123: ["full_name": "John Doe", "portrait": "mock://sc.com/avatar.1.jpg", "email": "john@doe.com"],
+        1: ["full_name": "Albert Johnson", "portrait": "mock://sc.com/avatar.1.jpg", "email": "a.johnson@example.com", "bio": "My name is Albert, but I'm not Einstein",
+            "posts_count": 1
+        ],
+        2: ["full_name": "Beth Lee", "portrait": "mock://sc.com/avatar.2.jpg", "email": "bethlee@example.com", "bio": "Photographer, blogger",
+            "posts_count": 6
+        ],
+        3: ["full_name": "David Charter", "portrait": "mock://sc.com/avatar.3.jpg", "email": "charter@example.com",
+            "posts_count": 3
+        ],
+        4: ["full_name": "Mary Goldsmith", "portrait": "mock://sc.com/avatar.4.jpg", "email": "mary@example.com",
+            "posts_count": 2
+        ],
+        5: ["full_name": "Simon Rochester", "portrait": "mock://sc.com/avatar.5.jpg", "email": "junior.janitor@bighedgefund.com", "bio": "Aspiring quadrillionaire",
+            "posts_count": 2
+        ],
+        6: ["full_name": "Chau Nguyen", "portrait": "mock://sc.com/avatar.6.jpg", "email": "chau@example.com",
+            "posts_count": 1
+        ],
+        7: ["full_name": "Peter Waters", "portrait": "mock://sc.com/avatar.7.jpg", "email": "pw@example.com",
+            "posts_count": 2
+        ],
+        8: ["full_name": "Tiffany MacDowell", "portrait": "mock://sc.com/avatar.8.jpg", "email": "tiff@example.com",
+            "posts_count": 1
+        ],
+        9: ["full_name": "Robert Stoughton", "portrait": "mock://sc.com/avatar.9.jpg", "email": "rob@example.com",
+            "posts_count": 1
+        ],
+        10: ["full_name": "Kate Benedict", "portrait": "mock://sc.com/avatar.10.jpg", "email": "kate@example.com",
+             "posts_count": 1
+        ],
+        123: ["full_name": "John Doe", "portrait": "mock://sc.com/avatar.1.jpg", "email": "john@doe.com",
+              "posts_count": 1
+        ],
     ]
 }
