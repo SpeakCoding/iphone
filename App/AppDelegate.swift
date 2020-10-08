@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     var tabBarController: UITabBarController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        initCacheDatabase()
-        
         // Set up view controllers behind the tab bar items
         let homeTabViewController = UINavigationController(rootViewController: PostFeedViewController())
         homeTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-home"), selectedImage: UIImage(named: "tab-bar-item-home-selected"))
@@ -45,18 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window!.makeKeyAndVisible()
         
         return true
-    }
-    
-    private func initCacheDatabase() {
-        #warning("Not implemented")
-        
-        #warning("Fetch current user from DB")
-        let currentUserID = UserDefaults.standard.integer(forKey: "Current user ID")
-        if currentUserID != 0 {
-            let currentUser = User(userName: "")
-            currentUser.id = currentUserID
-            User.current = currentUser
-        }
     }
     
     func presentLoginFlow(completion: @escaping () -> Void) {

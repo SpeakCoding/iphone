@@ -79,7 +79,11 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: false, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
-                completion(User(json: userJSON), nil)
+                let user = User(json: userJSON)
+                if Cache.enabled {
+                    Cache.shared.update(user: user)
+                }
+                completion(user, nil)
             } else {
                 completion(nil, error)
             }
@@ -96,7 +100,11 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    Post(json: postJSON)
+                    let post = Post(json: postJSON)
+                    if Cache.enabled {
+                        Cache.shared.update(post: post)
+                    }
+                    return post
                 }
                 completion(posts, nil)
             } else {
@@ -110,7 +118,11 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    Post(json: postJSON)
+                    let post = Post(json: postJSON)
+                    if Cache.enabled {
+                        Cache.shared.update(post: post)
+                    }
+                    return post
                 }
                 completion(posts, nil)
             } else {
@@ -128,7 +140,11 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                completion(Post(json: postJSON), nil)
+                let post = Post(json: postJSON)
+                if Cache.enabled {
+                    Cache.shared.update(post: post)
+                }
+                completion(post, nil)
             } else {
                 completion(nil, error)
             }
@@ -139,7 +155,11 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/like.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                completion(Post(json: postJSON), nil)
+                let post = Post(json: postJSON)
+                if Cache.enabled {
+                    Cache.shared.update(post: post)
+                }
+                completion(post, nil)
             } else {
                 completion(nil, error)
             }
@@ -150,7 +170,11 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/unlike.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                completion(Post(json: postJSON), nil)
+                let post = Post(json: postJSON)
+                if Cache.enabled {
+                    Cache.shared.update(post: post)
+                }
+                completion(post, nil)
             } else {
                 completion(nil, error)
             }

@@ -14,9 +14,12 @@ class PostFeedViewController: UITableViewController {
         self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
         self.tableView.estimatedRowHeight = 503
         
+        self.feed.posts = Cache.shared.fetchAllPosts()
         ServerAPI.shared.getFeedPosts(startPostIndex: 0) { (posts: [Post]?, error: Error?) in
             if let posts = posts {
-                self.feed.posts.append(contentsOf: posts)
+                self.feed.posts = posts
+                #warning("Paged loading is not implemented")
+//                self.feed.posts.append(contentsOf: posts)
                 self.tableView.reloadData()
             } else {
                 self.report(error: error)

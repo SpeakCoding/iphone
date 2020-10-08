@@ -55,6 +55,10 @@
             argument = "mock-api"
             isEnabled = "NO">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "clear-cache"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable

@@ -98,7 +98,7 @@ class SQLiteDatabase {
                 var value: Any?
                 switch sqlite3_column_type(statement, columnIndex) {
                     case SQLITE_INTEGER:
-                        value = sqlite3_column_int64(statement, columnIndex)
+                        value = Int(sqlite3_column_int64(statement, columnIndex))
                     case SQLITE_FLOAT:
                         value = sqlite3_column_double(statement, columnIndex)
                     case SQLITE_BLOB:
