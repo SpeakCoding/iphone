@@ -30,11 +30,7 @@ class PostFeedCell: UITableViewCell {
         self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
         self.postTextLabel.text = newPost.caption
         self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.short
-        self.postDateLabel.text = dateFormatter.string(from: newPost.time)
+        self.postDateLabel.text = newPost.time.stringRepresentation
     }
     
     @IBAction private func showUserProfile() {
