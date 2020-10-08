@@ -296,7 +296,7 @@ extension User {
             self.avatarURL = URL(string: userAvatarURI)
         }
         self.bio = json["bio"] as? String
-        self.postCount = json["posts_count"] as! Int
+        self.numberOfPosts = json["posts_count"] as! Int
     }
 }
 
@@ -313,7 +313,7 @@ extension Post {
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         self.id = json["id"] as! Int
-        self.likeCount = json["likes_count"] as! Int
+        self.numberOfLikes = json["likes_count"] as! Int
         self.isLiked = json["liked"] as! Bool
     }
 }

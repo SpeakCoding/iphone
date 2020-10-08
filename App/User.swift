@@ -6,7 +6,7 @@ class User: ModelObject {
     var name: String
     var avatarURL: URL?
     var bio: String?
-    var postCount = 0
+    var numberOfPosts = 0
     
     init(userName: String) {
         self.name = userName

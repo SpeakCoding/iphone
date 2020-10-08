@@ -25,12 +25,11 @@ class PostFeedCell: UITableViewCell {
         
         self.posterNameLabel.text = newPost.user.name
         self.posterLocationLabel.text = newPost.location
-        #warning("Not quite implemented")
         self.likeButton.isSelected = newPost.isLiked
         self.bookmarkButton.isSelected = false
-        self.likeCountLabel.text = "\(newPost.likeCount) likes"
+        self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
         self.postTextLabel.text = newPost.caption
-        self.commentCountLabel.text = "View all \(0) comments"
+        self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium

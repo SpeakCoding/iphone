@@ -11,7 +11,8 @@ class Post: ModelObject {
     var location: String?
     var likes = [Like]()
     var comments = [Comment]()
-    var likeCount = 0
+    var numberOfLikes = 0
+    var numberOfComments = 0
     var isLiked = false
     
     init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
