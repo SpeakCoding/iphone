@@ -14,7 +14,7 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var postTextLabel: UILabel!
     @IBOutlet private var commentCountLabel: UILabel!
     @IBOutlet private var postDateLabel: UILabel!
-    weak var actionDelegate: PostFeedCellDelegate?
+    weak var actionDelegate: PostFeedViewController?
     
     var post: Post!
     func setPost(_ newPost: Post) {
@@ -52,13 +52,4 @@ class PostFeedCell: UITableViewCell {
     @IBAction private func showAllComments() {
         self.actionDelegate?.showAllComments(post: post)
     }
-}
-
-
-protocol PostFeedCellDelegate: AnyObject {
-    func showUserProfile(_ user: User)
-    func toggleLike(post: Post)
-    func addComment(post: Post)
-    func toggleBookmark(post: Post)
-    func showAllComments(post: Post)
 }

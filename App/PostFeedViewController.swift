@@ -41,10 +41,11 @@ class PostFeedViewController: UITableViewController {
         postCell.actionDelegate = self
         return postCell
     }
-}
-
-
-extension PostFeedViewController: PostFeedCellDelegate {
+    
+    
+    // MARK: - PostFeedCell Actions
+    
+    
     func showUserProfile(_ user: User) {
         self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
     }
@@ -60,25 +61,9 @@ extension PostFeedViewController: PostFeedCellDelegate {
         }
         
         if post.isLiked {
-            ServerAPI.shared.unlikePost(post) { (updatedPost: Post?, error: Error?) in
-                updatePost(updatedPost, error: error)
-            }
+            ServerAPI.shared.unlikePost(post, completion: self.updatePostOrReportError)
         } else {
-            ServerAPI.shared.likePost(post) { (updatedPost: Post?, error: Error?) in
-                updatePost(updatedPost, error: error)
-            }
-        }
-        
-        func updatePost(_ updatedPost: Post?, error: Error?) {
-            if updatedPost != nil {
-                let postIndex = self.feed.posts.firstIndex(of: post)
-                if postIndex != nil {
-                    self.feed.posts[postIndex!] = updatedPost!
-                    self.tableView.reloadRows(at: [IndexPath(row: postIndex!, section: 0)], with: UITableView.RowAnimation.automatic)
-                }
-            } else {
-                self.report(error: error)
-            }
+            ServerAPI.shared.likePost(post, completion: self.updatePostOrReportError)
         }
     }
     
@@ -92,5 +77,15 @@ extension PostFeedViewController: PostFeedCellDelegate {
     
     func showAllComments(post: Post) {
         #warning("Not implemented")
+    }
+    
+    private func updatePostOrReportError(post: Post?, error: Error?) {
+        if post != nil {
+            if let postIndex = self.feed.posts.firstIndex(of: post!) {
+                self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.automatic)
+            }
+        } else {
+            self.report(error: error)
+        }
     }
 }

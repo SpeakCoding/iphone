@@ -155,7 +155,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/like.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                let post = Post(json: postJSON)
+                post.update(json: postJSON)
                 if Cache.enabled {
                     Cache.shared.update(post: post)
                 }
@@ -170,7 +170,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/unlike.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                let post = Post(json: postJSON)
+                post.update(json: postJSON)
                 if Cache.enabled {
                     Cache.shared.update(post: post)
                 }
@@ -337,6 +337,11 @@ extension Post {
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         self.id = json["id"] as! Int
+        self.numberOfLikes = json["likes_count"] as! Int
+        self.isLiked = json["liked"] as! Bool
+    }
+    
+    func update(json: [String: Any]) {
         self.numberOfLikes = json["likes_count"] as! Int
         self.isLiked = json["liked"] as! Bool
     }
