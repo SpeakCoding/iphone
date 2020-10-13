@@ -29,7 +29,12 @@ class PostFeedCell: UITableViewCell {
         self.bookmarkButton.isSelected = false
         self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
         self.postTextLabel.text = newPost.caption
-        self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
+        if newPost.numberOfComments > 0 {
+            self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
+            self.commentCountLabel.isHidden = false
+        } else {
+            self.commentCountLabel.isHidden = true
+        }
         self.postDateLabel.text = newPost.time.stringRepresentation
     }
     
