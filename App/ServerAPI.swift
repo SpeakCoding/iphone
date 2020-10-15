@@ -277,13 +277,12 @@ class ServerAPI {
                 do {
                     let json = try JSONSerialization.jsonObject(with: jsonData!, options: [])
                     #warning("Remove after debugging API")
-                    /*
                     if let formattedJSONData = try? JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted, .withoutEscapingSlashes]) {
                         if let formattedJSONString = String(data: formattedJSONData, encoding: .utf8) {
                             print("\(request.httpMethod!) \(request.url!) returned status code \((urlResponse as! HTTPURLResponse).statusCode) \(formattedJSONString)")
                         }
                     }
-                    */
+                    
                     if let responseJSON = (json as? [String: Any]) {
                         result = responseJSON["data"]
                         metadata = responseJSON["meta"] as? [String: String]

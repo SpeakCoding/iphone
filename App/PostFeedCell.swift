@@ -3,9 +3,9 @@ import UIKit
 
 class PostFeedCell: UITableViewCell {
     
-    @IBOutlet private var posterAvatarView: AvatarView!
-    @IBOutlet private var posterNameLabel: UILabel!
-    @IBOutlet private var posterLocationLabel: UILabel!
+    @IBOutlet private var userAvatarView: AvatarView!
+    @IBOutlet private var userNameLabel: UILabel!
+    @IBOutlet private var userLocationLabel: UILabel!
     @IBOutlet private var postImageView: AsynchronousImageView!
     @IBOutlet private var likeButton: UIButton!
     @IBOutlet private var commentButton: UIButton!
@@ -20,11 +20,11 @@ class PostFeedCell: UITableViewCell {
     func setPost(_ newPost: Post) {
         self.post = newPost
         
-        self.posterAvatarView.showImageAsynchronously(imageURL: newPost.user.avatarURL)
+        self.userAvatarView.showImageAsynchronously(imageURL: newPost.user.avatarURL)
         self.postImageView.showImageAsynchronously(imageURL: newPost.images?.first?.url)
         
-        self.posterNameLabel.text = newPost.user.name
-        self.posterLocationLabel.text = newPost.location
+        self.userNameLabel.text = newPost.user.name
+        self.userLocationLabel.text = newPost.location
         self.likeButton.isSelected = newPost.isLiked
         self.bookmarkButton.isSelected = false
         self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
