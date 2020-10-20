@@ -28,7 +28,7 @@ class ServerAPI {
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
                 let currentUser = User(json: userJSON)
-                User.current = currentUser
+                User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
             } else {
                 completion(nil, error)
@@ -43,7 +43,7 @@ class ServerAPI {
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
                 let currentUser = User(json: userJSON)
-                User.current = currentUser
+                User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
             } else {
                 completion(nil, error)
@@ -67,7 +67,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 let updatedUser = User(json: userJSON)
-                User.current = updatedUser
+                User.setCurrentUser(updatedUser)
                 completion(updatedUser, nil)
             } else {
                 completion(nil, error)
@@ -80,6 +80,9 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 let user = User(json: userJSON)
+                if user == User.current {
+                    User.setCurrentUser(user)
+                }
                 if Cache.enabled {
                     Cache.shared.update(user: user)
                 }

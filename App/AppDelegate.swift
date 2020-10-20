@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     var tabBarController: UITabBarController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        User.initCurrentUser()
+        
         // Set up view controllers behind the tab bar items
         let homeTabViewController = UINavigationController(rootViewController: PostFeedViewController())
         homeTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-home"), selectedImage: UIImage(named: "tab-bar-item-home-selected"))

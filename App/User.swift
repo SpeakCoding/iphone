@@ -12,29 +12,35 @@ class User: ModelObject {
         self.userName = userName
     }
     
-    static var current: User? = {
-        // Fetch the current user once, the first time User.current is accessed
+    static var current: User?
+    
+    /**
+     Initialize the current user from the cache on app launch
+     */
+    class func initCurrentUser() {
         if Cache.enabled {
-            return Cache.shared.fetchCurrentUser()
+            current = Cache.shared.fetchCurrentUser()
         } else {
             let currentUserID = UserDefaults.standard.integer(forKey: "Current user ID")
             if currentUserID != 0 {
                 let currentUser = User(userName: "")
                 currentUser.id = currentUserID
-                return currentUser
+                current = currentUser
             }
-            return nil
         }
-    }() {
-        didSet {
-            // Save the current user whenever it changes
-            if Cache.enabled {
-                if current != nil {
-                    Cache.shared.update(user: current!)
-                }
-            } else {
-                UserDefaults.standard.set(current?.id, forKey: "Current user ID")
+    }
+    
+    /**
+     Set the current user and update the cache
+     */
+    class func setCurrentUser(_ user: User?) {
+        current = user
+        if Cache.enabled {
+            if user != nil {
+                Cache.shared.update(user: user!)
             }
+        } else {
+            UserDefaults.standard.set(user?.id, forKey: "Current user ID")
         }
     }
 }
