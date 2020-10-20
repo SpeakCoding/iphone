@@ -3,7 +3,7 @@ import Foundation
 
 class Post: ModelObject {
     
-    var time: Date
+    var date: Date
     var user: User
     var caption: String
     var images: [Image]?
@@ -16,7 +16,7 @@ class Post: ModelObject {
     var isLiked = false
     
     init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
-        self.time = creationDate
+        self.date = creationDate
         self.user = author
         self.caption = postCaption
         self.images = postImages

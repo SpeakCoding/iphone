@@ -3,13 +3,13 @@ import Foundation
 
 class User: ModelObject {
     
-    var name: String
-    var avatarURL: URL?
+    var userName: String
+    var profilePictureURL: URL?
     var bio: String?
     var numberOfPosts = 0
     
     init(userName: String) {
-        self.name = userName
+        self.userName = userName
     }
     
     static var current: User? = {

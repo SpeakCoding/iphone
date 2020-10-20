@@ -41,8 +41,8 @@ class Cache {
             let query = """
             CREATE TABLE users (
             "id" INTEGER PRIMARY KEY NOT NULL,
-            "name" TEXT,
-            "avatar_url" TEXT,
+            "user_name" TEXT,
+            "profile_picture_url" TEXT,
             "bio" TEXT,
             "number_of_posts" INTEGER,
             "current" INTEGER DEFAULT 0
@@ -71,7 +71,7 @@ class Cache {
             "text" TEXT,
             "user_id" INTEGER,
             "post_id" INTEGER,
-            "parent_id" INTEGER
+            "parent_comment_id" INTEGER
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -103,11 +103,11 @@ class Cache {
     }
     
     private func userFromSQLite(row: [String: Any?]) -> User {
-        let name = row["name"] as! String
+        let name = row["user_name"] as! String
         let user = User(userName: name)
         user.id = row["id"] as! Int
-        if let imageURI = row["avatar_url"] as? String {
-            user.avatarURL = URL(string: imageURI)
+        if let pictureURI = row["profile_picture_url"] as? String {
+            user.profilePictureURL = URL(string: pictureURI)
         }
         user.bio = row["bio"] as? String
         user.numberOfPosts = row["number_of_posts"] as! Int
@@ -129,7 +129,7 @@ class Cache {
         assert(post.id != 0)
         update(user: post.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
-        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=? WHERE id=?", values: [post.time.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.id])
+        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.id])
     }
     
     func fetchUser(id: Int) -> User? {
@@ -149,6 +149,6 @@ class Cache {
     func update(user: User) {
         assert(user.id != 0)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
-        database.executeUpdate(sqlQuery: "UPDATE users SET name=?,avatar_url=?,bio=?,number_of_posts=?,current=? WHERE id=?", values: [user.name, user.avatarURL?.absoluteString, user.bio, user.numberOfPosts, user == User.current, user.id])
+        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user == User.current, user.id])
     }
 }

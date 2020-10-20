@@ -74,13 +74,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     private func displayUserInformation() {
-        self.navigationItem.title = self.user.name
+        self.navigationItem.title = self.user.userName
         #warning("Not implemented")
-        self.avatarView.showImageAsynchronously(imageURL: self.user.avatarURL)
+        self.avatarView.showImageAsynchronously(imageURL: self.user.profilePictureURL)
         self.postCountLabel.text = "\(self.user.numberOfPosts)"
         self.followerCountLabel.text = "\(0)"
         self.followedCountLabel.text = "\(0)"
-        self.userNameLabel.text = self.user.name
+        self.userNameLabel.text = self.user.userName
         self.bioLabel.text = self.user.bio
     }
     

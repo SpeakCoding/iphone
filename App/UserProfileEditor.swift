@@ -21,10 +21,10 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
         super.viewDidLoad()
         
         let currentUser = User.current!
-        if let avatarURL = currentUser.avatarURL {
+        if let avatarURL = currentUser.profilePictureURL {
             self.avatarView.showImageAsynchronously(imageURL: avatarURL)
         }
-        self.nameField.text = currentUser.name
+        self.nameField.text = currentUser.userName
         self.bioField.text = currentUser.bio
     }
     

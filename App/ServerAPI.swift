@@ -315,8 +315,8 @@ extension User {
         let userName = json["full_name"] as? String ?? "NO NAME"
         self.init(userName: userName)
         self.id = json["id"] as! Int
-        if let userAvatarURI = json["portrait"] as? String {
-            self.avatarURL = URL(string: userAvatarURI)
+        if let pictureURI = json["portrait"] as? String {
+            self.profilePictureURL = URL(string: pictureURI)
         }
         self.bio = json["bio"] as? String
         self.numberOfPosts = json["posts_count"] as! Int

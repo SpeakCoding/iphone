@@ -20,10 +20,10 @@ class PostFeedCell: UITableViewCell {
     func setPost(_ newPost: Post) {
         self.post = newPost
         
-        self.userAvatarView.showImageAsynchronously(imageURL: newPost.user.avatarURL)
+        self.userAvatarView.showImageAsynchronously(imageURL: newPost.user.profilePictureURL)
         self.postImageView.showImageAsynchronously(imageURL: newPost.images?.first?.url)
         
-        self.userNameLabel.text = newPost.user.name
+        self.userNameLabel.text = newPost.user.userName
         self.userLocationLabel.text = newPost.location
         self.likeButton.isSelected = newPost.isLiked
         self.bookmarkButton.isSelected = false
@@ -35,7 +35,7 @@ class PostFeedCell: UITableViewCell {
         } else {
             self.commentCountLabel.isHidden = true
         }
-        self.postDateLabel.text = newPost.time.stringRepresentation
+        self.postDateLabel.text = newPost.date.stringRepresentation
     }
     
     @IBAction private func showUserProfile() {
