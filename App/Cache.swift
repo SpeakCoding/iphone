@@ -83,46 +83,15 @@ class Cache {
         return result.first!["count(*)"] as! Int > 0
     }
     
-    private func postFromSQLite(row: [String: Any?]) -> Post {
-        let date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
-        let user = fetchUser(id: row["user_id"] as! Int)!
-        let caption = row["caption"] as! String
-        var images: [Image]?
-        if let imageURI = row["image_url"] as? String {
-            if let imageURL = URL(string: imageURI) {
-                images = [Image(url: imageURL)]
-            }
-        }
-        let location = row["location"] as? String
-        let post = Post(creationDate: date, author: user, postCaption: caption, postImages: images, postVideo: nil, postLocation: location)
-        post.id = row["id"] as! Int
-        post.numberOfLikes = row["number_of_likes"] as! Int
-        post.numberOfComments = row["number_of_comments"] as! Int
-        post.isLiked = (row["liked"] as! Int) != 0
-        return post
-    }
-    
-    private func userFromSQLite(row: [String: Any?]) -> User {
-        let name = row["user_name"] as! String
-        let user = User(userName: name)
-        user.id = row["id"] as! Int
-        if let pictureURI = row["profile_picture_url"] as? String {
-            user.profilePictureURL = URL(string: pictureURI)
-        }
-        user.bio = row["bio"] as? String
-        user.numberOfPosts = row["number_of_posts"] as! Int
-        return user
-    }
-    
     func fetchPost(id: Int) -> Post? {
         if let matchingPost = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
-            return postFromSQLite(row: matchingPost)
+            return Post(row: matchingPost)
         }
         return nil
     }
     
     func fetchAllPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { postFromSQLite(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
     }
     
     func update(post: Post) {
@@ -134,14 +103,14 @@ class Cache {
     
     func fetchUser(id: Int) -> User? {
         if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE id=?", parameters: [id]).first {
-            return userFromSQLite(row: matchingUser)
+            return User(row: matchingUser)
         }
         return nil
     }
     
     func fetchCurrentUser() -> User? {
         if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE current=1", parameters: nil).first {
-            return userFromSQLite(row: matchingUser)
+            return User(row: matchingUser)
         }
         return nil
     }
@@ -150,5 +119,43 @@ class Cache {
         assert(user.id != 0)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
         database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user == User.current, user.id])
+    }
+}
+
+
+// MARK: - Decoding Model Objects from SQLite Rows
+
+
+extension User {
+    convenience init(row: [String: Any?]) {
+        let name = row["user_name"] as! String
+        self.init(userName: name)
+        self.id = row["id"] as! Int
+        if let pictureURI = row["profile_picture_url"] as? String {
+            self.profilePictureURL = URL(string: pictureURI)
+        }
+        self.bio = row["bio"] as? String
+        self.numberOfPosts = row["number_of_posts"] as! Int
+    }
+}
+
+
+extension Post {
+    convenience init(row: [String: Any?]) {
+        let date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
+        let user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
+        let caption = row["caption"] as! String
+        var images: [Image]?
+        if let imageURI = row["image_url"] as? String {
+            if let imageURL = URL(string: imageURI) {
+                images = [Image(url: imageURL)]
+            }
+        }
+        let location = row["location"] as? String
+        self.init(creationDate: date, author: user, postCaption: caption, postImages: images, postVideo: nil, postLocation: location)
+        self.id = row["id"] as! Int
+        self.numberOfLikes = row["number_of_likes"] as! Int
+        self.numberOfComments = row["number_of_comments"] as! Int
+        self.isLiked = (row["liked"] as! Int) != 0
     }
 }
