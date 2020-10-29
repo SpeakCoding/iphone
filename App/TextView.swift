@@ -60,7 +60,7 @@ class TextView: UITextView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        placeholderLabel.frame.origin = CGPoint(x: self.contentInset.left + self.textContainer.lineFragmentPadding, y: self.contentInset.top + 8)
+        placeholderLabel.frame.origin = CGPoint(x: self.contentInset.left + self.textContainerInset.left + self.textContainer.lineFragmentPadding, y: self.contentInset.top + self.textContainerInset.top)
         backgroundView?.frame = self.bounds
     }
     
