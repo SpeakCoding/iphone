@@ -91,6 +91,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         let profileEditor = UserProfileEditor() {
             self.user = User.current!
             self.displayUserInformation()
+            self.dismiss(animated: true, completion: nil)
         }
         self.present(profileEditor, animated: true, completion: nil)
     }
