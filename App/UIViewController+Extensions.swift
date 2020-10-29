@@ -22,7 +22,6 @@ extension UIViewController {
                     completion!(image!)
                 } else {
                     let vc = PhotoPickerPreviewController(image: image!) { (newPost: Post) in
-                        print("New post: \(newPost)")
                         self.dismiss(animated: true, completion: nil)
                         UIViewController.imagePickerDelegate = nil
                     }

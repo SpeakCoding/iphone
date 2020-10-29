@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 
 /**
@@ -51,7 +51,7 @@ class ServerAPI {
         }
     }
     
-    func updateProfile(name: String?, bio: String?, avatarURL: URL?, completion: @escaping ((User?, Error?) -> Void)) {
+    func updateProfile(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
         var userInfo = [String: String]()
         if name != nil {
             userInfo["full_name"] = name!
@@ -59,8 +59,11 @@ class ServerAPI {
         if bio != nil {
             userInfo["bio"] = bio!
         }
-        if avatarURL != nil {
-            userInfo["portrait"] = avatarURL!.absoluteString
+        if profilePicture != nil {
+            if let imageBase64String = profilePicture!.jpegData(compressionQuality: 0.7)?.base64EncodedString() {
+                let imageDataURI = "data:image/jpeg;base64,".appending(imageBase64String)
+                userInfo["portrait"] = imageDataURI
+            }
         }
         let requestParameters = ["user": userInfo]
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: true, parameters: requestParameters)
@@ -134,11 +137,15 @@ class ServerAPI {
         }
     }
     
-    func createPost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+    func createPost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
+        guard let imageBase64String = image.jpegData(compressionQuality: 0.7)?.base64EncodedString() else {
+            completion(nil, NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image"]))
+            return
+        }
         let requestParameters = ["post": [
             "location": post.location,
             "description": post.caption,
-            "image": post.images?.first?.url.absoluteString,
+            "image": "data:image/jpeg;base64,".appending(imageBase64String),
             ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in

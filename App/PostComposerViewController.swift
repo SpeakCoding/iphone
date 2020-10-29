@@ -48,10 +48,11 @@ class PostComposerViewController: UIViewController {
         
         let location = self.locationField.text
         let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: location)
-        ServerAPI.shared.createPost(newPost) { (createdPost: Post?, error: Error?) in
+        ServerAPI.shared.createPost(newPost, image: self.image) { (createdPost: Post?, error: Error?) in
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton
             if createdPost != nil {
+                NotificationCenter.default.post(name: Notification.Name.NewPostNotification, object: createdPost)
                 self.completion(createdPost!)
             } else {
                 self.report(error: error)
@@ -62,4 +63,9 @@ class PostComposerViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+
+extension Notification.Name {
+    public static let NewPostNotification = NSNotification.Name("New post notification")
 }

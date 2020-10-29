@@ -25,6 +25,17 @@ class PostFeedViewController: UITableViewController {
                 self.report(error: error)
             }
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func newPostHasBeenCreated(notification: NSNotification) {
+        self.feed.posts.insert(notification.object as! Post, at: 0)
+        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.automatic)
     }
     
     

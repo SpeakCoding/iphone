@@ -7,6 +7,7 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
     @IBOutlet private var nameField: TextField!
     @IBOutlet private var bioField: TextView!
     private var completion: () -> Void
+    private var newProfilePicture: UIImage?
     
     init(completion: @escaping () -> Void) {
         self.completion = completion
@@ -31,14 +32,13 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
     @IBAction func setAvatar() {
         self.presentImagePicker { (image: UIImage) in
             self.avatarView.image = image
+            self.newProfilePicture = image
         }
     }
     
     @IBAction func save() {
         self.view.isUserInteractionEnabled = false
-        #warning("Upload the avatar first")
-        let avatarURL: URL? = nil
-        ServerAPI.shared.updateProfile(name: self.nameField.text, bio: self.bioField.text, avatarURL: avatarURL) { (user: User?, error: Error?) in
+        ServerAPI.shared.updateProfile(name: self.nameField.text, bio: self.bioField.text, profilePicture: self.newProfilePicture) { (user: User?, error: Error?) in
             self.view.isUserInteractionEnabled = true
             if user != nil {
                 self.completion()

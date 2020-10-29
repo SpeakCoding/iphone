@@ -19,10 +19,15 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     init(user: User) {
         self.user = user
         super.init(nibName: "UserProfileView", bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -94,6 +99,14 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             self.dismiss(animated: true, completion: nil)
         }
         self.present(profileEditor, animated: true, completion: nil)
+    }
+    
+    @objc private func newPostHasBeenCreated(notification: NSNotification) {
+        if self.user == User.current {
+            self.posts.insert(notification.object as! Post, at: 0)
+            self.placeholderLabel.isHidden = true
+            self.gridView.reloadData()
+        }
     }
     
     // MARK: - UICollectionViewDataSource
