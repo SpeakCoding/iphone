@@ -64,6 +64,12 @@ class TextView: UITextView {
         backgroundView?.frame = self.bounds
     }
     
+    override var text: String! {
+        didSet {
+            updatePlaceholderVisibility()
+        }
+    }
+    
     @objc private func updatePlaceholderVisibility() {
         placeholderLabel.isHidden = self.text.count > 0
     }
