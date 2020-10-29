@@ -63,7 +63,7 @@ class ServerAPI {
             userInfo["portrait"] = avatarURL!.absoluteString
         }
         let requestParameters = ["user": userInfo]
-        let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: false, parameters: requestParameters)
+        let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 let updatedUser = User(json: userJSON)
@@ -76,7 +76,7 @@ class ServerAPI {
     }
     
     func getUser(id: Int, completion: @escaping ((User?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 let user = User(json: userJSON)
@@ -99,7 +99,7 @@ class ServerAPI {
      until they reach the last `Post`.
      */
     func getFeedPosts(startPostIndex: UInt, completion: @escaping (([Post]?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -117,7 +117,7 @@ class ServerAPI {
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: false, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
