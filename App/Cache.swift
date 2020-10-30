@@ -4,7 +4,6 @@ import Foundation
 class Cache {
     
     static let shared = Cache()
-    static let enabled = !ProcessInfo().arguments.contains("mock-api")
     
     private var database: SQLiteDatabase
     init() {

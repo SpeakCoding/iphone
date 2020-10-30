@@ -37,7 +37,7 @@ class AsynchronousImageView: UIImageView {
         self.imageDownloadTask?.cancel()
         
         // Start downloading the new image
-        self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
+        self.imageDownloadTask = URLSession.shared.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
             // The completion closure is called on a secondary thread,
             // make sure we assign the image on the main thread
             DispatchQueue.main.async {
@@ -52,15 +52,5 @@ class AsynchronousImageView: UIImageView {
             }
         }
         self.imageDownloadTask?.resume()
-    }
-    
-    static let session = initSession()
-    private class func initSession() -> URLSession {
-        if ProcessInfo().arguments.contains("mock-api") {
-            let sharedSessionConfig = URLSessionConfiguration.default;
-            sharedSessionConfig.protocolClasses = [MockURLProtocol.self]
-            return URLSession(configuration: sharedSessionConfig)
-        }
-        return URLSession.shared
     }
 }

@@ -86,9 +86,7 @@ class ServerAPI {
                 if user == User.current {
                     User.setCurrentUser(user)
                 }
-                if Cache.enabled {
-                    Cache.shared.update(user: user)
-                }
+                Cache.shared.update(user: user)
                 completion(user, nil)
             } else {
                 completion(nil, error)
@@ -107,9 +105,7 @@ class ServerAPI {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
                     let post = Post(json: postJSON)
-                    if Cache.enabled {
-                        Cache.shared.update(post: post)
-                    }
+                    Cache.shared.update(post: post)
                     return post
                 }
                 completion(posts, nil)
@@ -125,9 +121,7 @@ class ServerAPI {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
                     let post = Post(json: postJSON)
-                    if Cache.enabled {
-                        Cache.shared.update(post: post)
-                    }
+                    Cache.shared.update(post: post)
                     return post
                 }
                 completion(posts, nil)
@@ -151,9 +145,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 let post = Post(json: postJSON)
-                if Cache.enabled {
-                    Cache.shared.update(post: post)
-                }
+                Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
                 completion(nil, error)
@@ -166,9 +158,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 post.update(json: postJSON)
-                if Cache.enabled {
-                    Cache.shared.update(post: post)
-                }
+                Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
                 completion(nil, error)
@@ -181,9 +171,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 post.update(json: postJSON)
-                if Cache.enabled {
-                    Cache.shared.update(post: post)
-                }
+                Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
                 completion(nil, error)
@@ -209,7 +197,7 @@ class ServerAPI {
         case PATCH
     }
     
-    private let baseURLString: String
+    private let baseURLString = "http://130.193.44.149:3000"
     private var session: URLSession
     private var accessToken: String? {
         didSet {
@@ -239,12 +227,6 @@ class ServerAPI {
         config.httpMaximumConnectionsPerHost = 1
         config.httpCookieStorage = nil
         config.urlCache = nil
-        if ProcessInfo().arguments.contains("mock-api") {
-            config.protocolClasses = [MockURLProtocol.self]
-            self.baseURLString = "mock://api.example.com"
-        } else {
-            self.baseURLString = "http://130.193.44.149:3000"
-        }
         
         let sessionDelegateQueue = OperationQueue()
         sessionDelegateQueue.name = "API.HTTP"
