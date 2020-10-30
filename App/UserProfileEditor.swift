@@ -3,7 +3,7 @@ import UIKit
 
 class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDelegate {
     
-    @IBOutlet private var avatarView: AvatarView!
+    @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var nameField: TextField!
     @IBOutlet private var bioField: TextView!
     private var completion: () -> Void
@@ -22,16 +22,16 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
         super.viewDidLoad()
         
         let currentUser = User.current!
-        if let avatarURL = currentUser.profilePictureURL {
-            self.avatarView.showImageAsynchronously(imageURL: avatarURL)
+        if let profilePictureURL = currentUser.profilePictureURL {
+            self.profilePictureView.showImageAsynchronously(imageURL: profilePictureURL)
         }
         self.nameField.text = currentUser.userName
         self.bioField.text = currentUser.bio
     }
     
-    @IBAction func setAvatar() {
+    @IBAction func changeProfilePicture() {
         self.presentImagePicker { (image: UIImage) in
-            self.avatarView.image = image
+            self.profilePictureView.image = image
             self.newProfilePicture = image
         }
     }

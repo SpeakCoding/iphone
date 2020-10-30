@@ -3,7 +3,7 @@ import UIKit
 
 class UserProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet private var avatarView: AvatarView!
+    @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var postCountLabel: UILabel!
     @IBOutlet private var followerCountLabel: UILabel!
     @IBOutlet private var followedCountLabel: UILabel!
@@ -78,7 +78,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     private func displayUserInformation() {
         self.navigationItem.title = self.user.userName
         #warning("Not implemented")
-        self.avatarView.showImageAsynchronously(imageURL: self.user.profilePictureURL)
+        self.profilePictureView.showImageAsynchronously(imageURL: self.user.profilePictureURL)
         self.postCountLabel.text = "\(self.user.numberOfPosts)"
         self.followerCountLabel.text = "\(0)"
         self.followedCountLabel.text = "\(0)"

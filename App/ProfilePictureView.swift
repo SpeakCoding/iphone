@@ -2,17 +2,17 @@ import UIKit
 
 
 /**
- This class represents a view which displays a round avatar image.
+ This class represents a view which displays a round profile picture image.
  Note that it is a subclass of `AsynchronousImageView`
- and thus inherits its functionality: `AvatarView` can download images too!
+ and thus inherits its functionality: `ProfilePictureView` can download images too!
  */
 @IBDesignable
-class AvatarView: AsynchronousImageView {
+class ProfilePictureView: AsynchronousImageView {
     
     private var clipMask: CAShapeLayer?
     private var placeholderImage: UIImage {
         get {
-            return UIImage(named: "avatar-placeholder", in: Bundle(for: AvatarView.self), compatibleWith: nil)!
+            return UIImage(named: "avatar-placeholder", in: Bundle(for: ProfilePictureView.self), compatibleWith: nil)!
         }
     }
 

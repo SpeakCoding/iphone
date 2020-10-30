@@ -26,7 +26,6 @@
 		9EB6DB8B2503AD7200C60EBF /* PostFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */; };
 		9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8C2504CCC200C60EBF /* UserProfileViewController.swift */; };
 		9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8E2504CCEE00C60EBF /* UserProfileView.xib */; };
-		9EB6DB922504D6C700C60EBF /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB912504D6C700C60EBF /* SeparatorView.swift */; };
 		9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */; };
 		9EB6DBD32507A16A00C60EBF /* TestData in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD22507A16A00C60EBF /* TestData */; };
 		9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */; };
@@ -42,7 +41,7 @@
 		9EDC2A3A24EE9D8100902B93 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A3924EE9D8100902B93 /* Like.swift */; };
 		9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A3B24EE9DD500902B93 /* Tag.swift */; };
 		9EDC2A3E24EE9F4D00902B93 /* ModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A3D24EE9F4D00902B93 /* ModelObject.swift */; };
-		9EDC2A4024EEB4AB00902B93 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A3F24EEB4AB00902B93 /* AvatarView.swift */; };
+		9EDC2A4024EEB4AB00902B93 /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A3F24EEB4AB00902B93 /* ProfilePictureView.swift */; };
 		9EDC2A4224EEBE4000902B93 /* AsynchronousImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A4124EEBE4000902B93 /* AsynchronousImageView.swift */; };
 		9EDC2A4424EFA74400902B93 /* ServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC2A4324EFA74400902B93 /* ServerAPI.swift */; };
 		9EF2BA52252EF50000BB2DBB /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF2BA51252EF50000BB2DBB /* Cache.swift */; };
@@ -70,7 +69,6 @@
 		9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedCell.swift; sourceTree = "<group>"; };
 		9EB6DB8C2504CCC200C60EBF /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		9EB6DB8F2504CCEE00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileView.xib; sourceTree = "<group>"; };
-		9EB6DB912504D6C700C60EBF /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
 		9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewController.swift; sourceTree = "<group>"; };
 		9EB6DBD22507A16A00C60EBF /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		9EB6DBD42507AD1F00C60EBF /* MockServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServerAPI.swift; sourceTree = "<group>"; };
@@ -88,7 +86,7 @@
 		9EDC2A3924EE9D8100902B93 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		9EDC2A3B24EE9DD500902B93 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		9EDC2A3D24EE9F4D00902B93 /* ModelObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelObject.swift; sourceTree = "<group>"; };
-		9EDC2A3F24EEB4AB00902B93 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		9EDC2A3F24EEB4AB00902B93 /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
 		9EDC2A4124EEBE4000902B93 /* AsynchronousImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsynchronousImageView.swift; sourceTree = "<group>"; };
 		9EDC2A4324EFA74400902B93 /* ServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAPI.swift; sourceTree = "<group>"; };
 		9EF2BA51252EF50000BB2DBB /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -141,8 +139,7 @@
 				9EF6CEBA24F6467B006A4E12 /* SQLiteDatabase.swift */,
 				9EF2BA51252EF50000BB2DBB /* Cache.swift */,
 				9EDC2A4124EEBE4000902B93 /* AsynchronousImageView.swift */,
-				9EDC2A3F24EEB4AB00902B93 /* AvatarView.swift */,
-				9EB6DB912504D6C700C60EBF /* SeparatorView.swift */,
+				9EDC2A3F24EEB4AB00902B93 /* ProfilePictureView.swift */,
 				9EB6DB8525036BFC00C60EBF /* TextField.swift */,
 				9EA259112521EEBD0056047B /* TextView.swift */,
 				9E2478A62503658C007EBBEB /* LoginViewController.swift */,
@@ -251,7 +248,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EB6DB922504D6C700C60EBF /* SeparatorView.swift in Sources */,
 				9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */,
 				9EB6DBD52507AD1F00C60EBF /* MockServerAPI.swift in Sources */,
 				9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */,
@@ -261,7 +257,7 @@
 				9EDC2A2E24EE9A5400902B93 /* Feed.swift in Sources */,
 				9EDC2A3224EE9B9300902B93 /* User.swift in Sources */,
 				9EF2BA54252F331200BB2DBB /* Date+Extensions.swift in Sources */,
-				9EDC2A4024EEB4AB00902B93 /* AvatarView.swift in Sources */,
+				9EDC2A4024EEB4AB00902B93 /* ProfilePictureView.swift in Sources */,
 				9EDC2A3E24EE9F4D00902B93 /* ModelObject.swift in Sources */,
 				9EF6CEBB24F6467B006A4E12 /* SQLiteDatabase.swift in Sources */,
 				9EDC2A3A24EE9D8100902B93 /* Like.swift in Sources */,

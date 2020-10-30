@@ -3,7 +3,7 @@ import UIKit
 
 class PostFeedCell: UITableViewCell {
     
-    @IBOutlet private var userAvatarView: AvatarView!
+    @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var userNameLabel: UILabel!
     @IBOutlet private var userLocationLabel: UILabel!
     @IBOutlet private var postImageView: AsynchronousImageView!
@@ -20,7 +20,7 @@ class PostFeedCell: UITableViewCell {
     func setPost(_ newPost: Post) {
         self.post = newPost
         
-        self.userAvatarView.showImageAsynchronously(imageURL: newPost.user.profilePictureURL)
+        self.profilePictureView.showImageAsynchronously(imageURL: newPost.user.profilePictureURL)
         self.postImageView.showImageAsynchronously(imageURL: newPost.images?.first?.url)
         
         self.userNameLabel.text = newPost.user.userName
