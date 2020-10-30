@@ -94,12 +94,7 @@ class ServerAPI {
         }
     }
     
-    /**
-     Get a batch of `Post` objects in the feed after the last `Post` object we received earlier.
-     This method is supposed to be called repeatedly as the user scrolls the feed
-     until they reach the last `Post`.
-     */
-    func getFeedPosts(startPostIndex: UInt, completion: @escaping (([Post]?, Error?) -> Void)) {
+    func getFeedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
