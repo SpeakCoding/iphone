@@ -19,7 +19,7 @@ class Cache {
         }
         print("The cache database is at \(databasePath)")
         
-        if !hasTable(name: "posts") {
+        if !hasTable(tableName: "posts") {
             let query = """
             CREATE TABLE posts (
             "id" INTEGER PRIMARY KEY NOT NULL,
@@ -36,7 +36,7 @@ class Cache {
             database.executeUpdate(sqlQuery: query, values: nil)
         }
         
-        if !hasTable(name: "users") {
+        if !hasTable(tableName: "users") {
             let query = """
             CREATE TABLE users (
             "id" INTEGER PRIMARY KEY NOT NULL,
@@ -50,7 +50,7 @@ class Cache {
             database.executeUpdate(sqlQuery: query, values: nil)
         }
         
-        if !hasTable(name: "likes") {
+        if !hasTable(tableName: "likes") {
             let query = """
             CREATE TABLE likes (
             "id" INTEGER PRIMARY KEY NOT NULL,
@@ -62,7 +62,7 @@ class Cache {
             database.executeUpdate(sqlQuery: query, values: nil)
         }
         
-        if !hasTable(name: "comments") {
+        if !hasTable(tableName: "comments") {
             let query = """
             CREATE TABLE comments (
             "id" INTEGER PRIMARY KEY NOT NULL,
@@ -77,8 +77,8 @@ class Cache {
         }
     }
     
-    private func hasTable(name: String) -> Bool {
-        let result = database.executeQuery(sqlQuery: "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?", parameters: [name])
+    private func hasTable(tableName: String) -> Bool {
+        let result = database.executeQuery(sqlQuery: "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?", parameters: [tableName])
         return result.first!["count(*)"] as! Int > 0
     }
     
