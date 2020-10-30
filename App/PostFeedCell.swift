@@ -38,6 +38,11 @@ class PostFeedCell: UITableViewCell {
         self.postDateLabel.text = newPost.date.stringRepresentation
     }
     
+    func updateLike() {
+        self.likeButton.isSelected = self.post.isLiked
+        self.likeCountLabel.text = "\(self.post.numberOfLikes) likes"
+    }
+    
     @IBAction private func showUserProfile() {
         self.actionDelegate?.showUserProfile(post.user)
     }

@@ -99,7 +99,15 @@ class PostFeedViewController: UITableViewController {
     private func updatePostOrReportError(post: Post?, error: Error?) {
         if post != nil {
             if let postIndex = self.feed.posts.firstIndex(of: post!) {
-                self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.automatic)
+                // The table view may have reused the post cell for another post while the network request was in progress.
+                // If the post cell still displays the same post, call updateLike() instead of reloading the cell to avoid flickering.
+                if let postCell = self.tableView.cellForRow(at: IndexPath(row: postIndex, section: 0)) as? PostFeedCell {
+                    if postCell.post == post {
+                        postCell.updateLike()
+                        return
+                    }
+                }
+                self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
             }
         } else {
             self.report(error: error)
