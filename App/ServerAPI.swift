@@ -94,6 +94,32 @@ class ServerAPI {
         }
     }
     
+    func follow(user: User, completion: @escaping ((User?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/\(user.id)/follow.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSON = result as? [String: Any] {
+                user.update(json: userJSON)
+                Cache.shared.update(user: user)
+                completion(user, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func unfollow(user: User, completion: @escaping ((User?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/\(user.id)/unfollow.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSON = result as? [String: Any] {
+                user.update(json: userJSON)
+                Cache.shared.update(user: user)
+                completion(user, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func getFeedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
@@ -307,6 +333,18 @@ extension User {
         }
         self.bio = json["bio"] as? String
         self.numberOfPosts = json["posts_count"] as! Int
+        self.update(json: json)
+    }
+    
+    func update(json: [String: Any]) {
+        self.numberOfFollowers = json["followers_count"] as! Int
+        self.numberOfFollowees = json["followees_count"] as! Int
+        if let isFollower = json["is_follower"] as? Bool {
+            self.isFollower = isFollower
+        }
+        if let isFollowed = json["is_followee"] as? Bool {
+            self.isFollowed = isFollowed
+        }
     }
 }
 
@@ -323,8 +361,7 @@ extension Post {
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         self.id = json["id"] as! Int
-        self.numberOfLikes = json["likes_count"] as! Int
-        self.isLiked = json["liked"] as! Bool
+        self.update(json: json)
     }
     
     func update(json: [String: Any]) {

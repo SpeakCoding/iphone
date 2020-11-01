@@ -13,11 +13,30 @@ class Cache {
             try? FileManager().removeItem(atPath: databasePath)
         }
         database = SQLiteDatabase(filePath: databasePath)
-        guard database.open() else {
-            print("Could not open the cache database at \(databasePath)")
-            return
+        while true {
+            guard database.open() else {
+                print("Could not open the cache database at \(databasePath)")
+                return
+            }
+            
+            // Make sure the database version which we store in the "user_version" pragma is up-to-date
+            let currentDatabaseVersion = 1
+            let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
+            print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
+            if onDiskDatabaseVersion == currentDatabaseVersion {
+                break
+            }
+            
+            if onDiskDatabaseVersion == 0 && !hasTable(tableName: "posts") {
+                // The database has just been created, the "user_version" pragma is not set yet
+                database.executeUpdate(sqlQuery: "PRAGMA user_version = \(currentDatabaseVersion)", values: nil)
+                break
+            }
+            
+            // The database schema is outdated, delete and recreate the database
+            database.close()
+            try? FileManager().removeItem(atPath: databasePath)
         }
-        print("The cache database is at \(databasePath)")
         
         if !hasTable(tableName: "posts") {
             let query = """
@@ -44,7 +63,11 @@ class Cache {
             "profile_picture_url" TEXT,
             "bio" TEXT,
             "number_of_posts" INTEGER,
-            "current" INTEGER DEFAULT 0
+            "followers_count" INTEGER,
+            "followees_count" INTEGER,
+            "is_follower" INTEGER,
+            "is_followed" INTEGER,
+            "is_current" INTEGER DEFAULT 0
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -108,7 +131,7 @@ class Cache {
     }
     
     func fetchCurrentUser() -> User? {
-        if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE current=1", parameters: nil).first {
+        if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE is_current=1", parameters: nil).first {
             return User(row: matchingUser)
         }
         return nil
@@ -117,7 +140,7 @@ class Cache {
     func update(user: User) {
         assert(user.id != 0)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
-        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user == User.current, user.id])
+        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=?,is_current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user == User.current, user.id])
     }
 }
 
@@ -135,6 +158,10 @@ extension User {
         }
         self.bio = row["bio"] as? String
         self.numberOfPosts = row["number_of_posts"] as! Int
+        self.numberOfFollowers = row["followers_count"] as! Int
+        self.numberOfFollowees = row["followees_count"] as! Int
+        self.isFollower = (row["is_follower"] as! Int) != 0
+        self.isFollowed = (row["is_followed"] as! Int) != 0
     }
 }
 

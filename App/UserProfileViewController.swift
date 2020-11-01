@@ -77,19 +77,37 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     private func displayUserInformation() {
         self.navigationItem.title = self.user.userName
-        #warning("Not implemented")
         self.profilePictureView.showImageAsynchronously(imageURL: self.user.profilePictureURL)
         self.postCountLabel.text = "\(self.user.numberOfPosts)"
-        self.followerCountLabel.text = "\(0)"
-        self.followedCountLabel.text = "\(0)"
+        self.followerCountLabel.text = "\(self.user.numberOfFollowers)"
+        self.followedCountLabel.text = "\(self.user.numberOfFollowees)"
+        self.setFollowButtonSelected(self.user.isFollowed)
         self.userNameLabel.text = self.user.userName
         self.bioLabel.text = self.user.bio
     }
     
     @IBAction private func toggleFollow() {
-        #warning("Not implemented")
-        self.followButton.isSelected = !self.followButton.isSelected
-        self.followButton.setBackgroundImage(UIImage(named: self.followButton.isSelected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
+        let follow = !self.followButton.isSelected
+        self.setFollowButtonSelected(follow)
+        if follow {
+            ServerAPI.shared.follow(user: self.user, completion: self.updateUserOrReportError)
+        } else {
+            ServerAPI.shared.unfollow(user: self.user, completion: self.updateUserOrReportError)
+        }
+    }
+    
+    private func updateUserOrReportError(user: User?, error: Error?) {
+        if user != nil {
+            self.displayUserInformation()
+        } else {
+            self.setFollowButtonSelected(self.user.isFollowed)
+            self.report(error: error)
+        }
+    }
+    
+    private func setFollowButtonSelected(_ selected: Bool) {
+        self.followButton.isSelected = selected
+        self.followButton.setBackgroundImage(UIImage(named: selected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
     }
     
     @IBAction private func editProfile() {

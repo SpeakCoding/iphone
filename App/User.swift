@@ -7,6 +7,10 @@ class User: ModelObject {
     var profilePictureURL: URL?
     var bio: String?
     var numberOfPosts = 0
+    var numberOfFollowers = 0
+    var numberOfFollowees = 0
+    var isFollower = false
+    var isFollowed = false
     
     init(userName: String) {
         self.userName = userName
