@@ -10,36 +10,22 @@ class TagCalloutView: UIView {
     }
     
     private var textLabel: UILabel!
+    var representedTag: Tag
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setUpInternals()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setUpInternals()
-    }
-    
-    private func setUpInternals() {
+    init(tag: Tag) {
+        self.representedTag = tag
+        super.init(frame: CGRect.zero)
+        
         self.isUserInteractionEnabled = false
         (self.layer as! CAShapeLayer).fillColor = UIColor(white: 0, alpha: 0.65).cgColor
 
         textLabel = UILabel(frame: CGRect.zero)
         textLabel.font = UIFont.systemFont(ofSize: 14)
         textLabel.textColor = UIColor.white
+        textLabel.text = tag.user.userName
+        textLabel.sizeToFit()
         self.addSubview(textLabel)
-    }
-    
-    var text: String? {
-        get {
-            self.textLabel.text
-        }
-        set {
-            self.textLabel.text = newValue
-            self.textLabel.sizeToFit()
-            self.sizeToFit()
-        }
+        self.sizeToFit()
     }
     
     var isArrowUp = false {
@@ -113,5 +99,9 @@ class TagCalloutView: UIView {
             shape.addLine(to: CGPoint(x: arrowCenterX - arrowHalfWidth, y: arrowBaseY))
         }
         (self.layer as! CAShapeLayer).path = shape.cgPath
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

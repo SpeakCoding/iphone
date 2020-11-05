@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserTaggingViewController" customModule="SpeakCoding" customModuleProvider="target">
+            <connections>
+                <outlet property="taggedImageView" destination="4Sg-1a-IbN" id="jhs-HG-Mhh"/>
+                <outlet property="view" destination="iN0-l3-epB" id="5PL-Bn-Xxx"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Sg-1a-IbN" customClass="TaggedImageView" customModule="SpeakCoding" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="44" width="375" height="375"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="4Sg-1a-IbN" secondAttribute="height" multiplier="1:1" priority="999" id="0Ec-KT-xUB"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="GOR-3I-16P"/>
+                    </connections>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FuC-ya-Av8">
+                    <rect key="frame" x="0.0" y="419" width="375" height="359"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Tap the photo to tag people" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEz-j3-G2e">
+                    <rect key="frame" x="87.333333333333314" y="589" width="200.33333333333337" height="19.333333333333371"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="4Sg-1a-IbN" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="2xM-eW-eux"/>
+                <constraint firstItem="FuC-ya-Av8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Id2-tn-9Jq"/>
+                <constraint firstItem="FuC-ya-Av8" firstAttribute="height" relation="greaterThanOrEqual" secondItem="jEz-j3-G2e" secondAttribute="height" constant="16" id="Qqf-nc-OD2"/>
+                <constraint firstItem="jEz-j3-G2e" firstAttribute="centerY" secondItem="FuC-ya-Av8" secondAttribute="centerY" id="SmH-h8-tuy"/>
+                <constraint firstItem="FuC-ya-Av8" firstAttribute="top" secondItem="4Sg-1a-IbN" secondAttribute="bottom" id="URe-XE-adO"/>
+                <constraint firstItem="4Sg-1a-IbN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="axn-SA-bUe"/>
+                <constraint firstItem="FuC-ya-Av8" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="m9R-oP-0CA"/>
+                <constraint firstItem="4Sg-1a-IbN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="qgW-bQ-5Ed"/>
+                <constraint firstItem="FuC-ya-Av8" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="vbJ-bS-3Xm"/>
+                <constraint firstItem="jEz-j3-G2e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="y8s-wl-ISb"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="132" y="129.31034482758622"/>
+        </view>
+    </objects>
+</document>

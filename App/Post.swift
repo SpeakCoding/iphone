@@ -9,6 +9,7 @@ class Post: ModelObject {
     var images: [Image]?
     var video: Video?
     var location: String?
+    var tags = [Tag]()
     var likes = [Like]()
     var comments = [Comment]()
     var numberOfLikes = 0

@@ -158,9 +158,16 @@ class ServerAPI {
             return
         }
         let requestParameters = ["post": [
-            "location": post.location,
+            "location": post.location as Any,
             "description": post.caption,
             "image": "data:image/jpeg;base64,".appending(imageBase64String),
+            "tags": post.tags.map { (tag) -> [String: Any] in
+                return [
+                    "user_id": tag.user.id,
+                    "left": tag.point.x,
+                    "top": tag.point.y
+                ]
+            }
             ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
@@ -361,6 +368,9 @@ extension Post {
         let location = json["location"] as? String
         self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
         self.id = json["id"] as! Int
+        if let tags = json["tags"] as? [[String: Any]] {
+            self.tags = tags.map { Tag(json: $0) }
+        }
         self.update(json: json)
     }
     
@@ -375,5 +385,14 @@ extension Image {
     convenience init(json: [String: Any]) {
         let imageURI = json["url"] as! String
         self.init(url: URL(string: imageURI)!)
+    }
+}
+
+
+extension Tag {
+    convenience init(json: [String: Any]) {
+        let user = User(json: json["user"] as! [String : Any])
+        let point = Point(x: json["left"] as! Double, y: json["top"] as! Double)
+        self.init(taggedUser: user, point: point)
     }
 }

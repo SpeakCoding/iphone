@@ -5,14 +5,16 @@ class PostComposerViewController: UIViewController {
     
     private var image: UIImage
     private var completion: (_ newPost: Post) -> Void
+    private var tags = [Tag]()
     @IBOutlet private var postImageView: UIImageView!
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var locationField: TextField!
     
-    init(image: UIImage , completion: @escaping (_ newPost: Post) -> Void) {
+    init(image: UIImage, completion: @escaping (_ newPost: Post) -> Void) {
         self.image = image
         self.completion = completion
         super.init(nibName: "PostComposerView", bundle: nil)
+        self.title = "New post"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: UIBarButtonItem.Style.plain, target: self, action: #selector(createNewPost))
         self.navigationItem.rightBarButtonItem!.isEnabled = false
     }
@@ -37,7 +39,11 @@ class PostComposerViewController: UIViewController {
     }
     
     @IBAction private func tagPeople() {
-        #warning("Tagging people is not implemented")
+        let userTagger = UserTaggingViewController(image: self.image, tags: self.tags) { (tags: [Tag]) in
+            self.tags = tags
+            self.navigationController?.popToViewController(self, animated: true)
+        }
+        self.navigationController?.pushViewController(userTagger, animated: true)
     }
     
     @objc private func createNewPost() {
