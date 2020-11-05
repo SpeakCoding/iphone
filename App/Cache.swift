@@ -6,6 +6,7 @@ class Cache {
     static let shared = Cache()
     
     private var database: SQLiteDatabase
+    
     init() {
         let cachesURL = FileManager().urls(for: .cachesDirectory, in: .userDomainMask).first!
         let databasePath = cachesURL.appendingPathComponent("AppCache.sqlite").path
