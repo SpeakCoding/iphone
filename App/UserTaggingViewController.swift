@@ -4,11 +4,11 @@ import UIKit
 class UserTaggingViewController: UIViewController {
     
     private var image: UIImage
-    private var completion: (_ tags: [Tag]) -> Void
+    private var completion: ([Tag]) -> Void
     private var tags: [Tag]
     @IBOutlet private var taggedImageView: TaggedImageView!
     
-    init(image: UIImage, tags: [Tag], completion: @escaping (_ tags: [Tag]) -> Void) {
+    init(image: UIImage, tags: [Tag], completion: @escaping ([Tag]) -> Void) {
         self.image = image
         self.tags = tags
         self.completion = completion
