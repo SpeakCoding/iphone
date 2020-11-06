@@ -29,8 +29,14 @@ class UserTaggingViewController: UIViewController {
     }
     
     func tagUserForPointInImage(point: Point) {
-        #warning("User lookup is not implemented")
-        self.taggedImageView.addTag(Tag(taggedUser: User.current!, point: point))
+        let userLookupViewController = UserLookupViewController { (user: User?) in
+            if user != nil {
+                let newTag = Tag(taggedUser: user!, point: point)
+                self.taggedImageView.addTag(newTag)
+            }
+            self.dismiss(animated: true, completion: nil)
+        }
+        self.present(userLookupViewController, animated: true, completion: nil)
     }
     
     required init?(coder: NSCoder) {

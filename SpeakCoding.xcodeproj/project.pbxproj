@@ -14,6 +14,10 @@
 		9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* PostFeedViewController.swift */; };
 		9E7AE7CE255402F8005F11B6 /* UserTaggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */; };
 		9E7AE7D12554063E005F11B6 /* UserTaggingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CF2554063E005F11B6 /* UserTaggingView.xib */; };
+		9E7AE7D32555466C005F11B6 /* UserLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */; };
+		9E7AE7D625554A17005F11B6 /* UserLookupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D425554A17005F11B6 /* UserLookupView.xib */; };
+		9E7AE7D825555B27005F11B6 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D725555B27005F11B6 /* UserCell.swift */; };
+		9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D9255578E2005F11B6 /* UserCell.xib */; };
 		9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A3251B672D00D5703A /* SignupViewController.swift */; };
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
 		9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */; };
@@ -59,6 +63,10 @@
 		9E772B8524FE21B40044E328 /* PostFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedViewController.swift; sourceTree = "<group>"; };
 		9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTaggingViewController.swift; sourceTree = "<group>"; };
 		9E7AE7D02554063E005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserTaggingView.xib; sourceTree = "<group>"; };
+		9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookupViewController.swift; sourceTree = "<group>"; };
+		9E7AE7D525554A17005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserLookupView.xib; sourceTree = "<group>"; };
+		9E7AE7D725555B27005F11B6 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		9E7AE7DA255578E2005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserCell.xib; sourceTree = "<group>"; };
 		9EA023A3251B672D00D5703A /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
 		9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCodeViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +174,10 @@
 				9E11AD08250A5C3900275489 /* PostComposerView.xib */,
 				9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */,
 				9E7AE7CF2554063E005F11B6 /* UserTaggingView.xib */,
+				9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */,
+				9E7AE7D425554A17005F11B6 /* UserLookupView.xib */,
+				9E7AE7D725555B27005F11B6 /* UserCell.swift */,
+				9E7AE7D9255578E2005F11B6 /* UserCell.xib */,
 				9EF2BA53252F331200BB2DBB /* Date+Extensions.swift */,
 				9EA2591525231D550056047B /* UIViewController+Extensions.swift */,
 				9EDC2A2224EE976B00902B93 /* Assets.xcassets */,
@@ -242,7 +254,9 @@
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
 				9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */,
 				9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */,
+				9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */,
 				9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */,
+				9E7AE7D625554A17005F11B6 /* UserLookupView.xib in Resources */,
 				9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +272,7 @@
 				9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */,
 				9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */,
 				9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */,
+				9E7AE7D825555B27005F11B6 /* UserCell.swift in Sources */,
 				9EDC2A3624EE9C5300902B93 /* Image.swift in Sources */,
 				9EDC2A2E24EE9A5400902B93 /* Feed.swift in Sources */,
 				9EDC2A3224EE9B9300902B93 /* User.swift in Sources */,
@@ -273,6 +288,7 @@
 				9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */,
 				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
+				9E7AE7D32555466C005F11B6 /* UserLookupViewController.swift in Sources */,
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
 				9EA259122521EEBD0056047B /* TextView.swift in Sources */,
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
@@ -306,6 +322,22 @@
 				9E7AE7D02554063E005F11B6 /* Base */,
 			);
 			name = UserTaggingView.xib;
+			sourceTree = "<group>";
+		};
+		9E7AE7D425554A17005F11B6 /* UserLookupView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9E7AE7D525554A17005F11B6 /* Base */,
+			);
+			name = UserLookupView.xib;
+			sourceTree = "<group>";
+		};
+		9E7AE7D9255578E2005F11B6 /* UserCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9E7AE7DA255578E2005F11B6 /* Base */,
+			);
+			name = UserCell.xib;
 			sourceTree = "<group>";
 		};
 		9EA023A5251B681C00D5703A /* SignupView.xib */ = {

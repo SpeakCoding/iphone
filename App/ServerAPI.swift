@@ -120,6 +120,23 @@ class ServerAPI {
         }
     }
     
+    func findUsers(searchText: String, completion: @escaping (([User]?, Error?) -> Void)) -> URLSessionDataTask {
+        #warning("Fix the endpoint")
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users.json?search=\(searchText)", authorized: true, parameters: nil)
+        return performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSONs = result as? [[String: Any]] {
+                let users = userJSONs.map { (userJSON) -> User in
+                    let user = User(json: userJSON)
+                    Cache.shared.update(user: user)
+                    return user
+                }
+                completion(users, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func getFeedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
@@ -288,7 +305,7 @@ class ServerAPI {
     /**
      Perform a network request and process a server's response
      */
-    private func performRequest(request: URLRequest, completion: @escaping ((_ data: Any?, _ metadata: [String: String]?, _ error: Error?) -> Void)) {
+    @discardableResult private func performRequest(request: URLRequest, completion: @escaping ((_ data: Any?, _ metadata: [String: String]?, _ error: Error?) -> Void)) -> URLSessionDataTask {
         let task = self.session.dataTask(with: request) { (jsonData: Data?, urlResponse: URLResponse?, requestError: Error?) in
             var result: Any?
             var metadata: [String: String]?
@@ -309,6 +326,10 @@ class ServerAPI {
                         if result == nil {
                             if let firstErrorInfo = (responseJSON["errors"] as? [[String: Any]])?.first {
                                 reportedError = NSError(domain: "API", code: 1, userInfo: [NSLocalizedDescriptionKey: firstErrorInfo["detail"] as? String ?? "Unknown"])
+                            } else {
+                                if let errorMessage = responseJSON["error"] as? String {
+                                    reportedError = NSError(domain: "API", code: 1, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                                }
                             }
                         }
                     }
@@ -322,6 +343,7 @@ class ServerAPI {
             }
         }
         task.resume()
+        return task
     }
 }
 
