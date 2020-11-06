@@ -2,9 +2,9 @@ import Foundation
 
 
 class Cache {
-    
+
     static let shared = Cache()
-    
+
     private var database: SQLiteDatabase
     init() {
         let cachesURL = FileManager().urls(for: .cachesDirectory, in: .userDomainMask).first!
@@ -18,7 +18,7 @@ class Cache {
                 print("Could not open the cache database at \(databasePath)")
                 return
             }
-            
+
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
             let currentDatabaseVersion = 1
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
@@ -26,18 +26,18 @@ class Cache {
             if onDiskDatabaseVersion == currentDatabaseVersion {
                 break
             }
-            
+
             if onDiskDatabaseVersion == 0 && !hasTable(tableName: "posts") {
                 // The database has just been created, the "user_version" pragma is not set yet
                 database.executeUpdate(sqlQuery: "PRAGMA user_version = \(currentDatabaseVersion)", values: nil)
                 break
             }
-            
+
             // The database schema is outdated, delete and recreate the database
             database.close()
             try? FileManager().removeItem(atPath: databasePath)
         }
-        
+
         if !hasTable(tableName: "posts") {
             let query = """
             CREATE TABLE posts (
@@ -54,7 +54,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        
+
         if !hasTable(tableName: "users") {
             let query = """
             CREATE TABLE users (
@@ -72,7 +72,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        
+
         if !hasTable(tableName: "likes") {
             let query = """
             CREATE TABLE likes (
@@ -84,7 +84,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        
+
         if !hasTable(tableName: "comments") {
             let query = """
             CREATE TABLE comments (
@@ -99,48 +99,48 @@ class Cache {
             database.executeUpdate(sqlQuery: query, values: nil)
         }
     }
-    
+
     private func hasTable(tableName: String) -> Bool {
         let result = database.executeQuery(sqlQuery: "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?", parameters: [tableName])
         return result.first!["count(*)"] as! Int > 0
     }
-    
-    func fetchPost(id: Int) -> Post? {
-        if let matchingPost = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
-            return Post(row: matchingPost)
-        }
-        return nil
-    }
-    
-    func fetchAllPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
-    }
-    
+
     func update(post: Post) {
         assert(post.id != 0)
         update(user: post.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
         database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.id])
     }
-    
+
+    func update(user: User) {
+        assert(user.id != 0)
+        database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
+        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=?,is_current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user == User.current, user.id])
+    }
+
+    func fetchPost(id: Int) -> Post? {
+        if let matchingPost = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
+            return Post(row: matchingPost)
+        }
+        return nil
+    }
+
+    func fetchAllPosts() -> [Post] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
+    }
+
     func fetchUser(id: Int) -> User? {
         if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE id=?", parameters: [id]).first {
             return User(row: matchingUser)
         }
         return nil
     }
-    
+
     func fetchCurrentUser() -> User? {
         if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE is_current=1", parameters: nil).first {
             return User(row: matchingUser)
         }
         return nil
-    }
-    
-    func update(user: User) {
-        assert(user.id != 0)
-        database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
-        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=?,is_current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user == User.current, user.id])
     }
 }
 
