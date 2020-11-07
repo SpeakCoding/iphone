@@ -68,15 +68,6 @@ class PostFeedViewController: UITableViewController {
     }
     
     func toggleLike(post: Post) {
-        // The user must be authorized to like/unlike posts
-        if User.current == nil {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.presentLoginFlow {
-                self.toggleLike(post: post)
-            }
-            return
-        }
-        
         if post.isLiked {
             ServerAPI.shared.unlikePost(post, completion: self.updatePostOrReportError)
         } else {

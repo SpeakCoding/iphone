@@ -42,7 +42,7 @@ class SignupViewController: UIViewController {
     }
     
     @IBAction private func logIn() {
-        self.navigationController?.setViewControllers([LoginViewController(emailAddress: emailTextField.text, completion: completion)], animated: true)
+        self.navigationController?.setViewControllers([LoginViewController(emailAddress: emailTextField.text, completion: self.completion)], animated: true)
     }
     
     // This function is called when the Next button is pressed
