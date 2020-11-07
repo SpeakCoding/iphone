@@ -22,7 +22,14 @@ class User: ModelObject {
      Initialize the current user from the cache on app launch
      */
     class func initCurrentUser() {
-        current = Cache.shared.fetchCurrentUser()
+        let currentUserID = UserDefaults.standard.integer(forKey: "current user ID")
+        if currentUserID != 0 {
+            current = Cache.shared.fetchUser(id: currentUserID)
+            if current == nil {
+                current = User(userName: "")
+                current!.id = currentUserID
+            }
+        }
     }
     
     /**
@@ -31,6 +38,7 @@ class User: ModelObject {
     class func setCurrentUser(_ user: User?) {
         current = user
         if user != nil {
+            UserDefaults.standard.set(user!.id, forKey: "current user ID")
             Cache.shared.update(user: user!)
         }
     }

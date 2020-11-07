@@ -14,6 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     var window: UIWindow?
     var tabBarController: UITabBarController!
+    
+    override init() {
+        super.init()
+        if ProcessInfo().arguments.contains("reset-all") {
+            UserDefaults.standard.removeObject(forKey: "current user ID")
+            UserDefaults.standard.removeObject(forKey: "access token")
+            let cachesURL = FileManager().urls(for: .cachesDirectory, in: .userDomainMask).first!
+            try? FileManager().removeItem(atPath: cachesURL.path)
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         User.initCurrentUser()

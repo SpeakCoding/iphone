@@ -56,6 +56,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "reset-all"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "clear-cache"
             isEnabled = "NO">
          </CommandLineArgument>

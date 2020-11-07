@@ -13,6 +13,9 @@ class Cache {
         if ProcessInfo().arguments.contains("clear-cache") {
             try? FileManager().removeItem(atPath: databasePath)
         }
+        if !FileManager().fileExists(atPath: cachesURL.path) {
+            try? FileManager().createDirectory(at: cachesURL, withIntermediateDirectories: true, attributes: nil)
+        }
         database = SQLiteDatabase(filePath: databasePath)
         while true {
             guard database.open() else {
@@ -67,8 +70,7 @@ class Cache {
             "followers_count" INTEGER,
             "followees_count" INTEGER,
             "is_follower" INTEGER,
-            "is_followed" INTEGER,
-            "is_current" INTEGER DEFAULT 0
+            "is_followed" INTEGER
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -116,7 +118,7 @@ class Cache {
     func update(user: User) {
         assert(user.id != 0)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
-        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=?,is_current=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user == User.current, user.id])
+        database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user.id])
     }
     
     func fetchPost(id: Int) -> Post? {
@@ -135,13 +137,6 @@ class Cache {
     
     func fetchAllPosts() -> [Post] {
         return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
-    }
-    
-    func fetchCurrentUser() -> User? {
-        if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE is_current=1", parameters: nil).first {
-            return User(row: matchingUser)
-        }
-        return nil
     }
 }
 
