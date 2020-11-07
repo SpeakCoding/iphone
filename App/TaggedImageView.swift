@@ -29,41 +29,46 @@ class TaggedImageView: AsynchronousImageView {
     
     // MARK: - Placing and dragging callout views
     
-    private var draggedTagCalloutView: TagCalloutView?
-    private var draggedTagCalloutViewPoint = CGPoint.zero
-    private var dragStartLocation = CGPoint.zero
+    private var touchedTagCalloutView: TagCalloutView?
+    private var touchedTagCalloutViewPoint = CGPoint.zero
+    private var touchDownLocation = CGPoint.zero
+    private var touchHasMoved = false
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for tagCalloutView in self.tagCalloutViews {
-            if tagCalloutView.point(inside: touches.first!.location(in: tagCalloutView), with: event) {
-                self.draggedTagCalloutView = tagCalloutView
-                self.draggedTagCalloutViewPoint = self.convert(tagCalloutView.point, from: tagCalloutView)
-                self.dragStartLocation = touches.first!.location(in: self)
+            let theTouch = touches.first!
+            if tagCalloutView.point(inside: theTouch.location(in: tagCalloutView), with: event) {
+                self.touchedTagCalloutView = tagCalloutView
+                self.touchedTagCalloutViewPoint = self.convert(tagCalloutView.point, from: tagCalloutView)
+                self.touchDownLocation = theTouch.location(in: self)
                 break
             }
         }
+        self.touchHasMoved = false
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = touches.first!.location(in: self)
         self.moveDraggedTagCalloutView(point: point)
+        self.touchHasMoved = true
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = touches.first!.location(in: self)
         
-        if let theDraggedView = self.draggedTagCalloutView {
-            // Finalize the position of the dragged callout view
-            self.moveDraggedTagCalloutView(point: point)
-            if theDraggedView.isHidden {
+        if let theDraggedView = self.touchedTagCalloutView {
+            if self.touchHasMoved {
+                // The callout view has been dragged
+                self.moveDraggedTagCalloutView(point: point)
+                let absolutePoint = self.convert(theDraggedView.point, from: theDraggedView)
+                theDraggedView.representedTag.point = self.convertToRelative(point: absolutePoint)
+            } else {
+                // The callout view was tapped to remove
                 self.tags.removeAll { $0 === theDraggedView.representedTag }
                 self.tagCalloutViews.removeAll { $0 === theDraggedView }
                 theDraggedView.removeFromSuperview()
-            } else {
-                let absolutePoint = self.convert(theDraggedView.point, from: theDraggedView)
-                theDraggedView.representedTag.point = self.convertToRelative(point: absolutePoint)
             }
-            self.draggedTagCalloutView = nil
+            self.touchedTagCalloutView = nil
         } else {
             // Create a new callout view
             self.delegate?.tagUserForPointInImage(point: self.convertToRelative(point: point))
@@ -71,16 +76,14 @@ class TaggedImageView: AsynchronousImageView {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.draggedTagCalloutView?.isHidden = false
-        self.draggedTagCalloutView = nil
+        self.touchedTagCalloutView = nil
     }
     
     private func moveDraggedTagCalloutView(point: CGPoint) {
-        if let theDraggedView = self.draggedTagCalloutView {
-            let dragDistance = CGVector(dx: point.x - self.dragStartLocation.x, dy: point.y - self.dragStartLocation.y)
-            let dragEndLocation = CGPoint(x: self.draggedTagCalloutViewPoint.x + dragDistance.dx, y: self.draggedTagCalloutViewPoint.y + dragDistance.dy)
+        if let theDraggedView = self.touchedTagCalloutView {
+            let dragDistance = CGVector(dx: point.x - self.touchDownLocation.x, dy: point.y - self.touchDownLocation.y)
+            let dragEndLocation = CGPoint(x: self.touchedTagCalloutViewPoint.x + dragDistance.dx, y: self.touchedTagCalloutViewPoint.y + dragDistance.dy)
             self.layoutTagCalloutView(theDraggedView, point: dragEndLocation)
-            theDraggedView.isHidden = !self.bounds.contains(dragEndLocation)
         }
     }
     

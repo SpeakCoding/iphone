@@ -32,10 +32,11 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEz-j3-G2e">
-                    <rect key="frame" x="58" y="570" width="259.33333333333331" height="57.333333333333371"/>
+                    <rect key="frame" x="85" y="560.33333333333337" width="205" height="76.666666666666629"/>
                     <string key="text">Tap the photo to tag people.
-Drag tags around to adjust position.
-Drag tags off the photo to remove.</string>
+Tap again to remove a tag.
+
+Press and drag to move.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
