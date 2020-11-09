@@ -16,6 +16,17 @@ class User: ModelObject {
         self.userName = userName
     }
     
+    func toggleFollowed() {
+        if self.isFollowed {
+            self.isFollowed = false
+            self.numberOfFollowers -= 1
+        } else {
+            self.isFollowed = true
+            self.numberOfFollowers += 1
+        }
+        Cache.shared.update(user: self)
+    }
+    
     static var current: User?
     
     /**

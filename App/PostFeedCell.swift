@@ -48,18 +48,18 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func toggleLike() {
-        self.actionDelegate?.toggleLike(post: post)
+        self.actionDelegate?.toggleLike(postFeedCell: self)
     }
     
     @IBAction private func addComment() {
-        self.actionDelegate?.addComment(post: post)
+        self.actionDelegate?.addComment(postFeedCell: self)
     }
     
     @IBAction private func toggleBookmark() {
-        self.actionDelegate?.toggleBookmark(post: post)
+        self.actionDelegate?.toggleBookmark(postFeedCell: self)
     }
     
     @IBAction private func showAllComments() {
-        self.actionDelegate?.showAllComments(post: post)
+        self.actionDelegate?.showAllComments(postFeedCell: self)
     }
 }

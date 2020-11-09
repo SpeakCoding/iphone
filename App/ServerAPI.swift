@@ -94,21 +94,14 @@ class ServerAPI {
         }
     }
     
-    func follow(user: User, completion: @escaping ((User?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/\(user.id)/follow.json", authorized: true, parameters: nil)
-        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
-            if let userJSON = result as? [String: Any] {
-                user.update(json: userJSON)
-                Cache.shared.update(user: user)
-                completion(user, nil)
-            } else {
-                completion(nil, error)
-            }
+    func updateUserFollowed(user: User, completion: @escaping ((User?, Error?) -> Void)) {
+        let endpoint: String
+        if user.isFollowed {
+            endpoint = "/users/\(user.id)/follow.json"
+        } else {
+            endpoint = "/users/\(user.id)/unfollow.json"
         }
-    }
-    
-    func unfollow(user: User, completion: @escaping ((User?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/\(user.id)/unfollow.json", authorized: true, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 user.update(json: userJSON)
@@ -198,21 +191,14 @@ class ServerAPI {
         }
     }
     
-    func likePost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/like.json", authorized: true, parameters: nil)
-        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
-            if let postJSON = result as? [String: Any] {
-                post.update(json: postJSON)
-                Cache.shared.update(post: post)
-                completion(post, nil)
-            } else {
-                completion(nil, error)
-            }
+    func updatePostLike(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        let endpoint: String
+        if post.isLiked {
+            endpoint = "/posts/\(post.id)/like.json"
+        } else {
+            endpoint = "/posts/\(post.id)/unlike.json"
         }
-    }
-    
-    func unlikePost(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts/\(post.id)/unlike.json", authorized: true, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 post.update(json: postJSON)

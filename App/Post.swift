@@ -24,4 +24,15 @@ class Post: ModelObject {
         self.video = postVideo
         self.location = postLocation
     }
+    
+    func toggleLike() {
+        if self.isLiked {
+            self.isLiked = false
+            self.numberOfLikes -= 1
+        } else {
+            self.isLiked = true
+            self.numberOfLikes += 1
+        }
+        Cache.shared.update(post: self)
+    }
 }

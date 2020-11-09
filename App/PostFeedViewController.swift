@@ -67,41 +67,36 @@ class PostFeedViewController: UITableViewController {
         self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
     }
     
-    func toggleLike(post: Post) {
-        if post.isLiked {
-            ServerAPI.shared.unlikePost(post, completion: self.updatePostOrReportError)
-        } else {
-            ServerAPI.shared.likePost(post, completion: self.updatePostOrReportError)
-        }
-    }
-    
-    func addComment(post: Post) {
-        #warning("Not implemented")
-    }
-    
-    func toggleBookmark(post: Post) {
-        #warning("Not implemented")
-    }
-    
-    func showAllComments(post: Post) {
-        #warning("Not implemented")
-    }
-    
-    private func updatePostOrReportError(post: Post?, error: Error?) {
-        if post != nil {
-            if let postIndex = self.feed.posts.firstIndex(of: post!) {
-                // The table view may have reused the post cell for another post while the network request was in progress.
-                // If the post cell still displays the same post, call updateLike() instead of reloading the cell to avoid flickering.
-                if let postCell = self.tableView.cellForRow(at: IndexPath(row: postIndex, section: 0)) as? PostFeedCell {
-                    if postCell.post == post {
-                        postCell.updateLike()
-                        return
-                    }
-                }
-                self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
+    func toggleLike(postFeedCell: PostFeedCell) {
+        let post = postFeedCell.post!
+        post.toggleLike()
+        postFeedCell.updateLike()
+        
+        ServerAPI.shared.updatePostLike(post, completion: { (updatedPost: Post?, error: Error?) in
+            if error != nil {
+                self.report(error: error)
+                post.toggleLike()
             }
-        } else {
-            self.report(error: error)
-        }
+            if postFeedCell.post == post {
+                postFeedCell.setPost(post)
+            } else {
+                // The table view has reused the post feed cell for another post while the network request was in progress
+                if let postIndex = self.feed.posts.firstIndex(of: post) {
+                    self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
+                }
+            }
+        })
+    }
+    
+    func addComment(postFeedCell: PostFeedCell) {
+        #warning("Not implemented")
+    }
+    
+    func toggleBookmark(postFeedCell: PostFeedCell) {
+        #warning("Not implemented")
+    }
+    
+    func showAllComments(postFeedCell: PostFeedCell) {
+        #warning("Not implemented")
     }
 }

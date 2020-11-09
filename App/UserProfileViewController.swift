@@ -81,31 +81,26 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.postCountLabel.text = "\(self.user.numberOfPosts)"
         self.followerCountLabel.text = "\(self.user.numberOfFollowers)"
         self.followedCountLabel.text = "\(self.user.numberOfFollowees)"
-        self.setFollowButtonSelected(self.user.isFollowed)
+        self.updateFollowButtonState()
         self.userNameLabel.text = self.user.userName
         self.bioLabel.text = self.user.bio
     }
     
     @IBAction private func toggleFollow() {
-        let follow = !self.followButton.isSelected
-        self.setFollowButtonSelected(follow)
-        if follow {
-            ServerAPI.shared.follow(user: self.user, completion: self.updateUserOrReportError)
-        } else {
-            ServerAPI.shared.unfollow(user: self.user, completion: self.updateUserOrReportError)
-        }
-    }
-    
-    private func updateUserOrReportError(user: User?, error: Error?) {
-        if user != nil {
+        self.user.toggleFollowed()
+        self.updateFollowButtonState()
+        
+        ServerAPI.shared.updateUserFollowed(user: self.user) { (user: User?, error: Error?) in
+            if error != nil {
+                self.report(error: error)
+                self.user.toggleFollowed()
+            }
             self.displayUserInformation()
-        } else {
-            self.setFollowButtonSelected(self.user.isFollowed)
-            self.report(error: error)
         }
     }
     
-    private func setFollowButtonSelected(_ selected: Bool) {
+    private func updateFollowButtonState() {
+        let selected = self.user.isFollowed
         self.followButton.isSelected = selected
         self.followButton.setBackgroundImage(UIImage(named: selected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
     }
