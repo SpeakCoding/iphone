@@ -19,7 +19,6 @@ class PostFeedViewController: UITableViewController {
         refreshControl.layer.zPosition = -1
         self.refreshControl = refreshControl
         
-        self.feed.posts = Cache.shared.fetchAllPosts()
         self.refreshFeedPosts()
         
         NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
@@ -27,11 +26,6 @@ class PostFeedViewController: UITableViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc private func newPostHasBeenCreated(notification: NSNotification) {
-        self.feed.posts.insert(notification.object as! Post, at: 0)
-        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.automatic)
     }
     
     @objc private func refreshFeedPosts() {
@@ -44,9 +38,13 @@ class PostFeedViewController: UITableViewController {
         }
     }
     
+    @objc private func newPostHasBeenCreated(notification: NSNotification) {
+        self.feed.posts.insert(notification.object as! Post, at: 0)
+        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.automatic)
+    }
+    
     
     // MARK: - UITableViewDataSource
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.feed.posts.count
@@ -61,7 +59,6 @@ class PostFeedViewController: UITableViewController {
     
     
     // MARK: - PostFeedCell Actions
-    
     
     func showUserProfile(_ user: User) {
         self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
