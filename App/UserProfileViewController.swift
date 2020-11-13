@@ -115,7 +115,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @objc private func newPostHasBeenCreated(notification: NSNotification) {
-        if self.user == User.current {
+        if self.isViewLoaded && self.user == User.current {
             self.posts.insert(notification.object as! Post, at: 0)
             self.placeholderLabel.isHidden = true
             self.gridView.reloadData()

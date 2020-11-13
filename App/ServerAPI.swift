@@ -118,8 +118,7 @@ class ServerAPI {
     }
     
     func findUsers(searchText: String, completion: @escaping (([User]?, Error?) -> Void)) -> URLSessionDataTask {
-        #warning("Fix the endpoint")
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users.json?search=\(searchText)", authorized: true, parameters: nil)
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/search.json?query=\(searchText)", authorized: true, parameters: nil)
         return performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in

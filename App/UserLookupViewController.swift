@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserLookupViewController: UIViewController {
+class UserLookupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private var completion: (User?) -> Void
     private var searchResults = [User]()
@@ -40,11 +40,11 @@ class UserLookupViewController: UIViewController {
     
     // MARK: - UITableViewDataSource
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.searchResults.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "User cell", for: indexPath) as! UserCell
         tableViewCell.setUser(self.searchResults[indexPath.row])
         return tableViewCell
@@ -53,7 +53,7 @@ class UserLookupViewController: UIViewController {
     
     // MARK: - UITableViewDelegate
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.lookupRequestTask?.cancel()
         self.lookupRequestTask = nil
         self.completion(self.searchResults[indexPath.row])

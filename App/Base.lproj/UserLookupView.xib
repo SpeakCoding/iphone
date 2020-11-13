@@ -29,9 +29,14 @@
                         <outlet property="delegate" destination="-1" id="ySh-mC-mFg"/>
                     </connections>
                 </searchBar>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Svg-Vf-mtQ">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Svg-Vf-mtQ">
                     <rect key="frame" x="0.0" y="100" width="375" height="678"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <inset key="separatorInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="5di-cX-2aq"/>
+                        <outlet property="delegate" destination="-1" id="LPi-Ot-2DZ"/>
+                    </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NLU-7t-qt5">
                     <rect key="frame" x="0.0" y="100" width="375" height="678"/>
