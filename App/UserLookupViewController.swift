@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserLookupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class UserLookupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     private var completion: (User?) -> Void
     private var searchResults = [User]()
@@ -40,11 +40,11 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - UITableViewDataSource
     
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.searchResults.count
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "User cell", for: indexPath) as! UserCell
         tableViewCell.setUser(self.searchResults[indexPath.row])
         return tableViewCell
@@ -53,7 +53,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - UITableViewDelegate
     
-    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.lookupRequestTask?.cancel()
         self.lookupRequestTask = nil
         self.completion(self.searchResults[indexPath.row])
@@ -62,12 +62,12 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - UISearchBarDelegate
     
-    @objc func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.cancelSearchTasks()
         self.completion(nil)
     }
     
-    @objc func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.cancelSearchTasks()
         if searchText.count > 0 {
             self.perform(#selector(performSearch), with: searchText, afterDelay: 0.25)
@@ -76,7 +76,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    @objc func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.cancelSearchTasks()
         let searchText = self.searchBar.text ?? ""
         if searchText.count > 0 {
