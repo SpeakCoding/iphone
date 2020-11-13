@@ -27,6 +27,8 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
+                UserDefaults.standard.set(self.accessToken, forKey: "access token")
+                
                 let currentUser = User(json: userJSON)
                 User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
@@ -42,6 +44,8 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
+                UserDefaults.standard.set(self.accessToken, forKey: "access token")
+                
                 let currentUser = User(json: userJSON)
                 User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
@@ -230,42 +234,41 @@ class ServerAPI {
     
     private let baseURLString = "http://130.193.44.149:3000"
     private var session: URLSession
-    private var accessToken: String? {
-        didSet {
-            UserDefaults.standard.set(accessToken, forKey: "access token")
-        }
-    }
+    private var accessToken: String?
     
     private init() {
+        self.session = ServerAPI.createURLSession()
+        self.accessToken = UserDefaults.standard.string(forKey: "access token")
+    }
+    
+    private class func createURLSession() -> URLSession {
         // It is always a good idea to provide a meaningful 'User-Agent' HTTP header value
         let appInfoDictionary = Bundle.main.infoDictionary!
         let appName = appInfoDictionary[kCFBundleNameKey as String]!
         let appVersion = appInfoDictionary["CFBundleShortVersionString"]!
         let userAgentString = "\(appName)/\(appVersion) iOS/\(ProcessInfo().operatingSystemVersionString)"
         
-        let config = URLSessionConfiguration.ephemeral
-        config.requestCachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
-        config.timeoutIntervalForRequest = 30
-        config.timeoutIntervalForResource = 300
-        config.networkServiceType = URLRequest.NetworkServiceType.default
-        config.allowsCellularAccess = true
-        config.connectionProxyDictionary = CFNetworkCopySystemProxySettings()?.takeRetainedValue() as [NSObject : AnyObject]?
-        config.tlsMinimumSupportedProtocolVersion = tls_protocol_version_t.TLSv12
-        config.httpShouldUsePipelining = true
-        config.httpShouldSetCookies = false
-        config.httpCookieAcceptPolicy = HTTPCookie.AcceptPolicy.never
-        config.httpAdditionalHeaders = ["User-Agent": userAgentString, "Accept": "application/json"]
-        config.httpMaximumConnectionsPerHost = 1
-        config.httpCookieStorage = nil
-        config.urlCache = nil
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.requestCachePolicy = URLRequest.CachePolicy.reloadIgnoringLocalCacheData
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 300
+        configuration.networkServiceType = URLRequest.NetworkServiceType.default
+        configuration.allowsCellularAccess = true
+        configuration.connectionProxyDictionary = CFNetworkCopySystemProxySettings()?.takeRetainedValue() as [NSObject : AnyObject]?
+        configuration.tlsMinimumSupportedProtocolVersion = tls_protocol_version_t.TLSv12
+        configuration.httpShouldUsePipelining = true
+        configuration.httpShouldSetCookies = false
+        configuration.httpCookieAcceptPolicy = HTTPCookie.AcceptPolicy.never
+        configuration.httpAdditionalHeaders = ["User-Agent": userAgentString, "Accept": "application/json"]
+        configuration.httpMaximumConnectionsPerHost = 1
+        configuration.httpCookieStorage = nil
+        configuration.urlCache = nil
         
         let sessionDelegateQueue = OperationQueue()
         sessionDelegateQueue.name = "API.HTTP"
         sessionDelegateQueue.maxConcurrentOperationCount = 1
         
-        self.session = URLSession(configuration: config, delegate: nil, delegateQueue: sessionDelegateQueue)
-        
-        self.accessToken = UserDefaults.standard.string(forKey: "access token")
+        return URLSession(configuration: configuration, delegate: nil, delegateQueue: sessionDelegateQueue)
     }
     
     /**
