@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDelegate {
+class UserProfileEditorController: UIViewController, UIAdaptivePresentationControllerDelegate {
     
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var nameField: TextField!
@@ -11,7 +11,7 @@ class UserProfileEditor: UIViewController, UIAdaptivePresentationControllerDeleg
     
     init(completion: @escaping () -> Void) {
         self.completion = completion
-        super.init(nibName: "UserProfileEditor", bundle: nil)
+        super.init(nibName: "UserProfileEditorController", bundle: nil)
     }
     
     override func viewDidLoad() {

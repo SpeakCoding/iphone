@@ -11,9 +11,9 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var commentButton: UIButton!
     @IBOutlet private var bookmarkButton: UIButton!
     @IBOutlet private var likeCountLabel: UILabel!
-    @IBOutlet private var postTextLabel: UILabel!
+    @IBOutlet private var captionLabel: UILabel!
     @IBOutlet private var commentCountLabel: UILabel!
-    @IBOutlet private var postDateLabel: UILabel!
+    @IBOutlet private var dateLabel: UILabel!
     weak var actionDelegate: PostFeedViewController?
     
     var post: Post!
@@ -28,14 +28,14 @@ class PostFeedCell: UITableViewCell {
         self.likeButton.isSelected = newPost.isLiked
         self.bookmarkButton.isSelected = false
         self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
-        self.postTextLabel.text = newPost.caption
+        self.captionLabel.text = newPost.caption
         if newPost.numberOfComments > 0 {
             self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
             self.commentCountLabel.isHidden = false
         } else {
             self.commentCountLabel.isHidden = true
         }
-        self.postDateLabel.text = newPost.date.stringRepresentation
+        self.dateLabel.text = newPost.date.stringRepresentation
     }
     
     func updateLike() {

@@ -22,8 +22,8 @@
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
 		9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */; };
 		9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */; };
-		9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditor.swift */; };
-		9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditor.xib */; };
+		9EA2590D2521E8610056047B /* UserProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditorController.swift */; };
+		9EA259102521E9230056047B /* UserProfileEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditorController.xib */; };
 		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
 		9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2591525231D550056047B /* UIViewController+Extensions.swift */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
@@ -71,8 +71,8 @@
 		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
 		9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCodeViewController.swift; sourceTree = "<group>"; };
 		9EA023AB251B81B500D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConfirmationCodeView.xib; sourceTree = "<group>"; };
-		9EA2590C2521E8610056047B /* UserProfileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditor.swift; sourceTree = "<group>"; };
-		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditor.xib; sourceTree = "<group>"; };
+		9EA2590C2521E8610056047B /* UserProfileEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditorController.swift; sourceTree = "<group>"; };
+		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditorController.xib; sourceTree = "<group>"; };
 		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		9EA2591525231D550056047B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
@@ -166,8 +166,8 @@
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
 				9EB6DB8C2504CCC200C60EBF /* UserProfileViewController.swift */,
 				9EB6DB8E2504CCEE00C60EBF /* UserProfileView.xib */,
-				9EA2590C2521E8610056047B /* UserProfileEditor.swift */,
-				9EA2590E2521E9230056047B /* UserProfileEditor.xib */,
+				9EA2590C2521E8610056047B /* UserProfileEditorController.swift */,
+				9EA2590E2521E9230056047B /* UserProfileEditorController.xib */,
 				9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */,
 				9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
@@ -252,7 +252,7 @@
 				9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */,
 				9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */,
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
-				9EA259102521E9230056047B /* UserProfileEditor.xib in Resources */,
+				9EA259102521E9230056047B /* UserProfileEditorController.xib in Resources */,
 				9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */,
 				9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */,
 				9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */,
@@ -292,7 +292,7 @@
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
 				9EA259122521EEBD0056047B /* TextView.swift in Sources */,
 				9EDC2A3424EE9C2800902B93 /* Comment.swift in Sources */,
-				9EA2590D2521E8610056047B /* UserProfileEditor.swift in Sources */,
+				9EA2590D2521E8610056047B /* UserProfileEditorController.swift in Sources */,
 				9EF33BC7254EC2430093B1DC /* TaggedImageView.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9E7AE7CE255402F8005F11B6 /* UserTaggingViewController.swift in Sources */,
@@ -356,12 +356,12 @@
 			name = ConfirmationCodeView.xib;
 			sourceTree = "<group>";
 		};
-		9EA2590E2521E9230056047B /* UserProfileEditor.xib */ = {
+		9EA2590E2521E9230056047B /* UserProfileEditorController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9EA2590F2521E9230056047B /* Base */,
 			);
-			name = UserProfileEditor.xib;
+			name = UserProfileEditorController.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {

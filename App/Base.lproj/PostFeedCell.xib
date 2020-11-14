@@ -163,13 +163,13 @@
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="bookmarkButton" destination="jYv-1q-kOm" id="Lei-gn-B42"/>
+                <outlet property="captionLabel" destination="5M3-Sx-g2E" id="nwO-9m-emO"/>
                 <outlet property="commentButton" destination="bPL-zP-51o" id="BVf-R3-8iH"/>
                 <outlet property="commentCountLabel" destination="ZaV-El-AeT" id="y1V-ke-jwC"/>
+                <outlet property="dateLabel" destination="OIH-jW-oKR" id="vXE-3Z-mg9"/>
                 <outlet property="likeButton" destination="cu6-Rx-tec" id="8QX-LS-qjP"/>
                 <outlet property="likeCountLabel" destination="f7k-tD-FDx" id="uQ2-t3-w2i"/>
-                <outlet property="postDateLabel" destination="OIH-jW-oKR" id="vXE-3Z-mg9"/>
                 <outlet property="postImageView" destination="eSN-gw-QzG" id="Zlm-q5-MyW"/>
-                <outlet property="postTextLabel" destination="5M3-Sx-g2E" id="nwO-9m-emO"/>
                 <outlet property="profilePictureView" destination="3xs-EP-1iu" id="mPM-SR-X0C"/>
                 <outlet property="userLocationLabel" destination="Ht9-6C-9u6" id="4ki-C1-NGL"/>
                 <outlet property="userNameLabel" destination="Hd5-ST-RMO" id="uSa-3a-Wfd"/>
