@@ -3,7 +3,7 @@ import UIKit
 
 class TaggedImageView: AsynchronousImageView {
     
-    @IBOutlet weak var delegate: UserTaggingViewController?
+    @IBOutlet weak var delegate: TagEditorController?
     private var tagCalloutViews = [TagCalloutView]()
     var tags = [Tag]() {
         didSet {

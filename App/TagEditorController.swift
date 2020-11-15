@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserTaggingViewController: UIViewController {
+class TagEditorController: UIViewController {
     
     private var image: UIImage
     private var completion: ([Tag]) -> Void
@@ -12,7 +12,7 @@ class UserTaggingViewController: UIViewController {
         self.image = image
         self.tags = tags
         self.completion = completion
-        super.init(nibName: "UserTaggingView", bundle: nil)
+        super.init(nibName: "TagEditorController", bundle: nil)
         self.title = "Tag people"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(callCompletion))
     }

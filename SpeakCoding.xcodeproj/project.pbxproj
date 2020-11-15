@@ -7,21 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9E11AD00250A415B00275489 /* PhotoPickerPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */; };
 		9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11AD06250A5B8100275489 /* PostComposerViewController.swift */; };
 		9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E11AD08250A5C3900275489 /* PostComposerView.xib */; };
 		9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2478A62503658C007EBBEB /* LoginViewController.swift */; };
 		9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* PostFeedViewController.swift */; };
-		9E7AE7CE255402F8005F11B6 /* UserTaggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */; };
-		9E7AE7D12554063E005F11B6 /* UserTaggingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CF2554063E005F11B6 /* UserTaggingView.xib */; };
+		9E7AE7CE255402F8005F11B6 /* TagEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */; };
+		9E7AE7D12554063E005F11B6 /* TagEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CF2554063E005F11B6 /* TagEditorController.xib */; };
 		9E7AE7D32555466C005F11B6 /* UserLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */; };
 		9E7AE7D625554A17005F11B6 /* UserLookupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D425554A17005F11B6 /* UserLookupView.xib */; };
 		9E7AE7D825555B27005F11B6 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D725555B27005F11B6 /* UserCell.swift */; };
 		9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D9255578E2005F11B6 /* UserCell.xib */; };
 		9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A3251B672D00D5703A /* SignupViewController.swift */; };
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
-		9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */; };
-		9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */; };
 		9EA2590D2521E8610056047B /* UserProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditorController.swift */; };
 		9EA259102521E9230056047B /* UserProfileEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditorController.xib */; };
 		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
@@ -56,21 +53,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerPreviewController.swift; sourceTree = "<group>"; };
 		9E11AD06250A5B8100275489 /* PostComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerViewController.swift; sourceTree = "<group>"; };
 		9E11AD09250A5C3900275489 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostComposerView.xib; sourceTree = "<group>"; };
 		9E2478A62503658C007EBBEB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9E772B8524FE21B40044E328 /* PostFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedViewController.swift; sourceTree = "<group>"; };
-		9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTaggingViewController.swift; sourceTree = "<group>"; };
-		9E7AE7D02554063E005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserTaggingView.xib; sourceTree = "<group>"; };
+		9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagEditorController.swift; sourceTree = "<group>"; };
+		9E7AE7D02554063E005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TagEditorController.xib; sourceTree = "<group>"; };
 		9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookupViewController.swift; sourceTree = "<group>"; };
 		9E7AE7D525554A17005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserLookupView.xib; sourceTree = "<group>"; };
 		9E7AE7D725555B27005F11B6 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		9E7AE7DA255578E2005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserCell.xib; sourceTree = "<group>"; };
 		9EA023A3251B672D00D5703A /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		9EA023A6251B681C00D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignupView.xib; sourceTree = "<group>"; };
-		9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationCodeViewController.swift; sourceTree = "<group>"; };
-		9EA023AB251B81B500D5703A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConfirmationCodeView.xib; sourceTree = "<group>"; };
 		9EA2590C2521E8610056047B /* UserProfileEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEditorController.swift; sourceTree = "<group>"; };
 		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditorController.xib; sourceTree = "<group>"; };
 		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
@@ -159,8 +153,6 @@
 				9EB6DB82250368C300C60EBF /* LoginView.xib */,
 				9EA023A3251B672D00D5703A /* SignupViewController.swift */,
 				9EA023A5251B681C00D5703A /* SignupView.xib */,
-				9EA023A8251B810900D5703A /* ConfirmationCodeViewController.swift */,
-				9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */,
 				9E772B8524FE21B40044E328 /* PostFeedViewController.swift */,
 				9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */,
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
@@ -169,11 +161,10 @@
 				9EA2590C2521E8610056047B /* UserProfileEditorController.swift */,
 				9EA2590E2521E9230056047B /* UserProfileEditorController.xib */,
 				9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */,
-				9E11ACFF250A415B00275489 /* PhotoPickerPreviewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
 				9E11AD08250A5C3900275489 /* PostComposerView.xib */,
-				9E7AE7CD255402F8005F11B6 /* UserTaggingViewController.swift */,
-				9E7AE7CF2554063E005F11B6 /* UserTaggingView.xib */,
+				9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */,
+				9E7AE7CF2554063E005F11B6 /* TagEditorController.xib */,
 				9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */,
 				9E7AE7D425554A17005F11B6 /* UserLookupView.xib */,
 				9E7AE7D725555B27005F11B6 /* UserCell.swift */,
@@ -247,8 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EA023A7251B681C00D5703A /* SignupView.xib in Resources */,
-				9E7AE7D12554063E005F11B6 /* UserTaggingView.xib in Resources */,
-				9EA023AC251B81B600D5703A /* ConfirmationCodeView.xib in Resources */,
+				9E7AE7D12554063E005F11B6 /* TagEditorController.xib in Resources */,
 				9EDC2A2624EE976B00902B93 /* LaunchScreen.storyboard in Resources */,
 				9EB6DB902504CCEE00C60EBF /* UserProfileView.xib in Resources */,
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
@@ -268,7 +258,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EA023A9251B810900D5703A /* ConfirmationCodeViewController.swift in Sources */,
 				9EB6DBD1250768BA00C60EBF /* LikedPostsViewController.swift in Sources */,
 				9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */,
 				9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */,
@@ -295,13 +284,12 @@
 				9EA2590D2521E8610056047B /* UserProfileEditorController.swift in Sources */,
 				9EF33BC7254EC2430093B1DC /* TaggedImageView.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
-				9E7AE7CE255402F8005F11B6 /* UserTaggingViewController.swift in Sources */,
+				9E7AE7CE255402F8005F11B6 /* TagEditorController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
 				9EF33BC9254EC6C10093B1DC /* TagCalloutView.swift in Sources */,
 				9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */,
 				9EDC2A3024EE9AD500902B93 /* Post.swift in Sources */,
 				9EDC2A4224EEBE4000902B93 /* AsynchronousImageView.swift in Sources */,
-				9E11AD00250A415B00275489 /* PhotoPickerPreviewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,12 +304,12 @@
 			name = PostComposerView.xib;
 			sourceTree = "<group>";
 		};
-		9E7AE7CF2554063E005F11B6 /* UserTaggingView.xib */ = {
+		9E7AE7CF2554063E005F11B6 /* TagEditorController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9E7AE7D02554063E005F11B6 /* Base */,
 			);
-			name = UserTaggingView.xib;
+			name = TagEditorController.xib;
 			sourceTree = "<group>";
 		};
 		9E7AE7D425554A17005F11B6 /* UserLookupView.xib */ = {
@@ -346,14 +334,6 @@
 				9EA023A6251B681C00D5703A /* Base */,
 			);
 			name = SignupView.xib;
-			sourceTree = "<group>";
-		};
-		9EA023AA251B81B500D5703A /* ConfirmationCodeView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9EA023AB251B81B500D5703A /* Base */,
-			);
-			name = ConfirmationCodeView.xib;
 			sourceTree = "<group>";
 		};
 		9EA2590E2521E9230056047B /* UserProfileEditorController.xib */ = {

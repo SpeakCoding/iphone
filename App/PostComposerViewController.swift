@@ -30,7 +30,16 @@ class PostComposerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.textView.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+        }
     }
     
     @objc func textViewDidChange(_ textView: UITextView) {
@@ -39,7 +48,7 @@ class PostComposerViewController: UIViewController {
     }
     
     @IBAction private func tagPeople() {
-        let userTagger = UserTaggingViewController(image: self.image, tags: self.tags) { (tags: [Tag]) in
+        let userTagger = TagEditorController(image: self.image, tags: self.tags) { (tags: [Tag]) in
             self.tags = tags
             self.navigationController?.popToViewController(self, animated: true)
         }

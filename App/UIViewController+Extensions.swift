@@ -21,11 +21,11 @@ extension UIViewController {
                 if completion != nil {
                     completion!(image!)
                 } else {
-                    let vc = PhotoPickerPreviewController(image: image!) { (newPost: Post) in
+                    let postComposer = PostComposerViewController(image: image!) { (newPost: Post) in
                         self.dismiss(animated: true, completion: nil)
                         UIViewController.imagePickerDelegate = nil
                     }
-                    picker.pushViewController(vc, animated: true)
+                    picker.pushViewController(postComposer, animated: true)
                     return
                 }
             }
