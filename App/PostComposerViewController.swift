@@ -9,6 +9,7 @@ class PostComposerViewController: UIViewController {
     @IBOutlet private var postImageView: UIImageView!
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var locationField: TextField!
+    @IBOutlet private var tagCountLabel: UILabel!
     
     init(image: UIImage, completion: @escaping (_ newPost: Post) -> Void) {
         self.image = image
@@ -25,6 +26,7 @@ class PostComposerViewController: UIViewController {
         self.postImageView.image = self.image
         
         self.textView.textContainerInset = UIEdgeInsets.zero
+        self.tagCountLabel.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +52,8 @@ class PostComposerViewController: UIViewController {
     @IBAction private func tagPeople() {
         let userTagger = TagEditorController(image: self.image, tags: self.tags) { (tags: [Tag]) in
             self.tags = tags
+            self.tagCountLabel.text = "(\(tags.count))"
+            self.tagCountLabel.isHidden = (tags.count == 0)
             self.navigationController?.popToViewController(self, animated: true)
         }
         self.navigationController?.pushViewController(userTagger, animated: true)

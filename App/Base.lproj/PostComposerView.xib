@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="locationField" destination="7GE-Td-0iX" id="aUX-8O-5j6"/>
                 <outlet property="postImageView" destination="3Et-FV-1Oe" id="DLd-Jf-f9Z"/>
+                <outlet property="tagCountLabel" destination="5gp-tO-89z" id="1Yf-hy-QCk"/>
                 <outlet property="textView" destination="cue-FX-6Jx" id="FcD-jg-bvk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="8gE-U8-PyY"/>
             </connections>
@@ -61,6 +62,12 @@
                         <action selector="tagPeople" destination="-1" eventType="touchUpInside" id="vW5-vO-XBv"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(0)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gp-tO-89z">
+                    <rect key="frame" x="321" y="215" width="22" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-icon" translatesAutoresizingMaskIntoConstraints="NO" id="kVL-ps-VUQ">
                     <rect key="frame" x="351" y="218.66666666666666" width="8" height="13"/>
                 </imageView>
@@ -95,8 +102,10 @@
                 <constraint firstAttribute="trailing" secondItem="095-44-d1t" secondAttribute="trailing" id="X87-At-1e8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cue-FX-6Jx" secondAttribute="trailing" constant="16" id="a9q-Du-p91"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="top" secondItem="3Et-FV-1Oe" secondAttribute="top" id="d13-7Y-X0j"/>
+                <constraint firstItem="5gp-tO-89z" firstAttribute="centerY" secondItem="kVL-ps-VUQ" secondAttribute="centerY" id="fzJ-ru-N2N"/>
                 <constraint firstItem="13X-d4-6ke" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="gSV-gL-mtF"/>
                 <constraint firstItem="cue-FX-6Jx" firstAttribute="height" relation="greaterThanOrEqual" secondItem="3Et-FV-1Oe" secondAttribute="height" id="gjh-Dq-7Gq"/>
+                <constraint firstItem="kVL-ps-VUQ" firstAttribute="leading" secondItem="5gp-tO-89z" secondAttribute="trailing" constant="8" id="hQH-nZ-N3i"/>
                 <constraint firstAttribute="trailing" secondItem="KA7-1A-eYy" secondAttribute="trailing" id="lJQ-eT-uVS"/>
                 <constraint firstItem="3Et-FV-1Oe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="qQX-OD-bt2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13X-d4-6ke" secondAttribute="trailing" id="wWU-in-zcL"/>
