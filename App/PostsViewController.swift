@@ -1,7 +1,7 @@
 import UIKit
 
 
-class PostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, PostFeedCellActionDelegate {
+class PostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var placeholderText: String?
     var selectedPostIndex: Int?
@@ -148,63 +148,8 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedCell
         postCell.setPost(self.posts[indexPath.row])
-        postCell.actionDelegate = self
+        postCell.viewController = self
         return postCell
-    }
-    
-    // MARK: - PostFeedCellActionDelegate
-    
-    func showUserProfile(_ user: User) {
-        let userProfileViewer = UserProfileViewController(user: user)
-        self.navigationController?.pushViewController(userProfileViewer, animated: true)
-    }
-    
-    func toggleLike(postFeedCell: PostFeedCell) {
-        let post = postFeedCell.post!
-        post.toggleLike()
-        
-        ServerAPI.shared.updatePostLike(post, completion: { (updatedPost: Post?, error: Error?) in
-            if error != nil {
-                self.report(error: error)
-                post.toggleLike()
-            }
-            if postFeedCell.post == post {
-                postFeedCell.setPost(post)
-            } else {
-                // The table view has reused the post feed cell for another post while the network request was in progress
-                if let postIndex = self.posts.firstIndex(of: post) {
-                    self.tableView?.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
-                }
-            }
-        })
-    }
-    
-    func toggleSaved(postFeedCell: PostFeedCell) {
-        let post = postFeedCell.post!
-        post.toggleSaved()
-        
-        ServerAPI.shared.updatePostSaved(post, completion: { (updatedPost: Post?, error: Error?) in
-            if error != nil {
-                self.report(error: error)
-                post.toggleSaved()
-            }
-            if postFeedCell.post == post {
-                postFeedCell.setPost(post)
-            } else {
-                // The table view has reused the post feed cell for another post while the network request was in progress
-                if let postIndex = self.posts.firstIndex(of: post) {
-                    self.tableView?.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
-                }
-            }
-        })
-    }
-    
-    func addComment(postFeedCell: PostFeedCell) {
-        #warning("Not implemented")
-    }
-    
-    func showAllComments(postFeedCell: PostFeedCell) {
-        #warning("Not implemented")
     }
     
     required init?(coder: NSCoder) {

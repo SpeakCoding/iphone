@@ -14,7 +14,7 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var captionLabel: UILabel!
     @IBOutlet private var commentCountLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
-    weak var actionDelegate: PostFeedCellActionDelegate?
+    weak var viewController: UIViewController?
     
     var post: Post!
     func setPost(_ newPost: Post) {
@@ -39,34 +39,48 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func showUserProfile() {
-        self.actionDelegate?.showUserProfile(post.user)
+        let userProfileViewer = UserProfileViewController(user: self.post.user)
+        self.viewController?.navigationController?.pushViewController(userProfileViewer, animated: true)
     }
     
     @IBAction private func toggleLike() {
-        self.actionDelegate?.toggleLike(postFeedCell: self)
+        self.post.toggleLike()
         self.likeButton.isSelected = self.post.isLiked
         self.likeCountLabel.text = "\(self.post.numberOfLikes) likes"
+        
+        let thePostToUpdate = self.post!
+        ServerAPI.shared.updatePostLike(self.post, completion: { (updatedPost: Post?, error: Error?) in
+            if error != nil {
+                self.viewController?.report(error: error)
+                thePostToUpdate.toggleLike()
+            }
+            if self.post == thePostToUpdate {
+                self.setPost(thePostToUpdate)
+            }
+        })
     }
     
     @IBAction private func toggleSaved() {
-        self.actionDelegate?.toggleSaved(postFeedCell: self)
+        self.post.toggleSaved()
         self.bookmarkButton.isSelected = self.post.isSaved
+        
+        let thePostToUpdate = self.post!
+        ServerAPI.shared.updatePostSaved(self.post, completion: { (updatedPost: Post?, error: Error?) in
+            if error != nil {
+                self.viewController?.report(error: error)
+                thePostToUpdate.toggleSaved()
+            }
+            if self.post == thePostToUpdate {
+                self.setPost(thePostToUpdate)
+            }
+        })
     }
     
     @IBAction private func addComment() {
-        self.actionDelegate?.addComment(postFeedCell: self)
+        #warning("Not implemented")
     }
     
     @IBAction private func showAllComments() {
-        self.actionDelegate?.showAllComments(postFeedCell: self)
+        #warning("Not implemented")
     }
-}
-
-
-protocol PostFeedCellActionDelegate : class {
-    func showUserProfile(_ user: User)
-    func toggleLike(postFeedCell: PostFeedCell)
-    func toggleSaved(postFeedCell: PostFeedCell)
-    func addComment(postFeedCell: PostFeedCell)
-    func showAllComments(postFeedCell: PostFeedCell)
 }
