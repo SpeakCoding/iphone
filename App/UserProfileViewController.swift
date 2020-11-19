@@ -115,6 +115,16 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.present(profileEditor, animated: true, completion: nil)
     }
     
+    @IBAction private func showFollowers() {
+        let userListViewController = UserListViewController(mode: UserListMode.followers, user: self.user)
+        self.navigationController?.pushViewController(userListViewController, animated: true)
+    }
+    
+    @IBAction private func showFollowees() {
+        let userListViewController = UserListViewController(mode: UserListMode.followees, user: self.user)
+        self.navigationController?.pushViewController(userListViewController, animated: true)
+    }
+    
     @objc private func showSavedPosts() {
         let postsViewController = PostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
             ServerAPI.shared.getSavedPosts(completion: completion)

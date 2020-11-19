@@ -61,7 +61,8 @@ class PostFeedViewController: UITableViewController, PostFeedCellActionDelegate 
     // MARK: - PostFeedCellActionDelegate
     
     func showUserProfile(_ user: User) {
-        self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
+        let userProfileViewer = UserProfileViewController(user: user)
+        self.navigationController?.pushViewController(userProfileViewer, animated: true)
     }
     
     func toggleLike(postFeedCell: PostFeedCell) {

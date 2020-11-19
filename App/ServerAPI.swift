@@ -117,6 +117,38 @@ class ServerAPI {
         }
     }
     
+    func getFollowers(user: User, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followers.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSONs = result as? [[String: Any]] {
+                let users = userJSONs.map { (userJSON) -> User in
+                    let user = User(json: userJSON)
+                    Cache.shared.update(user: user)
+                    return user
+                }
+                completion(users, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func getFollowees(user: User, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followees.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSONs = result as? [[String: Any]] {
+                let users = userJSONs.map { (userJSON) -> User in
+                    let user = User(json: userJSON)
+                    Cache.shared.update(user: user)
+                    return user
+                }
+                completion(users, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func findUsers(searchText: String, completion: @escaping (([User]?, Error?) -> Void)) -> URLSessionDataTask {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/search.json?query=\(searchText)", authorized: true, parameters: nil)
         return performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
