@@ -37,7 +37,6 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
         self.searchBar.becomeFirstResponder()
     }
     
-    
     // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,7 +49,6 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
         return tableViewCell
     }
     
-    
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -58,7 +56,6 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
         self.lookupRequestTask = nil
         self.completion(self.searchResults[indexPath.row])
     }
-    
     
     // MARK: - UISearchBarDelegate
     

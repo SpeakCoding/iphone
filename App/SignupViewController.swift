@@ -16,10 +16,6 @@ class SignupViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -103,5 +99,9 @@ class SignupViewController: UIViewController {
             return "A password must contain at least 3 characters"
         }
         return nil
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
     }
 }

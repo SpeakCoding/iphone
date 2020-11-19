@@ -22,10 +22,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -161,5 +157,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         postsViewController.title = "Posts"
         postsViewController.selectedPostIndex = indexPath.item
         self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
     }
 }

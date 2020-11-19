@@ -58,12 +58,12 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
     
     private func updateDisplayedPosts() {
         if self.posts.count > 0 {
-            if gridView != nil {
-                gridView!.reloadData()
+            if self.gridView != nil {
+                self.gridView!.reloadData()
                 return
             }
-            if tableView != nil {
-                tableView!.reloadData()
+            if self.tableView != nil {
+                self.tableView!.reloadData()
                 return
             }
             
@@ -73,49 +73,49 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
             layout.minimumInteritemSpacing = 0
             layout.minimumLineSpacing = 0
             
-            gridView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-            gridView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-            gridView!.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
-            gridView!.dataSource = self
-            gridView!.delegate = self
-            gridView!.backgroundColor = UIColor.white
-            self.view.addSubview(gridView!)
+            self.gridView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+            self.gridView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
+            self.gridView!.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
+            self.gridView!.dataSource = self
+            self.gridView!.delegate = self
+            self.gridView!.backgroundColor = UIColor.white
+            self.view.addSubview(self.gridView!)
             
-            placeholderLabel?.removeFromSuperview()
-            placeholderLabel = nil
+            self.placeholderLabel?.removeFromSuperview()
+            self.placeholderLabel = nil
         } else {
-            gridView?.removeFromSuperview()
-            gridView = nil
-            tableView?.removeFromSuperview()
-            tableView = nil
+            self.gridView?.removeFromSuperview()
+            self.gridView = nil
+            self.tableView?.removeFromSuperview()
+            self.tableView = nil
             
-            if placeholderLabel != nil {
+            if self.placeholderLabel != nil {
                 return
             }
             
-            placeholderLabel = UILabel(frame: CGRect.zero)
-            placeholderLabel!.font = UIFont.systemFont(ofSize: 16)
-            placeholderLabel!.textColor = UIColor.placeholderText
-            placeholderLabel!.text = placeholderText
-            placeholderLabel!.sizeToFit()
-            self.view.addSubview(placeholderLabel!)
+            self.placeholderLabel = UILabel(frame: CGRect.zero)
+            self.placeholderLabel!.font = UIFont.systemFont(ofSize: 16)
+            self.placeholderLabel!.textColor = UIColor.placeholderText
+            self.placeholderLabel!.text = self.placeholderText
+            self.placeholderLabel!.sizeToFit()
+            self.view.addSubview(self.placeholderLabel!)
             
-            placeholderLabel!.translatesAutoresizingMaskIntoConstraints = false
-            placeholderLabel!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            placeholderLabel!.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: UIScreen.main.bounds.size.height / 3).isActive = true
+            self.placeholderLabel!.translatesAutoresizingMaskIntoConstraints = false
+            self.placeholderLabel!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.placeholderLabel!.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: UIScreen.main.bounds.size.height / 3).isActive = true
         }
     }
     
     private func displayPostsAsList() {
-        tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
-        tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-        tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        tableView!.estimatedRowHeight = 503
-        tableView!.dataSource = self
-        tableView!.delegate = self
-        self.view.addSubview(tableView!)
-        tableView!.layoutIfNeeded()
-        tableView!.scrollToRow(at: IndexPath(row: self.selectedPostIndex!, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+        self.tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
+        self.tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
+        self.tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView!.estimatedRowHeight = 503
+        self.tableView!.dataSource = self
+        self.tableView!.delegate = self
+        self.view.addSubview(self.tableView!)
+        self.tableView!.layoutIfNeeded()
+        self.tableView!.scrollToRow(at: IndexPath(row: self.selectedPostIndex!, section: 0), at: UITableView.ScrollPosition.top, animated: false)
     }
     
     // MARK: - UICollectionViewDataSource
