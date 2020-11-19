@@ -1,7 +1,7 @@
 import UIKit
 
 
-class PostFeedViewController: UITableViewController {
+class PostFeedViewController: UITableViewController, PostFeedCellActionDelegate {
     
     private var feed = Feed()
     
@@ -31,8 +31,8 @@ class PostFeedViewController: UITableViewController {
     @objc private func refreshFeedPosts() {
         ServerAPI.shared.getFeedPosts() { (posts: [Post]?, error: Error?) in
             self.refreshControl!.endRefreshing()
-            if let posts = posts {
-                self.feed.posts = posts
+            if posts != nil {
+                self.feed.posts = posts!
                 self.tableView.reloadData()
             }
         }
@@ -58,7 +58,7 @@ class PostFeedViewController: UITableViewController {
     }
     
     
-    // MARK: - PostFeedCell Actions
+    // MARK: - PostFeedCellActionDelegate
     
     func showUserProfile(_ user: User) {
         self.navigationController?.pushViewController(UserProfileViewController(user: user), animated: true)
@@ -67,7 +67,6 @@ class PostFeedViewController: UITableViewController {
     func toggleLike(postFeedCell: PostFeedCell) {
         let post = postFeedCell.post!
         post.toggleLike()
-        postFeedCell.updateLike()
         
         ServerAPI.shared.updatePostLike(post, completion: { (updatedPost: Post?, error: Error?) in
             if error != nil {
@@ -85,11 +84,27 @@ class PostFeedViewController: UITableViewController {
         })
     }
     
-    func addComment(postFeedCell: PostFeedCell) {
-        #warning("Not implemented")
+    func toggleSaved(postFeedCell: PostFeedCell) {
+        let post = postFeedCell.post!
+        post.toggleSaved()
+        
+        ServerAPI.shared.updatePostSaved(post, completion: { (updatedPost: Post?, error: Error?) in
+            if error != nil {
+                self.report(error: error)
+                post.toggleSaved()
+            }
+            if postFeedCell.post == post {
+                postFeedCell.setPost(post)
+            } else {
+                // The table view has reused the post feed cell for another post while the network request was in progress
+                if let postIndex = self.feed.posts.firstIndex(of: post) {
+                    self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
+                }
+            }
+        })
     }
     
-    func toggleBookmark(postFeedCell: PostFeedCell) {
+    func addComment(postFeedCell: PostFeedCell) {
         #warning("Not implemented")
     }
     

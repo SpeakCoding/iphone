@@ -149,6 +149,22 @@ class ServerAPI {
         }
     }
     
+    func getSavedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/saved.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSONs = result as? [[String: Any]] {
+                let posts = postJSONs.map { (postJSON) -> Post in
+                    let post = Post(json: postJSON)
+                    Cache.shared.update(post: post)
+                    return post
+                }
+                completion(posts, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
@@ -200,6 +216,25 @@ class ServerAPI {
             endpoint = "/posts/\(post.id)/like.json"
         } else {
             endpoint = "/posts/\(post.id)/unlike.json"
+        }
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSON = result as? [String: Any] {
+                post.update(json: postJSON)
+                Cache.shared.update(post: post)
+                completion(post, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func updatePostSaved(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        let endpoint: String
+        if post.isSaved {
+            endpoint = "/posts/\(post.id)/save.json"
+        } else {
+            endpoint = "/posts/\(post.id)/unsave.json"
         }
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
@@ -387,6 +422,7 @@ extension Post {
     func update(json: [String: Any]) {
         self.numberOfLikes = json["likes_count"] as! Int
         self.isLiked = json["liked"] as! Bool
+        self.isSaved = json["saved"] as! Bool
     }
 }
 

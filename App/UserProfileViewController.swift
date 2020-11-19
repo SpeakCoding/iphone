@@ -34,6 +34,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         super.viewDidLoad()
         
         if self.user == User.current {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "button-bookmark-off"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(showSavedPosts))
             self.followButton.isHidden = true
         } else {
             self.editProfileButton.isHidden = true
@@ -114,6 +115,15 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.present(profileEditor, animated: true, completion: nil)
     }
     
+    @objc private func showSavedPosts() {
+        let postsViewController = PostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
+            ServerAPI.shared.getSavedPosts(completion: completion)
+        }
+        postsViewController.title = "Saved posts"
+        postsViewController.placeholderText = "No saved posts"
+        self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
+    
     @objc private func newPostHasBeenCreated(notification: NSNotification) {
         if self.isViewLoaded && self.user == User.current {
             self.posts.insert(notification.object as! Post, at: 0)
@@ -125,36 +135,12 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     // MARK: - UICollectionViewDataSource
     
     internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return self.posts.count
     }
     
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Post cell", for: indexPath) as! PostTileCell
-        cell.imageView.showImageAsynchronously(imageURL: posts[indexPath.item].images?.first?.url)
+        cell.imageView.showImageAsynchronously(imageURL: self.posts[indexPath.item].images?.first?.url)
         return cell
-    }
-}
-
-
-fileprivate class PostTileCell: UICollectionViewCell {
-    
-    var imageView: AsynchronousImageView
-    
-    override init(frame: CGRect) {
-        self.imageView = AsynchronousImageView(frame: frame)
-        self.imageView.contentMode = UIView.ContentMode.scaleAspectFill
-        self.imageView.clipsToBounds = true
-        super.init(frame: frame)
-        contentView.addSubview(self.imageView)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.imageView.frame = contentView.bounds
     }
 }

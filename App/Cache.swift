@@ -53,6 +53,7 @@ class Cache {
             "location" TEXT,
             "number_of_likes" INTEGER,
             "number_of_comments" INTEGER,
+            "saved" INTEGER,
             "liked" INTEGER
             )
             """
@@ -112,7 +113,7 @@ class Cache {
         assert(post.id != 0)
         update(user: post.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
-        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.id])
+        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.isSaved, post.id])
     }
     
     func update(user: User) {
@@ -137,6 +138,10 @@ class Cache {
     
     func fetchAllPosts() -> [Post] {
         return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
+    }
+    
+    func fetchSavedPosts() -> [Post] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
     }
 }
 
@@ -179,5 +184,6 @@ extension Post {
         self.numberOfLikes = row["number_of_likes"] as! Int
         self.numberOfComments = row["number_of_comments"] as! Int
         self.isLiked = (row["liked"] as! Int) != 0
+        self.isSaved = (row["saved"] as! Int) != 0
     }
 }

@@ -78,7 +78,7 @@
                         <state key="normal" image="button-bookmark-off"/>
                         <state key="selected" image="button-bookmark-on"/>
                         <connections>
-                            <action selector="toggleBookmark" destination="A6V-Dk-2ln" eventType="touchUpInside" id="j4v-J2-Npy"/>
+                            <action selector="toggleSaved" destination="A6V-Dk-2ln" eventType="touchUpInside" id="j4v-J2-Npy"/>
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="N Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7k-tD-FDx">

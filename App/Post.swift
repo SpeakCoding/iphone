@@ -15,6 +15,7 @@ class Post: ModelObject {
     var numberOfLikes = 0
     var numberOfComments = 0
     var isLiked = false
+    var isSaved = false
     
     init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
         self.date = creationDate
@@ -33,6 +34,11 @@ class Post: ModelObject {
             self.isLiked = true
             self.numberOfLikes += 1
         }
+        Cache.shared.update(post: self)
+    }
+    
+    func toggleSaved() {
+        self.isSaved = !self.isSaved
         Cache.shared.update(post: self)
     }
 }
