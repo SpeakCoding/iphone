@@ -24,7 +24,7 @@ class Cache {
             }
             
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
-            let currentDatabaseVersion = 1
+            let currentDatabaseVersion = 2
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
             print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
             if onDiskDatabaseVersion == currentDatabaseVersion {
