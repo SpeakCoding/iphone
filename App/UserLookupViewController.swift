@@ -26,6 +26,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "User cell")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.placeholderView.isHidden = true
     }
@@ -33,7 +34,6 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "User cell")
         self.searchBar.becomeFirstResponder()
     }
     
