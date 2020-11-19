@@ -35,7 +35,10 @@ class LoginViewController: UIViewController {
         let animationDuration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
         let keyboardFrameInWindow = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let keyboardTopOffset = self.view.bounds.maxY - self.view.convert(keyboardFrameInWindow, from: nil).minY
-        self.view.layoutMargins.bottom = max(keyboardTopOffset, 0)
+        var layoutMargins = self.view.layoutMargins
+        layoutMargins.top = 0
+        layoutMargins.bottom = max(keyboardTopOffset, 0)
+        self.view.layoutMargins = layoutMargins
         UIView.animate(withDuration: animationDuration) {
             self.view.layoutIfNeeded()
         }
