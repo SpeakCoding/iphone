@@ -77,10 +77,30 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func addComment() {
-        #warning("Not implemented")
+        #warning("Adding comments is not implemented")
     }
     
     @IBAction private func showAllComments() {
-        #warning("Not implemented")
+        #warning("Comments are not implemented")
+    }
+    
+    @IBAction private func showOptions() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+        if self.post.user == User.current {
+            alert.addAction(UIAlertAction(title: "Edit", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+                #warning("Editing posts is not implemented")
+            }))
+        } else {
+            let likeActionTitle = self.post.isLiked ? "Unlike" : "Like"
+            alert.addAction(UIAlertAction(title: likeActionTitle, style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+                self.toggleLike()
+            }))
+            let saveActionTitle = self.post.isSaved ? "Remove from Saved" : "Save"
+            alert.addAction(UIAlertAction(title: saveActionTitle, style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+                self.toggleSaved()
+            }))
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.viewController?.present(alert, animated: true, completion: nil)
     }
 }
