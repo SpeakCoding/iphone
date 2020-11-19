@@ -153,4 +153,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         cell.imageView.showImageAsynchronously(imageURL: self.posts[indexPath.item].images?.first?.url)
         return cell
     }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let postsViewController = PostsViewController(posts: self.posts, refreshClosure: nil)
+        postsViewController.title = "Posts"
+        postsViewController.selectedPostIndex = indexPath.item
+        self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
 }

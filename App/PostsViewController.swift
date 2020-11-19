@@ -4,13 +4,15 @@ import UIKit
 class PostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, PostFeedCellActionDelegate {
     
     var placeholderText: String?
+    var selectedPostIndex: Int?
     private var posts = [Post]()
-    private var refreshClosure: (@escaping ([Post]?, Error?) -> Void) -> Void
+    private var refreshClosure: ((@escaping ([Post]?, Error?) -> Void) -> Void)?
     private var gridView: UICollectionView?
     private var tableView: UITableView?
     private var placeholderLabel: UILabel?
+    private var shouldDisplaySelectedPostAfterLayout = false
     
-    init(posts: [Post], refreshClosure: @escaping (@escaping ([Post]?, Error?) -> Void) -> Void) {
+    init(posts: [Post], refreshClosure: ((@escaping ([Post]?, Error?) -> Void) -> Void)?) {
         self.posts = posts
         self.refreshClosure = refreshClosure
         super.init(nibName: nil, bundle: nil)
@@ -20,16 +22,41 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
-        self.displayPosts()
-        self.refreshClosure({ (posts: [Post]?, error: Error?) in
-            if posts != nil {
-                self.posts = posts!
-                self.displayPosts()
-            }
-        })
+        
+        if self.selectedPostIndex != nil {
+            /*
+             In order to display a specific post, we have to scroll the table view to its representing cell's offset.
+             Since cell heights depend on the screen width, their offsets also depend on the screen width.
+             That means we have to let the table view layout its cells before we can scroll it to a specific cell.
+             To do this we set a flag and check it in viewDidLayoutSubviews() to finally call displayPostsAsList().
+            */
+            self.shouldDisplaySelectedPostAfterLayout = true
+        } else {
+            self.updateDisplayedPosts()
+        }
+        
+        if let refreshClosure = self.refreshClosure {
+            refreshClosure({ (posts: [Post]?, error: Error?) in
+                if posts != nil {
+                    self.posts = posts!
+                    self.updateDisplayedPosts()
+                }
+            })
+        }
     }
     
-    private func displayPosts() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if self.shouldDisplaySelectedPostAfterLayout {
+            if self.selectedPostIndex != nil {
+                self.displayPostsAsList()
+            }
+            self.shouldDisplaySelectedPostAfterLayout = false
+        }
+    }
+    
+    private func updateDisplayedPosts() {
         if self.posts.count > 0 {
             if gridView != nil {
                 gridView!.reloadData()
@@ -79,6 +106,18 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
         }
     }
     
+    private func displayPostsAsList() {
+        tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
+        tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
+        tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
+        tableView!.estimatedRowHeight = 503
+        tableView!.dataSource = self
+        tableView!.delegate = self
+        self.view.addSubview(tableView!)
+        tableView!.layoutIfNeeded()
+        tableView!.scrollToRow(at: IndexPath(row: self.selectedPostIndex!, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -94,18 +133,10 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
-        tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-        tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        tableView!.estimatedRowHeight = 503
-        tableView!.dataSource = self
-        tableView!.delegate = self
-        self.view.addSubview(tableView!)
-        tableView!.layoutIfNeeded()
-        tableView!.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.top, animated: false)
-        
-        gridView?.removeFromSuperview()
-        gridView = nil
+        self.selectedPostIndex = indexPath.item
+        self.displayPostsAsList()
+        self.gridView?.removeFromSuperview()
+        self.gridView = nil
     }
     
     // MARK: - UITableViewDataSource
