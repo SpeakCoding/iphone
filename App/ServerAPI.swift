@@ -234,6 +234,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
                 let post = Post(json: postJSON)
+                User.current?.numberOfPosts = post.user.numberOfPosts
                 Cache.shared.update(post: post)
                 completion(post, nil)
             } else {

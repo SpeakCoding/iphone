@@ -143,6 +143,10 @@ class Cache {
     func fetchSavedPosts() -> [Post] {
         return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
     }
+    
+    func fetchPostsMadeBy(user: User) -> [Post] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
+    }
 }
 
 

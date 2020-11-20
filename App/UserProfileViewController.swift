@@ -14,10 +14,11 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBOutlet private var gridView: UICollectionView!
     @IBOutlet private var placeholderLabel: UILabel!
     private var user: User
-    private var posts = [Post]()
+    private var posts: [Post]
 
     init(user: User) {
         self.user = user
+        self.posts = Cache.shared.fetchPostsMadeBy(user: user)
         super.init(nibName: "UserProfileView", bundle: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
     }
@@ -40,12 +41,14 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             self.followButton.setTitle("Unfollow", for: [UIControl.State.selected, UIControl.State.highlighted])
         }
         
-        gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
+        self.gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
         let cellWidth = UIScreen.main.bounds.size.width / 3.0
         let layout = self.gridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         
         self.displayUserInformation()
+        self.placeholderLabel.isHidden = (self.posts.count > 0)
+        
         self.fetchUserAndPosts()
     }
     
@@ -60,15 +63,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         }
         
         ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
-            if let posts = posts {
-                if posts.count > 0 {
-                    self.posts.append(contentsOf: posts)
-                    self.placeholderLabel.isHidden = true
-                    self.gridView.reloadData()
-                    return
-                }
+            if posts != nil {
+                self.posts = posts!
+                self.gridView.reloadData()
+                self.placeholderLabel.isHidden = (posts!.count > 0)
+            } else {
+                self.report(error: error)
             }
-            self.placeholderLabel.isHidden = false
         }
     }
     
@@ -135,6 +136,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             self.posts.insert(notification.object as! Post, at: 0)
             self.placeholderLabel.isHidden = true
             self.gridView.reloadData()
+            self.displayUserInformation()
         }
     }
     
