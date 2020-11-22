@@ -11,20 +11,38 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBOutlet private var bioLabel: UILabel!
     @IBOutlet private var followButton: UIButton!
     @IBOutlet private var editProfileButton: UIButton!
+    @IBOutlet private var postsViewModeControl: SegmentedControl!
     @IBOutlet private var gridView: UICollectionView!
     @IBOutlet private var placeholderLabel: UILabel!
     private var user: User
-    private var posts: [Post]
+    private var posts = [Post]()
+    private var observer: Any?
 
     init(user: User) {
         self.user = user
-        self.posts = Cache.shared.fetchPostsMadeBy(user: user)
         super.init(nibName: "UserProfileView", bundle: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
+        
+        if user == User.current {
+            weak var weakSelf = self
+            self.observer = NotificationCenter.default.addObserver(forName: Notification.Name.NewPostNotification,
+                                                                   object: nil,
+                                                                   queue: nil) { (notification: Notification) in
+                if let unwrappedWeakSelf = weakSelf {
+                    if unwrappedWeakSelf.isViewLoaded {
+                        unwrappedWeakSelf.posts.insert(notification.object as! Post, at: 0)
+                        unwrappedWeakSelf.placeholderLabel.isHidden = true
+                        unwrappedWeakSelf.gridView.reloadData()
+                        unwrappedWeakSelf.displayUserInformation()
+                    }
+                }
+            }
+        }
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        if self.observer != nil {
+            NotificationCenter.default.removeObserver(self.observer!)
+        }
     }
     
     override func viewDidLoad() {
@@ -41,36 +59,18 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             self.followButton.setTitle("Unfollow", for: [UIControl.State.selected, UIControl.State.highlighted])
         }
         
+        self.displayUserInformation()
+        self.refreshUserInformation()
+        
         self.gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
         let cellWidth = UIScreen.main.bounds.size.width / 3.0
         let layout = self.gridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         
-        self.displayUserInformation()
-        self.placeholderLabel.isHidden = (self.posts.count > 0)
-        
-        self.fetchUserAndPosts()
-    }
-    
-    private func fetchUserAndPosts() {
-        ServerAPI.shared.getUser(id: self.user.id) { (user: User?, error: Error?) in
-            if user != nil {
-                self.user = user!
-                self.displayUserInformation()
-            } else {
-                self.report(error: error)
-            }
-        }
-        
-        ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
-            if posts != nil {
-                self.posts = posts!
-                self.gridView.reloadData()
-                self.placeholderLabel.isHidden = (posts!.count > 0)
-            } else {
-                self.report(error: error)
-            }
-        }
+        self.postsViewModeControl.addSegment(with: UIImage(named: "icon-grid"))
+        self.postsViewModeControl.addSegment(with: UIImage(named: "icon-tag"))
+        self.postsViewModeControl.selectedSegmentIndex = 0
+        self.setPostsViewMode()
     }
     
     private func displayUserInformation() {
@@ -84,6 +84,58 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.bioLabel.text = self.user.bio
     }
     
+    private func refreshUserInformation() {
+        ServerAPI.shared.getUser(id: self.user.id) { (user: User?, error: Error?) in
+            if user != nil {
+                self.user = user!
+                self.displayUserInformation()
+            } else {
+                self.report(error: error)
+            }
+        }
+    }
+    
+    private func updateFollowButtonState() {
+        let selected = self.user.isFollowed
+        self.followButton.isSelected = selected
+        self.followButton.setBackgroundImage(UIImage(named: selected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
+    }
+    
+    private func setDisplayedPosts(posts: [Post]) {
+        self.posts = posts
+        self.gridView.reloadData()
+        self.placeholderLabel.isHidden = (posts.count > 0)
+    }
+    
+    private func refreshPosts() {
+        if self.postsViewModeControl.selectedSegmentIndex == 0 {
+            ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
+                if posts != nil {
+                    self.setDisplayedPosts(posts: posts!)
+                } else {
+                    self.report(error: error)
+                }
+            }
+        } else {
+            ServerAPI.shared.getPostsWithTaggedUser(user: user) { (posts: [Post]?, error: Error?) in
+                if posts != nil {
+                    self.setDisplayedPosts(posts: posts!)
+                } else {
+                    self.report(error: error)
+                }
+            }
+        }
+    }
+    
+    @IBAction private func setPostsViewMode() {
+        if self.postsViewModeControl.selectedSegmentIndex == 0 {
+            self.setDisplayedPosts(posts: Cache.shared.fetchPostsMadeBy(user: user))
+        } else {
+            self.setDisplayedPosts(posts: Cache.shared.fetchPostsWithTagged(user: user))
+        }
+        self.refreshPosts()
+    }
+    
     @IBAction private func toggleFollow() {
         self.user.toggleFollowed()
         self.updateFollowButtonState()
@@ -95,12 +147,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             }
             self.displayUserInformation()
         }
-    }
-    
-    private func updateFollowButtonState() {
-        let selected = self.user.isFollowed
-        self.followButton.isSelected = selected
-        self.followButton.setBackgroundImage(UIImage(named: selected ? "small-button-on" : "small-button-off"), for: UIControl.State.normal)
     }
     
     @IBAction private func editProfile() {
@@ -129,15 +175,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         postsViewController.title = "Saved posts"
         postsViewController.placeholderText = "No saved posts"
         self.navigationController?.pushViewController(postsViewController, animated: true)
-    }
-    
-    @objc private func newPostHasBeenCreated(notification: NSNotification) {
-        if self.isViewLoaded && self.user == User.current {
-            self.posts.insert(notification.object as! Post, at: 0)
-            self.placeholderLabel.isHidden = true
-            self.gridView.reloadData()
-            self.displayUserInformation()
-        }
     }
     
     // MARK: - UICollectionViewDataSource

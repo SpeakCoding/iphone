@@ -28,6 +28,7 @@
 		9EA259102521E9230056047B /* UserProfileEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA2590E2521E9230056047B /* UserProfileEditorController.xib */; };
 		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
 		9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2591525231D550056047B /* UIViewController+Extensions.swift */; };
+		9EAE9A7C256A5A1100928DF6 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A7B256A5A1100928DF6 /* SegmentedControl.swift */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -79,6 +80,7 @@
 		9EA2590F2521E9230056047B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserProfileEditorController.xib; sourceTree = "<group>"; };
 		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		9EA2591525231D550056047B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		9EAE9A7B256A5A1100928DF6 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				9EF2BA51252EF50000BB2DBB /* Cache.swift */,
 				9EDC2A4124EEBE4000902B93 /* AsynchronousImageView.swift */,
 				9EDC2A3F24EEB4AB00902B93 /* ProfilePictureView.swift */,
+				9EAE9A7B256A5A1100928DF6 /* SegmentedControl.swift */,
 				9EF33BC6254EC2430093B1DC /* TaggedImageView.swift */,
 				9EF33BC8254EC6C10093B1DC /* TagCalloutView.swift */,
 				9EB6DB8525036BFC00C60EBF /* TextField.swift */,
@@ -285,6 +288,7 @@
 				9EDC2A3224EE9B9300902B93 /* User.swift in Sources */,
 				9EF2BA54252F331200BB2DBB /* Date+Extensions.swift in Sources */,
 				9EDC2A4024EEB4AB00902B93 /* ProfilePictureView.swift in Sources */,
+				9EAE9A7C256A5A1100928DF6 /* SegmentedControl.swift in Sources */,
 				9EDC2A3E24EE9F4D00902B93 /* ModelObject.swift in Sources */,
 				9EF6CEBB24F6467B006A4E12 /* SQLiteDatabase.swift in Sources */,
 				9EDC2A3A24EE9D8100902B93 /* Like.swift in Sources */,

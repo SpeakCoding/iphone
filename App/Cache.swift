@@ -102,6 +102,21 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
+        
+        if !hasTable(tableName: "tags") {
+            let query = """
+            CREATE TABLE tags (
+            "post_id" INTEGER NOT NULL,
+            "user_id" INTEGER NOT NULL,
+            "top" REAL,
+            "left" REAL,
+            FOREIGN KEY (post_id) REFERENCES posts(id),
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            UNIQUE (post_id, user_id)
+            )
+            """
+            database.executeUpdate(sqlQuery: query, values: nil)
+        }
     }
     
     private func hasTable(tableName: String) -> Bool {
@@ -114,12 +129,26 @@ class Cache {
         update(user: post.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
         database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.isSaved, post.id])
+        update(tags: post.tags, post: post)
     }
     
     func update(user: User) {
         assert(user.id != 0)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO users (id) VALUES (?)", values: [user.id])
         database.executeUpdate(sqlQuery: "UPDATE users SET user_name=?,profile_picture_url=?,bio=?,number_of_posts=?,followers_count=?,followees_count=?,is_follower=?,is_followed=? WHERE id=?", values: [user.userName, user.profilePictureURL?.absoluteString, user.bio, user.numberOfPosts, user.numberOfFollowers, user.numberOfFollowees, user.isFollower, user.isFollowed, user.id])
+    }
+    
+    func update(tags: [Tag], post: Post) {
+        assert(post.id != 0)
+        if tags.count > 0 {
+            for tag in tags {
+                assert(tag.user.id != 0)
+                database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO tags (post_id,user_id) VALUES (?,?)", values: [post.id, tag.user.id])
+                database.executeUpdate(sqlQuery: "UPDATE tags SET left=?,top=? WHERE post_id=? AND user_id=?", values: [tag.point.x, tag.point.y, post.id, tag.user.id])
+            }
+        } else {
+            database.executeUpdate(sqlQuery: "DELETE FROM tags WHERE post_id=?", values: [post.id])
+        }
     }
     
     func fetchPost(id: Int) -> Post? {
@@ -146,6 +175,10 @@ class Cache {
     
     func fetchPostsMadeBy(user: User) -> [Post] {
         return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
+    }
+    
+    func fetchPostsWithTagged(user: User) -> [Post] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
     }
 }
 

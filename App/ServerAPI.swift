@@ -213,6 +213,22 @@ class ServerAPI {
         }
     }
     
+    func getPostsWithTaggedUser(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/tagged.json?user_id=\(user.id)", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSONs = result as? [[String: Any]] {
+                let posts = postJSONs.map { (postJSON) -> Post in
+                    let post = Post(json: postJSON)
+                    Cache.shared.update(post: post)
+                    return post
+                }
+                completion(posts, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func createPost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
         guard let imageBase64String = image.jpegData(compressionQuality: 0.7)?.base64EncodedString() else {
             completion(nil, NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image"]))
