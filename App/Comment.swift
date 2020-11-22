@@ -1,12 +1,11 @@
 import Foundation
 
 
-class Comment {
+class Comment: ModelObject {
     
     var date: Date
     var user: User
     var text: String
-    var replies = [Comment]()
     
     init(date: Date, user: User, text: String) {
         self.date = date

@@ -77,7 +77,8 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func addComment() {
-        #warning("Adding comments is not implemented")
+        let commentsViewController = CommentsViewController(post: self.post)
+        self.viewController?.navigationController?.pushViewController(commentsViewController, animated: true)
     }
     
     @IBAction private func showAllComments() {

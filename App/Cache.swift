@@ -24,7 +24,7 @@ class Cache {
             }
             
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
-            let currentDatabaseVersion = 2
+            let currentDatabaseVersion = 3
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
             print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
             if onDiskDatabaseVersion == currentDatabaseVersion {
@@ -76,7 +76,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        
+        /*
         if !hasTable(tableName: "likes") {
             let query = """
             CREATE TABLE likes (
@@ -88,7 +88,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        
+        */
         if !hasTable(tableName: "comments") {
             let query = """
             CREATE TABLE comments (
@@ -96,8 +96,7 @@ class Cache {
             "date" REAL,
             "text" TEXT,
             "user_id" INTEGER,
-            "post_id" INTEGER,
-            "parent_comment_id" INTEGER
+            "post_id" INTEGER
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -130,6 +129,9 @@ class Cache {
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
         database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.isSaved, post.id])
         update(tags: post.tags, post: post)
+        for comment in post.comments {
+            update(comment: comment, post: post)
+        }
     }
     
     func update(user: User) {
@@ -149,6 +151,13 @@ class Cache {
         } else {
             database.executeUpdate(sqlQuery: "DELETE FROM tags WHERE post_id=?", values: [post.id])
         }
+    }
+    
+    func update(comment: Comment, post: Post) {
+        assert(comment.id != 0)
+        assert(post.id != 0)
+        database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO comments (id) VALUES (?)", values: [comment.id])
+        database.executeUpdate(sqlQuery: "UPDATE comments SET date=?,user_id=?,post_id=?,text=? WHERE id=?", values: [comment.date.timeIntervalSinceReferenceDate, comment.user.id, post.id, comment.text, comment.id])
     }
     
     func fetchPost(id: Int) -> Post? {
@@ -179,6 +188,10 @@ class Cache {
     
     func fetchPostsWithTagged(user: User) -> [Post] {
         return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
+    }
+    
+    func fetchCommments(post: Post) -> [Comment] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM comments WHERE post_id=? ORDER BY date ASC", parameters: [post.id]).map { Comment(row: $0) }
     }
 }
 
@@ -222,5 +235,17 @@ extension Post {
         self.numberOfComments = row["number_of_comments"] as! Int
         self.isLiked = (row["liked"] as! Int) != 0
         self.isSaved = (row["saved"] as! Int) != 0
+        self.comments = Cache.shared.fetchCommments(post: self)
+    }
+}
+
+
+extension Comment {
+    convenience init(row: [String: Any?]) {
+        let date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
+        let user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
+        let text = row["text"] as! String
+        self.init(date: date, user: user, text: text)
+        self.id = row["id"] as! Int
     }
 }

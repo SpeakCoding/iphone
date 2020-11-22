@@ -29,6 +29,10 @@
 		9EA259122521EEBD0056047B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA259112521EEBD0056047B /* TextView.swift */; };
 		9EA2591625231D550056047B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2591525231D550056047B /* UIViewController+Extensions.swift */; };
 		9EAE9A7C256A5A1100928DF6 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A7B256A5A1100928DF6 /* SegmentedControl.swift */; };
+		9EAE9A7E256A7BEA00928DF6 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A7D256A7BEA00928DF6 /* CommentsViewController.swift */; };
+		9EAE9A81256A7C5700928DF6 /* CommentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EAE9A7F256A7C5700928DF6 /* CommentsView.xib */; };
+		9EAE9A84256A7EA100928DF6 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EAE9A82256A7EA100928DF6 /* CommentCell.xib */; };
+		9EAE9A86256A7EB700928DF6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A85256A7EB700928DF6 /* CommentCell.swift */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -81,6 +85,10 @@
 		9EA259112521EEBD0056047B /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		9EA2591525231D550056047B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9EAE9A7B256A5A1100928DF6 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		9EAE9A7D256A7BEA00928DF6 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		9EAE9A80256A7C5700928DF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CommentsView.xib; sourceTree = "<group>"; };
+		9EAE9A83256A7EA100928DF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CommentCell.xib; sourceTree = "<group>"; };
+		9EAE9A85256A7EB700928DF6 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -187,6 +195,10 @@
 				9E7AE7D725555B27005F11B6 /* UserCell.swift */,
 				9E7AE7D9255578E2005F11B6 /* UserCell.xib */,
 				9E1E079F2566B7F9005B79C7 /* UserCell+FollowButton.xib */,
+				9EAE9A7D256A7BEA00928DF6 /* CommentsViewController.swift */,
+				9EAE9A7F256A7C5700928DF6 /* CommentsView.xib */,
+				9EAE9A85256A7EB700928DF6 /* CommentCell.swift */,
+				9EAE9A82256A7EA100928DF6 /* CommentCell.xib */,
 				9EF2BA53252F331200BB2DBB /* Date+Extensions.swift */,
 				9EA2591525231D550056047B /* UIViewController+Extensions.swift */,
 				9EDC2A2224EE976B00902B93 /* Assets.xcassets */,
@@ -255,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EAE9A84256A7EA100928DF6 /* CommentCell.xib in Resources */,
 				9EA023A7251B681C00D5703A /* SignupView.xib in Resources */,
 				9E1E07A12566B7F9005B79C7 /* UserCell+FollowButton.xib in Resources */,
 				9E7AE7D12554063E005F11B6 /* TagEditorController.xib in Resources */,
@@ -267,6 +280,7 @@
 				9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */,
 				9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */,
 				9E7AE7D625554A17005F11B6 /* UserLookupView.xib in Resources */,
+				9EAE9A81256A7C5700928DF6 /* CommentsView.xib in Resources */,
 				9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,6 +311,7 @@
 				9EDC2A3824EE9D0D00902B93 /* Video.swift in Sources */,
 				9EB6DB8B2503AD7200C60EBF /* PostFeedCell.swift in Sources */,
 				9EF2BA52252EF50000BB2DBB /* Cache.swift in Sources */,
+				9EAE9A86256A7EB700928DF6 /* CommentCell.swift in Sources */,
 				9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */,
 				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
@@ -308,6 +323,7 @@
 				9EF33BC7254EC2430093B1DC /* TaggedImageView.swift in Sources */,
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9E7AE7CE255402F8005F11B6 /* TagEditorController.swift in Sources */,
+				9EAE9A7E256A7BEA00928DF6 /* CommentsViewController.swift in Sources */,
 				9E1E079725669025005B79C7 /* PostsViewController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
 				9EF33BC9254EC6C10093B1DC /* TagCalloutView.swift in Sources */,
@@ -382,6 +398,22 @@
 				9EA2590F2521E9230056047B /* Base */,
 			);
 			name = UserProfileEditorController.xib;
+			sourceTree = "<group>";
+		};
+		9EAE9A7F256A7C5700928DF6 /* CommentsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EAE9A80256A7C5700928DF6 /* Base */,
+			);
+			name = CommentsView.xib;
+			sourceTree = "<group>";
+		};
+		9EAE9A82256A7EA100928DF6 /* CommentCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EAE9A83256A7EA100928DF6 /* Base */,
+			);
+			name = CommentCell.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {

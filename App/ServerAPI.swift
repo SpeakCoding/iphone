@@ -297,6 +297,20 @@ class ServerAPI {
         }
     }
     
+    func createComment(_ comment: Comment, to post: Post, completion: @escaping ((Comment?, Error?) -> Void)) {
+        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text]]
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/comments.json", authorized: true, parameters: requestParameters)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let commentJSON = result as? [String: Any] {
+                let commment = Comment(json: commentJSON)
+                Cache.shared.update(comment: commment, post: post)
+                completion(commment, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     // MARK: - Private stuff
     
     /**
@@ -465,6 +479,9 @@ extension Post {
         if let tags = json["tags"] as? [[String: Any]] {
             self.tags = tags.map { Tag(json: $0) }
         }
+        if let comments = json["comments"] as? [[String: Any]] {
+            self.comments = comments.map { Comment(json: $0) }
+        }
         self.update(json: json)
     }
     
@@ -489,5 +506,16 @@ extension Tag {
         let user = User(json: json["user"] as! [String : Any])
         let point = Point(x: json["left"] as! Double, y: json["top"] as! Double)
         self.init(taggedUser: user, point: point)
+    }
+}
+
+
+extension Comment {
+    convenience init(json: [String: Any]) {
+        let date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
+        let user = User(json: json["user"] as! [String : Any])
+        let text = json["body"] as! String
+        self.init(date: date, user: user, text: text)
+        self.id = json["id"] as! Int
     }
 }

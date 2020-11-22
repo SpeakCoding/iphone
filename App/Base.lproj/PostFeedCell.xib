@@ -63,7 +63,7 @@
                             <action selector="toggleLike" destination="A6V-Dk-2ln" eventType="touchUpInside" id="nt1-XD-v5h"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPL-zP-51o">
+                    <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPL-zP-51o">
                         <rect key="frame" x="47" y="369" width="41" height="42"/>
                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                         <state key="normal" image="button-comment"/>
