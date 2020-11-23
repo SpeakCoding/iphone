@@ -33,6 +33,8 @@
 		9EAE9A81256A7C5700928DF6 /* CommentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EAE9A7F256A7C5700928DF6 /* CommentsView.xib */; };
 		9EAE9A84256A7EA100928DF6 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EAE9A82256A7EA100928DF6 /* CommentCell.xib */; };
 		9EAE9A86256A7EB700928DF6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A85256A7EB700928DF6 /* CommentCell.swift */; };
+		9EAE9A88256BA3CD00928DF6 /* PostEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAE9A87256BA3CD00928DF6 /* PostEditorController.swift */; };
+		9EAE9A8B256BA74800928DF6 /* PostEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EAE9A89256BA74800928DF6 /* PostEditorController.xib */; };
 		9EB6DB84250368C300C60EBF /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB82250368C300C60EBF /* LoginView.xib */; };
 		9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB6DB8525036BFC00C60EBF /* TextField.swift */; };
 		9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */; };
@@ -89,6 +91,8 @@
 		9EAE9A80256A7C5700928DF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CommentsView.xib; sourceTree = "<group>"; };
 		9EAE9A83256A7EA100928DF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CommentCell.xib; sourceTree = "<group>"; };
 		9EAE9A85256A7EB700928DF6 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		9EAE9A87256BA3CD00928DF6 /* PostEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorController.swift; sourceTree = "<group>"; };
+		9EAE9A8A256BA74800928DF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostEditorController.xib; sourceTree = "<group>"; };
 		9EB6DB83250368C300C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginView.xib; sourceTree = "<group>"; };
 		9EB6DB8525036BFC00C60EBF /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		9EB6DB882503A01F00C60EBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostFeedCell.xib; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 				9EB6DBD0250768BA00C60EBF /* LikedPostsViewController.swift */,
 				9E11AD06250A5B8100275489 /* PostComposerViewController.swift */,
 				9E11AD08250A5C3900275489 /* PostComposerView.xib */,
+				9EAE9A87256BA3CD00928DF6 /* PostEditorController.swift */,
+				9EAE9A89256BA74800928DF6 /* PostEditorController.xib */,
 				9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */,
 				9E7AE7CF2554063E005F11B6 /* TagEditorController.xib */,
 				9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */,
@@ -277,6 +283,7 @@
 				9EDC2A2324EE976B00902B93 /* Assets.xcassets in Resources */,
 				9EA259102521E9230056047B /* UserProfileEditorController.xib in Resources */,
 				9EB6DB892503A01F00C60EBF /* PostFeedCell.xib in Resources */,
+				9EAE9A8B256BA74800928DF6 /* PostEditorController.xib in Resources */,
 				9E7AE7DB255578E2005F11B6 /* UserCell.xib in Resources */,
 				9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */,
 				9E7AE7D625554A17005F11B6 /* UserLookupView.xib in Resources */,
@@ -312,6 +319,7 @@
 				9EB6DB8B2503AD7200C60EBF /* PostFeedCell.swift in Sources */,
 				9EF2BA52252EF50000BB2DBB /* Cache.swift in Sources */,
 				9EAE9A86256A7EB700928DF6 /* CommentCell.swift in Sources */,
+				9EAE9A88256BA3CD00928DF6 /* PostEditorController.swift in Sources */,
 				9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */,
 				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
@@ -414,6 +422,14 @@
 				9EAE9A83256A7EA100928DF6 /* Base */,
 			);
 			name = CommentCell.xib;
+			sourceTree = "<group>";
+		};
+		9EAE9A89256BA74800928DF6 /* PostEditorController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9EAE9A8A256BA74800928DF6 /* Base */,
+			);
+			name = PostEditorController.xib;
 			sourceTree = "<group>";
 		};
 		9EB6DB82250368C300C60EBF /* LoginView.xib */ = {

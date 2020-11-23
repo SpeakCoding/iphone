@@ -28,17 +28,6 @@ class TagEditorController: UIViewController {
         self.completion(self.taggedImageView.tags)
     }
     
-    func tagUserForPointInImage(point: Point) {
-        let userLookupViewController = UserLookupViewController { (user: User?) in
-            if user != nil {
-                let newTag = Tag(taggedUser: user!, point: point)
-                self.taggedImageView.addTag(newTag)
-            }
-            self.dismiss(animated: true, completion: nil)
-        }
-        self.present(userLookupViewController, animated: true, completion: nil)
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

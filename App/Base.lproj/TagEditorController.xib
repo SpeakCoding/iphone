@@ -24,7 +24,7 @@
                         <constraint firstAttribute="width" secondItem="4Sg-1a-IbN" secondAttribute="height" multiplier="1:1" priority="999" id="0Ec-KT-xUB"/>
                     </constraints>
                     <connections>
-                        <outlet property="delegate" destination="-1" id="GOR-3I-16P"/>
+                        <outlet property="viewController" destination="-1" id="FjM-XW-Ac2"/>
                     </connections>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FuC-ya-Av8">

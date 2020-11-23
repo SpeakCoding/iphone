@@ -89,7 +89,20 @@ class PostFeedCell: UITableViewCell {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         if self.post.user == User.current {
             alert.addAction(UIAlertAction(title: "Edit", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-                #warning("Editing posts is not implemented")
+                let postEditor = PostEditorController(post: self.post, cachedPostImage: self.postImageView.image) { (updatedPost: Post?) in
+                    var view = self as UIView?
+                    while !(view is UITableView) {
+                        view = view?.superview
+                    }
+                    if let tableView = (view as? UITableView) {
+                        tableView.reloadData()
+                    }
+                    self.viewController?.dismiss(animated: true, completion: nil)
+                }
+                let navigationController = UINavigationController(rootViewController: postEditor)
+                navigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+                self.viewController?.present(navigationController, animated: true, completion: nil)
             }))
         } else {
             let likeActionTitle = self.post.isLiked ? "Unlike" : "Like"

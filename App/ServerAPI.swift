@@ -259,6 +259,29 @@ class ServerAPI {
         }
     }
     
+    func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
+        let requestParameters = ["post": [
+            "description": post.caption,
+            "tags": post.tags.map { (tag) -> [String: Any] in
+                return [
+                    "user_id": tag.user.id,
+                    "left": tag.point.x,
+                    "top": tag.point.y
+                ]
+            }
+            ]]
+        let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/posts/\(post.id).json", authorized: true, parameters: requestParameters)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let postJSON = result as? [String: Any] {
+                let post = Post(json: postJSON)
+                Cache.shared.update(post: post)
+                completion(post, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func updatePostLike(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let endpoint: String
         if post.isLiked {

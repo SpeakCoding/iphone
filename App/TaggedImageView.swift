@@ -3,7 +3,7 @@ import UIKit
 
 class TaggedImageView: AsynchronousImageView {
     
-    @IBOutlet weak var delegate: TagEditorController?
+    @IBOutlet weak var viewController: UIViewController?
     private var tagCalloutViews = [TagCalloutView]()
     var tags = [Tag]() {
         didSet {
@@ -21,10 +21,6 @@ class TaggedImageView: AsynchronousImageView {
             // This will cause layoutSubviews() to be called when appropriate
             self.setNeedsLayout()
         }
-    }
-    
-    func addTag(_ tag: Tag) {
-        self.tags.append(tag)
     }
     
     // MARK: - Placing and dragging callout views
@@ -71,7 +67,17 @@ class TaggedImageView: AsynchronousImageView {
             self.touchedTagCalloutView = nil
         } else {
             // Create a new callout view
-            self.delegate?.tagUserForPointInImage(point: self.convertToRelative(point: point))
+            if let viewController = self.viewController {
+                let relativePoint = self.convertToRelative(point: point)
+                let userLookupViewController = UserLookupViewController { (user: User?) in
+                    if user != nil {
+                        let newTag = Tag(taggedUser: user!, point: relativePoint)
+                        self.tags.append(newTag)
+                    }
+                    viewController.dismiss(animated: true, completion: nil)
+                }
+                viewController.present(userLookupViewController, animated: true, completion: nil)
+            }
         }
     }
     
