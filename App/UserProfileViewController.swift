@@ -16,33 +16,19 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBOutlet private var placeholderLabel: UILabel!
     private var user: User
     private var posts = [Post]()
-    private var observer: Any?
 
     init(user: User) {
         self.user = user
         super.init(nibName: "UserProfileView", bundle: nil)
         
         if user == User.current {
-            weak var weakSelf = self
-            self.observer = NotificationCenter.default.addObserver(forName: Notification.Name.NewPostNotification,
-                                                                   object: nil,
-                                                                   queue: nil) { (notification: Notification) in
-                if let unwrappedWeakSelf = weakSelf {
-                    if unwrappedWeakSelf.isViewLoaded {
-                        unwrappedWeakSelf.posts.insert(notification.object as! Post, at: 0)
-                        unwrappedWeakSelf.placeholderLabel.isHidden = true
-                        unwrappedWeakSelf.gridView.reloadData()
-                        unwrappedWeakSelf.displayUserInformation()
-                    }
-                }
-            }
+            NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(postHasBeenDeleted), name: Notification.Name.PostDeletedNotification, object: nil)
         }
     }
     
     deinit {
-        if self.observer != nil {
-            NotificationCenter.default.removeObserver(self.observer!)
-        }
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -178,6 +164,26 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         postsViewController.title = "Saved posts"
         postsViewController.placeholderText = "No saved posts"
         self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
+    
+    @objc private func newPostHasBeenCreated(notification: NSNotification) {
+        if self.isViewLoaded {
+            self.posts.insert(notification.object as! Post, at: 0)
+            self.placeholderLabel.isHidden = true
+            self.gridView.reloadData()
+            self.displayUserInformation()
+        }
+    }
+    
+    @objc private func postHasBeenDeleted(notification: NSNotification) {
+        if self.isViewLoaded {
+            if let postIndex = self.posts.firstIndex(of: notification.object as! Post) {
+                self.posts.remove(at: postIndex)
+                self.placeholderLabel.isHidden = (self.posts.count > 0)
+                self.gridView.reloadData()
+                self.displayUserInformation()
+            }
+        }
     }
     
     // MARK: - UICollectionViewDataSource

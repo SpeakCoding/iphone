@@ -88,7 +88,7 @@ class PostFeedCell: UITableViewCell {
     @IBAction private func showOptions() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         if self.post.user == User.current {
-            alert.addAction(UIAlertAction(title: "Edit", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Edit Post", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
                 let postEditor = PostEditorController(post: self.post, cachedPostImage: self.postImageView.image) { (updatedPost: Post?) in
                     var view = self as UIView?
                     while !(view is UITableView) {
@@ -104,6 +104,15 @@ class PostFeedCell: UITableViewCell {
                 navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
                 self.viewController?.present(navigationController, animated: true, completion: nil)
             }))
+            alert.addAction(UIAlertAction(title: "Delete Post", style: UIAlertAction.Style.destructive, handler: { (_: UIAlertAction) in
+                ServerAPI.shared.deletePost(self.post) { (error: Error?) in
+                    if error == nil {
+                        NotificationCenter.default.post(name: Notification.Name.PostDeletedNotification, object: self.post)
+                    } else {
+                        self.viewController?.report(error: error)
+                    }
+                }
+            }))
         } else {
             let likeActionTitle = self.post.isLiked ? "Unlike" : "Like"
             alert.addAction(UIAlertAction(title: likeActionTitle, style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
@@ -117,4 +126,9 @@ class PostFeedCell: UITableViewCell {
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.viewController?.present(alert, animated: true, completion: nil)
     }
+}
+
+
+extension Notification.Name {
+    public static let PostDeletedNotification = NSNotification.Name("Post deleted")
 }

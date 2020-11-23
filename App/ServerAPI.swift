@@ -282,6 +282,13 @@ class ServerAPI {
         }
     }
     
+    func deletePost(_ post: Post, completion: @escaping ((Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.DELETE, endpoint: "/posts/\(post.id).json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            completion(error)
+        }
+    }
+    
     func updatePostLike(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let endpoint: String
         if post.isLiked {
