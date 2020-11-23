@@ -22,6 +22,7 @@ class PostFeedViewController: UITableViewController {
         self.refreshFeedPosts()
         
         NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.FeedUpdatedNotification, object: nil)
     }
     
     deinit {
@@ -29,18 +30,20 @@ class PostFeedViewController: UITableViewController {
     }
     
     @objc private func refreshFeedPosts() {
-        ServerAPI.shared.getFeedPosts() { (posts: [Post]?, error: Error?) in
+        ServerAPI.shared.getFeedPosts(feed: self.feed) { (posts: [Post]?, error: Error?) in
             self.refreshControl!.endRefreshing()
             if posts != nil {
-                self.feed.posts = posts!
                 self.tableView.reloadData()
             }
         }
     }
     
     @objc private func newPostHasBeenCreated(notification: NSNotification) {
-        self.feed.posts.insert(notification.object as! Post, at: 0)
-        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableView.RowAnimation.automatic)
+        self.refreshFeedPosts()
+    }
+    
+    @objc private func feedHasBeenUpdated(notification: NSNotification) {
+        self.refreshFeedPosts()
     }
     
     // MARK: - UITableViewDataSource

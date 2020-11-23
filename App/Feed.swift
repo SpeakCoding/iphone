@@ -6,6 +6,6 @@ class Feed {
     var posts: [Post]
     
     init() {
-        self.posts = Cache.shared.fetchAllPosts()
+        self.posts = Cache.shared.fetchFeedPosts()
     }
 }

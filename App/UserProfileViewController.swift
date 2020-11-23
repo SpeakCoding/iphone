@@ -141,6 +141,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.updateFollowButtonState()
         
         ServerAPI.shared.updateUserFollowed(user: self.user) { (user: User?, error: Error?) in
+            if user != nil {
+                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
+            }
             if error != nil {
                 self.report(error: error)
                 self.user.toggleFollowed()
@@ -201,4 +204,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
+}
+
+
+extension Notification.Name {
+    public static let FeedUpdatedNotification = NSNotification.Name("Feed updated")
 }

@@ -41,6 +41,9 @@ class UserCell: UITableViewCell {
         
         let theUserToUpdate = self.user!
         ServerAPI.shared.updateUserFollowed(user: self.user) { (user: User?, error: Error?) in
+            if user != nil {
+                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
+            }
             if error != nil {
                 theUserToUpdate.toggleFollowed()
                 if self.user == theUserToUpdate {

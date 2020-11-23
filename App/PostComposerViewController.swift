@@ -87,5 +87,5 @@ class PostComposerViewController: UIViewController {
 
 
 extension Notification.Name {
-    public static let NewPostNotification = NSNotification.Name("New post notification")
+    public static let NewPostNotification = NSNotification.Name("New post created")
 }

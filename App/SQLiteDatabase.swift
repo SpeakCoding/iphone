@@ -123,6 +123,11 @@ class SQLiteDatabase {
         return queryResult
     }
     
+    func commitTransaction(updates: () -> Void) {
+        executeUpdate(sqlQuery: "BEGIN EXCLUSIVE TRANSACTION", values: nil)
+        updates()
+        executeUpdate(sqlQuery: "COMMIT TRANSACTION", values: nil)
+    }
     
     // MARK: - Private stuff
     

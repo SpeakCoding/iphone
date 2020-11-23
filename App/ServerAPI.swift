@@ -165,15 +165,15 @@ class ServerAPI {
         }
     }
     
-    func getFeedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
+    func getFeedPosts(feed: Feed, completion: @escaping (([Post]?, Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    let post = Post(json: postJSON)
-                    Cache.shared.update(post: post)
-                    return post
+                    Post(json: postJSON)
                 }
+                feed.posts = posts
+                Cache.shared.update(feed: feed)
                 completion(posts, nil)
             } else {
                 completion(nil, error)

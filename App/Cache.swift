@@ -60,6 +60,17 @@ class Cache {
             database.executeUpdate(sqlQuery: query, values: nil)
         }
         
+        if !hasTable(tableName: "feed") {
+            let query = """
+            CREATE TABLE feed (
+            "post_id" INTEGER NOT NULL,
+            "position" INTEGER NOT NULL,
+            FOREIGN KEY (post_id) REFERENCES posts(id)
+            )
+            """
+            database.executeUpdate(sqlQuery: query, values: nil)
+        }
+        
         if !hasTable(tableName: "users") {
             let query = """
             CREATE TABLE users (
@@ -160,6 +171,18 @@ class Cache {
         database.executeUpdate(sqlQuery: "UPDATE comments SET date=?,user_id=?,post_id=?,text=? WHERE id=?", values: [comment.date.timeIntervalSinceReferenceDate, comment.user.id, post.id, comment.text, comment.id])
     }
     
+    func update(feed: Feed) {
+        // Wrapping a lot of SQLite updates in a transaction results in much better performance.
+        // For example, updating a 100 post feed is about 10 times faster when in a single transaction.
+        database.commitTransaction {
+            database.executeUpdate(sqlQuery: "DELETE from feed", values: nil)
+            for (postIndex, post) in feed.posts.enumerated() {
+                update(post: post)
+                database.executeUpdate(sqlQuery: "INSERT INTO feed (post_id,position) VALUES (?,?)", values: [post.id, postIndex])
+            }
+        }
+    }
+    
     func fetchPost(id: Int) -> Post? {
         if let matchingPost = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
             return Post(row: matchingPost)
@@ -174,20 +197,20 @@ class Cache {
         return nil
     }
     
-    func fetchAllPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
+    func fetchFeedPosts() -> [Post] {
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts INNER JOIN feed ON posts.id=feed.post_id ORDER BY feed.position ASC", parameters: nil).map { Post(row: $0) }
     }
     
     func fetchSavedPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY date DESC", parameters: nil).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY id DESC", parameters: nil).map { Post(row: $0) }
     }
     
     func fetchPostsMadeBy(user: User) -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY id DESC", parameters: [user.id]).map { Post(row: $0) }
     }
     
     func fetchPostsWithTagged(user: User) -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY date DESC", parameters: [user.id]).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY id DESC", parameters: [user.id]).map { Post(row: $0) }
     }
     
     func fetchCommments(post: Post) -> [Comment] {
