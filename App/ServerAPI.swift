@@ -437,13 +437,6 @@ class ServerAPI {
             if requestError == nil && jsonData != nil {
                 do {
                     let json = try JSONSerialization.jsonObject(with: jsonData!, options: [])
-                    #warning("Remove after debugging API")
-                    if let formattedJSONData = try? JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted, .withoutEscapingSlashes]) {
-                        if let formattedJSONString = String(data: formattedJSONData, encoding: .utf8) {
-                            print("\(request.httpMethod!) \(request.url!) returned status code \((urlResponse as! HTTPURLResponse).statusCode) \(formattedJSONString)")
-                        }
-                    }
-                    
                     if let responseJSON = (json as? [String: Any]) {
                         result = responseJSON["data"]
                         metadata = responseJSON["meta"] as? [String: String]
@@ -477,8 +470,7 @@ class ServerAPI {
 
 extension User {
     convenience init(json: [String: Any]) {
-        #warning("Remove the default name")
-        let userName = json["full_name"] as? String ?? "NO NAME"
+        let userName = json["full_name"] as! String
         self.init(userName: userName)
         self.id = json["id"] as! Int
         if let pictureURI = json["portrait"] as? String {
