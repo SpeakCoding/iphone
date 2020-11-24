@@ -16,6 +16,11 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
         self.posts = posts
         self.refreshClosure = refreshClosure
         super.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postHasBeenDeleted), name: Notification.Name.PostDeletedNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -116,6 +121,15 @@ class PostsViewController: UIViewController, UICollectionViewDataSource, UIColle
         self.view.addSubview(self.tableView!)
         self.tableView!.layoutIfNeeded()
         self.tableView!.scrollToRow(at: IndexPath(row: self.selectedPostIndex!, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+    }
+    
+    @objc private func postHasBeenDeleted(notification: NSNotification) {
+        if self.isViewLoaded {
+            if let postIndex = self.posts.firstIndex(of: notification.object as! Post) {
+                self.posts.remove(at: postIndex)
+                self.updateDisplayedPosts()
+            }
+        }
     }
     
     // MARK: - UICollectionViewDataSource

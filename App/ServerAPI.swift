@@ -285,6 +285,13 @@ class ServerAPI {
     func deletePost(_ post: Post, completion: @escaping ((Error?) -> Void)) {
         let request = makeRequest(method: HTTPMethod.DELETE, endpoint: "/posts/\(post.id).json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if error == nil {
+                Cache.shared.delete(post: post)
+                if let currentUser = User.current {
+                    currentUser.numberOfPosts -= 1
+                    Cache.shared.update(user: currentUser)
+                }
+            }
             completion(error)
         }
     }

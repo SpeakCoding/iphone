@@ -179,7 +179,7 @@ class Cache {
         // Wrapping a lot of SQLite updates in a transaction results in much better performance.
         // For example, updating a 100 post feed is about 10 times faster when in a single transaction.
         database.commitTransaction {
-            database.executeUpdate(sqlQuery: "DELETE from feed", values: nil)
+            database.executeUpdate(sqlQuery: "DELETE FROM feed", values: nil)
             for (postIndex, post) in feed.posts.enumerated() {
                 update(post: post)
                 database.executeUpdate(sqlQuery: "INSERT INTO feed (post_id,position) VALUES (?,?)", values: [post.id, postIndex])
@@ -219,6 +219,10 @@ class Cache {
     
     func fetchCommments(post: Post) -> [Comment] {
         return database.executeQuery(sqlQuery: "SELECT * FROM comments WHERE post_id=? ORDER BY date ASC", parameters: [post.id]).map { Comment(row: $0) }
+    }
+    
+    func delete(post: Post) {
+        database.executeUpdate(sqlQuery: "DELETE FROM posts WHERE id=?", values: [post.id])
     }
 }
 
