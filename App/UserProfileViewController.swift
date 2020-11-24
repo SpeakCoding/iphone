@@ -158,7 +158,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @objc private func showSavedPosts() {
-        let postsViewController = PostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
+        let postsViewController = UserPostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
             ServerAPI.shared.getSavedPosts(completion: completion)
         }
         postsViewController.title = "Saved posts"
@@ -201,7 +201,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let postsViewController = PostsViewController(posts: self.posts, refreshClosure: nil)
+        let postsViewController = UserPostsViewController(posts: self.posts, refreshClosure: nil)
         postsViewController.title = "Posts"
         postsViewController.selectedPostIndex = indexPath.item
         self.navigationController?.pushViewController(postsViewController, animated: true)

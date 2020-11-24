@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E11AD06250A5B8100275489 /* PostComposerViewController.swift */; };
 		9E11AD0A250A5C3900275489 /* PostComposerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E11AD08250A5C3900275489 /* PostComposerView.xib */; };
-		9E1E079725669025005B79C7 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1E079625669025005B79C7 /* PostsViewController.swift */; };
+		9E1E079725669025005B79C7 /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1E079625669025005B79C7 /* UserPostsViewController.swift */; };
 		9E1E079925669172005B79C7 /* PostTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1E079825669172005B79C7 /* PostTileCell.swift */; };
 		9E1E079B2566A6A1005B79C7 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1E079A2566A6A1005B79C7 /* UserListViewController.swift */; };
 		9E1E079E2566AAE1005B79C7 /* UserListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E1E079C2566AAE1005B79C7 /* UserListView.xib */; };
@@ -67,7 +67,7 @@
 /* Begin PBXFileReference section */
 		9E11AD06250A5B8100275489 /* PostComposerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerViewController.swift; sourceTree = "<group>"; };
 		9E11AD09250A5C3900275489 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PostComposerView.xib; sourceTree = "<group>"; };
-		9E1E079625669025005B79C7 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		9E1E079625669025005B79C7 /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
 		9E1E079825669172005B79C7 /* PostTileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTileCell.swift; sourceTree = "<group>"; };
 		9E1E079A2566A6A1005B79C7 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		9E1E079D2566AAE1005B79C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserListView.xib; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 				9E772B8524FE21B40044E328 /* PostFeedViewController.swift */,
 				9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */,
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
-				9E1E079625669025005B79C7 /* PostsViewController.swift */,
+				9E1E079625669025005B79C7 /* UserPostsViewController.swift */,
 				9E1E079825669172005B79C7 /* PostTileCell.swift */,
 				9EB6DB8C2504CCC200C60EBF /* UserProfileViewController.swift */,
 				9EB6DB8E2504CCEE00C60EBF /* UserProfileView.xib */,
@@ -332,7 +332,7 @@
 				9EB6DB8D2504CCC200C60EBF /* UserProfileViewController.swift in Sources */,
 				9E7AE7CE255402F8005F11B6 /* TagEditorController.swift in Sources */,
 				9EAE9A7E256A7BEA00928DF6 /* CommentsViewController.swift in Sources */,
-				9E1E079725669025005B79C7 /* PostsViewController.swift in Sources */,
+				9E1E079725669025005B79C7 /* UserPostsViewController.swift in Sources */,
 				9EDC2A1A24EE976900902B93 /* AppDelegate.swift in Sources */,
 				9EF33BC9254EC6C10093B1DC /* TagCalloutView.swift in Sources */,
 				9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */,

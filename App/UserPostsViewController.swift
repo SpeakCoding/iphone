@@ -1,7 +1,7 @@
 import UIKit
 
 
-class PostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate {
+class UserPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var placeholderText: String?
     var selectedPostIndex: Int?
