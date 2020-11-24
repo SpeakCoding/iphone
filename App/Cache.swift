@@ -24,7 +24,7 @@ class Cache {
             }
             
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
-            let currentDatabaseVersion = 3
+            let currentDatabaseVersion = 4
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
             print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
             if onDiskDatabaseVersion == currentDatabaseVersion {
@@ -54,7 +54,8 @@ class Cache {
             "number_of_likes" INTEGER,
             "number_of_comments" INTEGER,
             "saved" INTEGER,
-            "liked" INTEGER
+            "liked" INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id)
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -106,8 +107,10 @@ class Cache {
             "id" INTEGER PRIMARY KEY NOT NULL,
             "date" REAL,
             "text" TEXT,
+            "post_id" INTEGER,
             "user_id" INTEGER,
-            "post_id" INTEGER
+            FOREIGN KEY (post_id) REFERENCES posts(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -167,6 +170,7 @@ class Cache {
     func update(comment: Comment, post: Post) {
         assert(comment.id != 0)
         assert(post.id != 0)
+        update(user: comment.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO comments (id) VALUES (?)", values: [comment.id])
         database.executeUpdate(sqlQuery: "UPDATE comments SET date=?,user_id=?,post_id=?,text=? WHERE id=?", values: [comment.date.timeIntervalSinceReferenceDate, comment.user.id, post.id, comment.text, comment.id])
     }
