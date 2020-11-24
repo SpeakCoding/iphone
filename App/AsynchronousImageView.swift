@@ -11,6 +11,18 @@ import UIKit
  */
 class AsynchronousImageView: UIImageView {
     
+    private static let imageCache: ImageCache = {
+        let imageCacheURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first!.appendingPathComponent("Images")
+        return ImageCache(__memoryCapacity: 0, diskCapacity: 50 * 1024 * 1024, directoryURL: imageCacheURL)
+    }()
+    
+    private static let session: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = AsynchronousImageView.imageCache
+        configuration.requestCachePolicy = URLRequest.CachePolicy.returnCacheDataElseLoad
+        return URLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+    }()
+    
     private var currentImageURL: URL?
     private var imageDownloadTask: URLSessionDataTask?
     
@@ -30,14 +42,26 @@ class AsynchronousImageView: UIImageView {
         }
         self.currentImageURL = imageURL
         
-        // Reset the displayed image while we download the new one
-        self.image = nil
-        
         // Cancel the image download in progress we might have
         self.imageDownloadTask?.cancel()
         
+        // Use a cached image if any
+        if let cachedImage = AsynchronousImageView.imageCache.cachedImageFor(url: self.currentImageURL!) {
+            self.image = cachedImage
+            self.imageDownloadTask = nil
+            return
+        }
+        
+        // Reset the displayed image while we download the new one
+        self.image = nil
+        
         // Start downloading the new image
-        self.imageDownloadTask = URLSession.shared.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
+        self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
+            // If we have cancelled the task with self.imageDownloadTask?.cancel(), do nothing
+            if error != nil && (error! as NSError).code == NSURLErrorCancelled {
+                return
+            }
+            
             // The completion closure is called on a secondary thread,
             // make sure we assign the image on the main thread
             DispatchQueue.main.async {
@@ -52,5 +76,30 @@ class AsynchronousImageView: UIImageView {
             }
         }
         self.imageDownloadTask?.resume()
+    }
+}
+
+
+class ImageCache: URLCache {
+    override func storeCachedResponse(_ cachedResponse: CachedURLResponse, for dataTask: URLSessionDataTask) {
+        // By default the URLCache processes HTTP redirections by associating the received data with the last request made.
+        // That is, if the server redirects to a random URL for every image request (say, in the name of security),
+        // we cannot look up cached images by their original URLs.
+        // This implementation associates the received data with the original request instead.
+        if let originalRequest = dataTask.originalRequest, let currentRequest = dataTask.currentRequest {
+            if originalRequest.url != currentRequest.url {
+                super.storeCachedResponse(cachedResponse, for: originalRequest)
+                return
+            }
+        }
+        super.storeCachedResponse(cachedResponse, for: dataTask)
+    }
+    
+    func cachedImageFor(url: URL) -> UIImage? {
+        let request = URLRequest(url: url)
+        if let cachedResponse = self.cachedResponse(for: request) {
+            return UIImage(data: cachedResponse.data)
+        }
+        return nil
     }
 }
