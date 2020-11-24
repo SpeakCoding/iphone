@@ -13,7 +13,6 @@ class Post: ModelObject {
     var likes = [Like]()
     var comments = [Comment]()
     var numberOfLikes = 0
-    var numberOfComments = 0
     var isLiked = false
     var isSaved = false
     

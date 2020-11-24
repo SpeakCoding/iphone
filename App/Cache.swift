@@ -52,7 +52,6 @@ class Cache {
             "image_url" TEXT,
             "location" TEXT,
             "number_of_likes" INTEGER,
-            "number_of_comments" INTEGER,
             "saved" INTEGER,
             "liked" INTEGER,
             FOREIGN KEY (user_id) REFERENCES users(id)
@@ -141,7 +140,7 @@ class Cache {
         assert(post.id != 0)
         update(user: post.user)
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
-        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,number_of_comments=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.numberOfComments, post.isLiked, post.isSaved, post.id])
+        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.isLiked, post.isSaved, post.id])
         update(tags: post.tags, post: post)
         for comment in post.comments {
             update(comment: comment, post: post)
@@ -263,7 +262,6 @@ extension Post {
         self.init(creationDate: date, author: user, postCaption: caption, postImages: images, postVideo: nil, postLocation: location)
         self.id = row["id"] as! Int
         self.numberOfLikes = row["number_of_likes"] as! Int
-        self.numberOfComments = row["number_of_comments"] as! Int
         self.isLiked = (row["liked"] as! Int) != 0
         self.isSaved = (row["saved"] as! Int) != 0
         self.comments = Cache.shared.fetchCommments(post: self)

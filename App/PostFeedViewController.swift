@@ -24,6 +24,7 @@ class PostFeedViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.NewPostNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.PostDeletedNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.FeedUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newCommentHasBeenCreated), name: Notification.Name.NewCommentNotification, object: nil)
     }
     
     deinit {
@@ -41,6 +42,13 @@ class PostFeedViewController: UITableViewController {
     
     @objc private func feedHasBeenUpdated(notification: NSNotification) {
         self.refreshFeedPosts()
+    }
+    
+    @objc private func newCommentHasBeenCreated(notification: NSNotification) {
+        let post = notification.object as! Post
+        if let postIndex = self.feed.posts.firstIndex(of: post) {
+            self.tableView.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
+        }
     }
     
     // MARK: - UITableViewDataSource

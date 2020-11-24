@@ -341,6 +341,7 @@ class ServerAPI {
             if let commentJSON = result as? [String: Any] {
                 let commment = Comment(json: commentJSON)
                 Cache.shared.update(comment: commment, post: post)
+                post.comments.append(comment)
                 completion(commment, nil)
             } else {
                 completion(nil, error)

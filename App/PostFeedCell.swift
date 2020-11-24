@@ -29,8 +29,8 @@ class PostFeedCell: UITableViewCell {
         self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
         self.bookmarkButton.isSelected = newPost.isSaved
         self.captionLabel.text = newPost.caption
-        if newPost.numberOfComments > 0 {
-            self.commentCountLabel.text = "View all \(newPost.numberOfComments) comments"
+        if newPost.comments.count > 0 {
+            self.commentCountLabel.text = "View all \(newPost.comments.count) comments"
             self.commentCountLabel.isHidden = false
         } else {
             self.commentCountLabel.isHidden = true
@@ -82,7 +82,8 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func showAllComments() {
-        #warning("Comments are not implemented")
+        let commentsViewController = CommentsViewController(post: self.post)
+        self.viewController?.navigationController?.pushViewController(commentsViewController, animated: true)
     }
     
     @IBAction private func showOptions() {

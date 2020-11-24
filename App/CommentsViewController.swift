@@ -35,9 +35,9 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        let a = self.becomeFirstResponder()
-//        let b = self.textField.becomeFirstResponder()
-//        print("\(a), \(b)")
+        if let selection = self.tableView.indexPathForSelectedRow {
+            self.tableView.deselectRow(at: selection, animated: true)
+        }
     }
     
     override var inputAccessoryView: UIView? {
@@ -74,6 +74,7 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.comments.append(newComment!)
                 self.tableView.insertRows(at: [insertedIndexPath], with: UITableView.RowAnimation.automatic)
                 self.tableView.scrollToRow(at: insertedIndexPath, at: UITableView.ScrollPosition.bottom, animated: true)
+                NotificationCenter.default.post(name: Notification.Name.NewCommentNotification, object: self.post)
             }
         }
         self.textField.text = ""
@@ -82,6 +83,7 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func replyTo(comment: Comment) {
         self.textField.text = "@" + comment.user.userName + " " + (self.textField.text ?? "")
+        self.textField.postButton.isEnabled = true
     }
     
     // MARK: - UITableViewDataSource
@@ -160,4 +162,9 @@ class CommentTextField: UITextField {
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.maxX - self.postButton.frame.width, y: 0, width: self.postButton.frame.width, height: bounds.height)
     }
+}
+
+
+extension Notification.Name {
+    public static let NewCommentNotification = NSNotification.Name("New comment created")
 }

@@ -17,6 +17,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
         self.refreshClosure = refreshClosure
         super.init(nibName: nil, bundle: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postHasBeenDeleted), name: Notification.Name.PostDeletedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newCommentHasBeenCreated), name: Notification.Name.NewCommentNotification, object: nil)
     }
     
     deinit {
@@ -128,6 +129,15 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
             if let postIndex = self.posts.firstIndex(of: notification.object as! Post) {
                 self.posts.remove(at: postIndex)
                 self.updateDisplayedPosts()
+            }
+        }
+    }
+    
+    @objc private func newCommentHasBeenCreated(notification: NSNotification) {
+        if self.tableView != nil {
+            let post = notification.object as! Post
+            if let postIndex = self.posts.firstIndex(of: post) {
+                self.tableView!.reloadRows(at: [IndexPath(row: postIndex, section: 0)], with: UITableView.RowAnimation.none)
             }
         }
     }
