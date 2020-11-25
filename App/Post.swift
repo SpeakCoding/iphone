@@ -15,6 +15,7 @@ class Post: ModelObject {
     var numberOfLikes = 0
     var isLiked = false
     var isSaved = false
+    var likerFollowee: User?
     
     init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
         self.date = creationDate

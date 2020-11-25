@@ -24,7 +24,7 @@ class Cache {
             }
             
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
-            let currentDatabaseVersion = 4
+            let currentDatabaseVersion = 5
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
             print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
             if onDiskDatabaseVersion == currentDatabaseVersion {
@@ -54,7 +54,9 @@ class Cache {
             "number_of_likes" INTEGER,
             "saved" INTEGER,
             "liked" INTEGER,
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            "liker_followee_id" INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (liker_followee_id) REFERENCES users(id)
             )
             """
             database.executeUpdate(sqlQuery: query, values: nil)
@@ -139,8 +141,11 @@ class Cache {
     func update(post: Post) {
         assert(post.id != 0)
         update(user: post.user)
+        if post.likerFollowee != nil {
+            update(user: post.likerFollowee!)
+        }
         database.executeUpdate(sqlQuery: "INSERT OR IGNORE INTO posts (id) VALUES (?)", values: [post.id])
-        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,liked=?,saved=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.isLiked, post.isSaved, post.id])
+        database.executeUpdate(sqlQuery: "UPDATE posts SET date=?,user_id=?,caption=?,image_url=?,location=?,number_of_likes=?,liked=?,saved=?,liker_followee_id=? WHERE id=?", values: [post.date.timeIntervalSinceReferenceDate, post.user.id, post.caption, post.images?.first?.url.absoluteString, post.location, post.numberOfLikes, post.isLiked, post.isSaved, post.likerFollowee?.id, post.id])
         update(tags: post.tags, post: post)
         for comment in post.comments {
             update(comment: comment, post: post)
@@ -265,6 +270,9 @@ extension Post {
         self.isLiked = (row["liked"] as! Int) != 0
         self.isSaved = (row["saved"] as! Int) != 0
         self.comments = Cache.shared.fetchCommments(post: self)
+        if let likerFolloweeID = row["liker_followee_id"] as? Int {
+            self.likerFollowee = Cache.shared.fetchUser(id: likerFolloweeID)
+        }
     }
 }
 

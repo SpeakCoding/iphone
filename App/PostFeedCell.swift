@@ -10,7 +10,9 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var likeButton: UIButton!
     @IBOutlet private var commentButton: UIButton!
     @IBOutlet private var bookmarkButton: UIButton!
-    @IBOutlet private var likeCountLabel: UILabel!
+    @IBOutlet private var likerFolloweeProfileButton: UIButton!
+    @IBOutlet private var likerFolloweeProfilePictureView: ProfilePictureView!
+    @IBOutlet private var likesLabel: UILabel!
     @IBOutlet private var captionLabel: UILabel!
     @IBOutlet private var commentCountLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
@@ -25,8 +27,7 @@ class PostFeedCell: UITableViewCell {
         
         self.userNameLabel.text = newPost.user.userName
         self.userLocationLabel.text = newPost.location
-        self.likeButton.isSelected = newPost.isLiked
-        self.likeCountLabel.text = "\(newPost.numberOfLikes) likes"
+        self.updateLikes()
         self.bookmarkButton.isSelected = newPost.isSaved
         self.captionLabel.text = newPost.caption
         if newPost.comments.count > 0 {
@@ -38,6 +39,29 @@ class PostFeedCell: UITableViewCell {
         self.dateLabel.text = newPost.date.stringRepresentation
     }
     
+    private func updateLikes() {
+        self.likeButton.isSelected = self.post.isLiked
+        let likerFollowee = self.post.likerFollowee
+        self.likerFolloweeProfilePictureView.showImageAsynchronously(imageURL: likerFollowee?.profilePictureURL)
+        if likerFollowee != nil {
+            self.likerFolloweeProfilePictureView.isHidden = false
+            self.likerFolloweeProfileButton.isHidden = false
+            let textTemplate = (self.post.numberOfLikes > 1) ? "Liked by {user} and {others}" : "Liked by {user}"
+            let text = NSMutableAttributedString(string: textTemplate, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)])
+            if let characterRange = text.string.range(of: "{others}") {
+                text.replaceCharacters(in: NSRange(characterRange, in: text.string), with: NSAttributedString(string: "\(self.post.numberOfLikes - 1) others", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)]))
+            }
+            if let characterRange = text.string.range(of: "{user}") {
+                text.replaceCharacters(in: NSRange(characterRange, in: text.string), with: NSAttributedString(string: likerFollowee!.userName, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)]))
+            }
+            self.likesLabel.attributedText = text
+        } else {
+            self.likerFolloweeProfilePictureView.isHidden = true
+            self.likerFolloweeProfileButton.isHidden = true
+            self.likesLabel.text = "\(self.post.numberOfLikes) likes"
+        }
+    }
+    
     @IBAction private func showUserProfile() {
         let userProfileViewer = UserProfileViewController(user: self.post.user)
         self.viewController?.navigationController?.pushViewController(userProfileViewer, animated: true)
@@ -45,8 +69,7 @@ class PostFeedCell: UITableViewCell {
     
     @IBAction private func toggleLike() {
         self.post.toggleLike()
-        self.likeButton.isSelected = self.post.isLiked
-        self.likeCountLabel.text = "\(self.post.numberOfLikes) likes"
+        self.updateLikes()
         
         let thePostToUpdate = self.post!
         ServerAPI.shared.updatePostLike(self.post, completion: { (updatedPost: Post?, error: Error?) in
@@ -84,6 +107,13 @@ class PostFeedCell: UITableViewCell {
     @IBAction private func showAllComments() {
         let commentsViewController = CommentsViewController(post: self.post)
         self.viewController?.navigationController?.pushViewController(commentsViewController, animated: true)
+    }
+    
+    @IBAction private func showLikerProfile() {
+        if let likerFollowee = self.post.likerFollowee {
+            let userProfileViewer = UserProfileViewController(user: likerFollowee)
+            self.viewController?.navigationController?.pushViewController(userProfileViewer, animated: true)
+        }
     }
     
     @IBAction private func showOptions() {

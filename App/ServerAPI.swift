@@ -512,6 +512,11 @@ extension Post {
         if let comments = json["comments"] as? [[String: Any]] {
             self.comments = comments.map { Comment(json: $0) }
         }
+        if let likerFolloweeJSON = json["liker_followee"] as? [String : Any] {
+            self.likerFollowee = User(json: likerFolloweeJSON)
+        } else {
+            self.likerFollowee = nil
+        }
         self.update(json: json)
     }
     
