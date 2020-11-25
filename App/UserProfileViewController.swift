@@ -139,12 +139,16 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func editProfile() {
-        let profileEditor = UserProfileEditorController() {
-            self.user = User.current!
-            self.displayUserInformation()
+        let profileEditor = UserProfileEditorController() { (profileUpdated: Bool) in
+            if profileUpdated {
+                self.user = User.current!
+                self.displayUserInformation()
+            }
             self.dismiss(animated: true, completion: nil)
         }
-        self.present(profileEditor, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: profileEditor)
+        navigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     @IBAction private func showFollowers() {

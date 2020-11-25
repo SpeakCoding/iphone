@@ -5,17 +5,28 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
     
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var nameField: TextField!
-    @IBOutlet private var bioField: TextView!
-    private var completion: () -> Void
+    @IBOutlet private var bioField: TextField!
+    private var completion: (Bool) -> Void
     private var newProfilePicture: UIImage?
     
-    init(completion: @escaping () -> Void) {
+    init(completion: @escaping (Bool) -> Void) {
         self.completion = completion
         super.init(nibName: "UserProfileEditorController", bundle: nil)
+        self.title = "Edit profile"
+        
+        // Don't allow cancelling when signing up
+        if User.current!.userName.count > 0 {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancel))
+            self.navigationItem.leftBarButtonItem!.tintColor = UIColor.black
+        }
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancel))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.nameField.background = nil
+        self.bioField.background = nil
         
         let currentUser = User.current!
         if let profilePictureURL = currentUser.profilePictureURL {
@@ -32,21 +43,26 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
         }
     }
     
-    @IBAction func save() {
+    @objc func cancel() {
+        self.completion(false)
+    }
+    
+    @objc func save() {
         self.view.isUserInteractionEnabled = false
         ServerAPI.shared.updateProfile(name: self.nameField.text, bio: self.bioField.text, profilePicture: self.newProfilePicture) { (user: User?, error: Error?) in
             self.view.isUserInteractionEnabled = true
             if user != nil {
-                self.completion()
+                self.completion(true)
             } else {
                 self.report(error: error)
             }
         }
     }
     
-    // This is called when the user swipes down to dismiss the login flow view controller after signing up
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        self.completion()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     required init?(coder: NSCoder) {

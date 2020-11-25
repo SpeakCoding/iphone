@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         User.initCurrentUser()
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window!.tintColor = UIColor(named: "sc-blue")
         if User.current == nil {
             let loginViewController = LoginViewController(emailAddress: nil) {
                 self.setupUI()
