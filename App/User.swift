@@ -39,6 +39,7 @@ class User: ModelObject {
             if current == nil {
                 current = User(userName: "")
                 current!.id = currentUserID
+                ServerAPI.shared.getUser(id: currentUserID, completion: {_,_ in })
             }
         }
     }
