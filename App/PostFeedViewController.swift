@@ -13,12 +13,17 @@ class PostFeedViewController: UITableViewController {
         
         self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
         self.tableView.estimatedRowHeight = 503
+        self.tableView.separatorInset = UIEdgeInsets.zero
         
         let refreshControl = UIRefreshControl(frame: CGRect.zero)
         refreshControl.addTarget(self, action: #selector(refreshFeedPosts), for: UIControl.Event.valueChanged)
         refreshControl.layer.zPosition = -1
         self.refreshControl = refreshControl
         
+        if self.feed.posts.count == 0 {
+            self.refreshControl!.beginRefreshing()
+            self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        }
         self.refreshFeedPosts()
         
         NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.NewPostNotification, object: nil)
@@ -35,6 +40,7 @@ class PostFeedViewController: UITableViewController {
         ServerAPI.shared.getFeedPosts(feed: self.feed) { (posts: [Post]?, error: Error?) in
             self.refreshControl!.endRefreshing()
             if posts != nil {
+                self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 self.tableView.reloadData()
             }
         }
