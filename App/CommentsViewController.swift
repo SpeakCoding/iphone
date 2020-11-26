@@ -5,6 +5,10 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var tableViewBottomOffset: NSLayoutConstraint!
+    @IBOutlet private var postDetailsHeaderView: UIView!
+    @IBOutlet private var postAuthorProfilePictureView: ProfilePictureView!
+    @IBOutlet private var captionLabel: UILabel!
+    @IBOutlet private var dateLabel: UILabel!
     @IBOutlet private var accessoryView: UIView!
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var textField: CommentTextField!
@@ -25,6 +29,14 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.postAuthorProfilePictureView.showImageAsynchronously(imageURL: self.post.user.profilePictureURL)
+        self.dateLabel.text = self.post.date.stringRepresentation
+        let text = NSMutableAttributedString(string: self.post.user.userName.appending(" "), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)])
+        text.append(NSAttributedString(string: self.post.caption, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)]))
+        self.captionLabel.attributedText = text
+        self.postDetailsHeaderView.frame.size = self.postDetailsHeaderView.systemLayoutSizeFitting(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat.greatestFiniteMagnitude), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
+        self.tableView.tableHeaderView = self.postDetailsHeaderView
         
         self.tableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "Comment cell")
         self.profilePictureView.showImageAsynchronously(imageURL: User.current?.profilePictureURL)
