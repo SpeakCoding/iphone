@@ -21,11 +21,6 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
         super.init(nibName: "UserListView", bundle: nil)
     }
     
-    init(usersWhoLiked post: Post) {
-        self.mode = UserKind.likers(post)
-        super.init(nibName: "UserListView", bundle: nil)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
