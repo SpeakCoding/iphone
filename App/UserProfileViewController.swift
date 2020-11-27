@@ -152,12 +152,12 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func showFollowers() {
-        let userListViewController = UserListViewController(mode: UserListMode.followers, user: self.user)
+        let userListViewController = UserListViewController(UserKind.followers(self.user))
         self.navigationController?.pushViewController(userListViewController, animated: true)
     }
     
     @IBAction private func showFollowees() {
-        let userListViewController = UserListViewController(mode: UserListMode.followees, user: self.user)
+        let userListViewController = UserListViewController(UserKind.followees(self.user))
         self.navigationController?.pushViewController(userListViewController, animated: true)
     }
     

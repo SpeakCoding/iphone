@@ -10,7 +10,7 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var likeButton: UIButton!
     @IBOutlet private var commentButton: UIButton!
     @IBOutlet private var bookmarkButton: UIButton!
-    @IBOutlet private var likerFolloweeProfileButton: UIButton!
+    @IBOutlet private var showLikersButton: UIButton!
     @IBOutlet private var likerFolloweeProfilePictureView: ProfilePictureView!
     @IBOutlet private var likesLabel: UILabel!
     @IBOutlet private var captionLabel: UILabel!
@@ -45,7 +45,6 @@ class PostFeedCell: UITableViewCell {
         self.likerFolloweeProfilePictureView.showImageAsynchronously(imageURL: likerFollowee?.profilePictureURL)
         if likerFollowee != nil {
             self.likerFolloweeProfilePictureView.isHidden = false
-            self.likerFolloweeProfileButton.isHidden = false
             let textTemplate = (self.post.numberOfLikes > 1) ? "Liked by {user} and {others}" : "Liked by {user}"
             let text = NSMutableAttributedString(string: textTemplate, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)])
             if let characterRange = text.string.range(of: "{others}") {
@@ -57,9 +56,9 @@ class PostFeedCell: UITableViewCell {
             self.likesLabel.attributedText = text
         } else {
             self.likerFolloweeProfilePictureView.isHidden = true
-            self.likerFolloweeProfileButton.isHidden = true
             self.likesLabel.text = "\(self.post.numberOfLikes) likes"
         }
+        self.showLikersButton.isHidden = (self.post.numberOfLikes == 0)
     }
     
     @IBAction private func showUserProfile() {
@@ -109,10 +108,10 @@ class PostFeedCell: UITableViewCell {
         self.viewController?.navigationController?.pushViewController(commentsViewController, animated: true)
     }
     
-    @IBAction private func showLikerProfile() {
-        if let likerFollowee = self.post.likerFollowee {
-            let userProfileViewer = UserProfileViewController(user: likerFollowee)
-            self.viewController?.navigationController?.pushViewController(userProfileViewer, animated: true)
+    @IBAction private func showLikers() {
+        if self.post.numberOfLikes > 0 {
+            let userListViewController = UserListViewController(usersWhoLiked: self.post)
+            self.viewController?.navigationController?.pushViewController(userListViewController, animated: true)
         }
     }
     

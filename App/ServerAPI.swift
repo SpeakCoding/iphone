@@ -229,6 +229,22 @@ class ServerAPI {
         }
     }
     
+    func getUsersWhoLiked(post: Post, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/\(post.id)/likers.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let userJSONs = result as? [[String: Any]] {
+                let users = userJSONs.map { (userJSON) -> User in
+                    let user = User(json: userJSON)
+                    Cache.shared.update(user: user)
+                    return user
+                }
+                completion(users, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     func createPost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
         guard let imageBase64String = image.jpegData(compressionQuality: 0.7)?.base64EncodedString() else {
             completion(nil, NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image"]))

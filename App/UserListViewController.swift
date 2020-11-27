@@ -1,24 +1,28 @@
 import UIKit
 
 
-enum UserListMode {
-    case followers
-    case followees
+enum UserKind {
+    case followers(User)
+    case followees(User)
+    case likers(Post)
 }
 
 class UserListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
-    private var mode: UserListMode
-    private var user: User
+    private var mode: UserKind
     private var users = [User]()
     private var filteredUsers: [User]?
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var placeholderLabel: UILabel!
     private var searchBar: UISearchBar?
     
-    init(mode: UserListMode, user: User) {
-        self.mode = mode
-        self.user = user
+    init(_ userKind: UserKind) {
+        self.mode = userKind
+        super.init(nibName: "UserListView", bundle: nil)
+    }
+    
+    init(usersWhoLiked post: Post) {
+        self.mode = UserKind.likers(post)
         super.init(nibName: "UserListView", bundle: nil)
     }
     
@@ -27,16 +31,18 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.tableView.register(UINib(nibName: "UserCell+FollowButton", bundle: nil), forCellReuseIdentifier: "User cell")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
-        self.tableView.rowHeight = 64
         
         self.placeholderLabel.isHidden = true
         switch self.mode {
-        case .followers:
+        case .followers(let user):
             self.title = "Followers"
-            ServerAPI.shared.getFollowers(user: self.user, completion: self.displayAllUsers)
-        case .followees:
+            ServerAPI.shared.getFollowers(user: user, completion: self.displayAllUsers)
+        case .followees(let user):
             self.title = "Following"
-            ServerAPI.shared.getFollowees(user: self.user, completion: self.displayAllUsers)
+            ServerAPI.shared.getFollowees(user: user, completion: self.displayAllUsers)
+        case .likers(let post):
+            self.title = "Likes"
+            ServerAPI.shared.getUsersWhoLiked(post: post, completion: self.displayAllUsers)
         }
     }
     

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -16,11 +16,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hc7-9I-MrT">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hc7-9I-MrT">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <inset key="separatorInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                     <connections>
@@ -29,7 +29,7 @@
                     </connections>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Nobody found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vaz-lr-mcN">
-                    <rect key="frame" x="108.5" y="203.5" width="103.5" height="19.5"/>
+                    <rect key="frame" x="136" y="298.66666666666669" width="103.33333333333331" height="19.333333333333314"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" systemColor="placeholderTextColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -41,7 +41,7 @@
                 <constraint firstItem="hc7-9I-MrT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Lr8-mL-kkG"/>
                 <constraint firstItem="hc7-9I-MrT" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="a7D-gS-BKl"/>
                 <constraint firstItem="Vaz-lr-mcN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="g2E-hl-Y8a"/>
-                <constraint firstItem="hc7-9I-MrT" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="jYD-o6-02i"/>
+                <constraint firstItem="hc7-9I-MrT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jYD-o6-02i"/>
                 <constraint firstItem="Vaz-lr-mcN" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerYWithinMargins" multiplier="0.75" id="qU3-gA-DLS"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
