@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="emailTextField" destination="MHc-bq-VCg" id="t1y-TJ-zuu"/>
                 <outlet property="errorLabel" destination="kCV-kB-g3d" id="E4Q-Jz-ASt"/>
+                <outlet property="logInButton" destination="9as-dB-Paf" id="OOp-Wk-NTn"/>
                 <outlet property="passwordTextField" destination="eO4-Jh-yWK" id="rac-vY-9r3"/>
                 <outlet property="view" destination="iN0-l3-epB" id="nJh-jt-QjH"/>
             </connections>
@@ -64,27 +65,14 @@
                             <color key="textColor" red="0.97647058823529409" green="0.19607843137254902" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9as-dB-Paf">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9as-dB-Paf">
                             <rect key="frame" x="0.0" y="53.5" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="TzM-K3-31B"/>
                             </constraints>
-                            <state key="normal">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="Already have an account? ">
-                                        <attributes>
-                                            <font key="NSFont" size="18" name="SFUIDisplay-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Log in">
-                                        <attributes>
-                                            <color key="NSColor" red="0.38430999999999998" green="0.52549000000000001" blue="0.95686000000000004" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="18" name="SFUIDisplay-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                            <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="18"/>
+                            <state key="normal" title="Already have an account? Log in">
+                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
                             <connections>
                                 <action selector="logIn" destination="-1" eventType="touchUpInside" id="TLG-C3-YQj"/>

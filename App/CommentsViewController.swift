@@ -40,6 +40,7 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.tableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "Comment cell")
         self.profilePictureView.showImageAsynchronously(imageURL: User.current?.profilePictureURL)
+        self.textField.background = UIImage(named: "comment-field")
         self.textField.postButton.addTarget(self, action: #selector(sendComment), for: UIControl.Event.touchUpInside)
         self.textField.postButton.isEnabled = false
     }

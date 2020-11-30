@@ -166,6 +166,16 @@
                         <constraint firstAttribute="height" constant="1" id="8zX-ml-EjV"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IuY-jS-hTG" customClass="SegmentedControl" customModule="SpeakCoding" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="277" width="414" height="44"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="t0k-lp-OVj"/>
+                    </constraints>
+                    <connections>
+                        <action selector="setPostsViewMode" destination="-1" eventType="valueChanged" id="Ian-Fh-YyV"/>
+                    </connections>
+                </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U9q-gf-O5w" userLabel="Separator">
                     <rect key="frame" x="0.0" y="321" width="414" height="1"/>
                     <color key="backgroundColor" red="0.92941176469999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,16 +203,6 @@
                     <color key="textColor" systemColor="placeholderTextColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IuY-jS-hTG" customClass="SegmentedControl" customModule="SpeakCoding" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="277" width="414" height="44"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="t0k-lp-OVj"/>
-                    </constraints>
-                    <connections>
-                        <action selector="setPostsViewMode" destination="-1" eventType="valueChanged" id="Ian-Fh-YyV"/>
-                    </connections>
-                </view>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>

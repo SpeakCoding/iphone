@@ -6,6 +6,7 @@ class SignupViewController: UIViewController {
     @IBOutlet private var emailTextField: TextField!
     @IBOutlet private var passwordTextField: TextField!
     @IBOutlet private var errorLabel: UILabel!
+    @IBOutlet private var logInButton: UIButton!
     private var emailAddress: String?
     private var completion: () -> Void
     
@@ -25,6 +26,11 @@ class SignupViewController: UIViewController {
         
         self.emailTextField.text = self.emailAddress
         self.errorLabel.isHidden = true
+        
+        let buttonFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
+        let buttonText = NSMutableAttributedString(string: "Already have an account? ", attributes: [NSAttributedString.Key.font: buttonFont, NSAttributedString.Key.foregroundColor: UIColor.black])
+        buttonText.append(NSAttributedString(string: "Log in", attributes: [NSAttributedString.Key.font: buttonFont, NSAttributedString.Key.foregroundColor: UIColor(named: "sc-blue")!]))
+        self.logInButton.setAttributedTitle(buttonText, for: UIControl.State.normal)
     }
     
     @objc private func keyboardWillChangeFrame(notification: Notification) {

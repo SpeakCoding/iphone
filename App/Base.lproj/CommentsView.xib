@@ -49,6 +49,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPd-cP-bqM" userLabel="Separator">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.92941176469999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="NnV-0L-L3u"/>
+                    </constraints>
+                </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TE-Mx-dip" customClass="ProfilePictureView" customModule="SpeakCoding" customModuleProvider="target">
                     <rect key="frame" x="12" y="8" width="44" height="44"/>
                     <constraints>
@@ -68,12 +75,15 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
+                <constraint firstItem="PPd-cP-bqM" firstAttribute="top" secondItem="KOy-i4-eBO" secondAttribute="top" id="11n-aH-tdA"/>
                 <constraint firstItem="pxh-Zs-Uaq" firstAttribute="leading" secondItem="7TE-Mx-dip" secondAttribute="trailing" constant="12" id="REy-tl-cNE"/>
                 <constraint firstItem="7TE-Mx-dip" firstAttribute="centerY" secondItem="KOy-i4-eBO" secondAttribute="centerY" id="UrC-nH-4mI"/>
                 <constraint firstItem="7TE-Mx-dip" firstAttribute="leading" secondItem="KOy-i4-eBO" secondAttribute="leading" constant="12" id="Uvl-T2-WSd"/>
+                <constraint firstItem="PPd-cP-bqM" firstAttribute="leading" secondItem="KOy-i4-eBO" secondAttribute="leading" id="dCp-5o-0Ag"/>
                 <constraint firstItem="pxh-Zs-Uaq" firstAttribute="bottom" secondItem="7TE-Mx-dip" secondAttribute="bottom" id="gQm-lX-2Oj"/>
                 <constraint firstItem="pxh-Zs-Uaq" firstAttribute="top" secondItem="7TE-Mx-dip" secondAttribute="top" id="hOy-KI-2Zh"/>
                 <constraint firstAttribute="trailing" secondItem="pxh-Zs-Uaq" secondAttribute="trailing" constant="12" id="i3x-Mb-sFd"/>
+                <constraint firstAttribute="trailing" secondItem="PPd-cP-bqM" secondAttribute="trailing" id="kt5-FQ-OTV"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
