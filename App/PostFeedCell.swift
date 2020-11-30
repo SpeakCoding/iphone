@@ -16,7 +16,17 @@ class PostFeedCell: UITableViewCell {
     @IBOutlet private var captionLabel: UILabel!
     @IBOutlet private var commentCountLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
+    private var doubleTapRecognizer: UITapGestureRecognizer!
     weak var viewController: UIViewController?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLike))
+        self.doubleTapRecognizer.numberOfTapsRequired = 2
+        self.doubleTapRecognizer.delegate = self
+        self.contentView.addGestureRecognizer(self.doubleTapRecognizer)
+    }
     
     var post: Post!
     func setPost(_ newPost: Post) {
@@ -155,6 +165,13 @@ class PostFeedCell: UITableViewCell {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.viewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer == self.doubleTapRecognizer {
+            return self.postImageView.bounds.contains(touch.location(in: self.postImageView))
+        }
+        return true
     }
 }
 
