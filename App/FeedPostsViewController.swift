@@ -1,7 +1,7 @@
 import UIKit
 
 
-class PostFeedViewController: UITableViewController {
+class FeedPostsViewController: UITableViewController {
     
     private var feed = Feed()
     

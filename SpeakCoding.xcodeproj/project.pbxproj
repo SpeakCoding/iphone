@@ -15,7 +15,7 @@
 		9E1E079E2566AAE1005B79C7 /* UserListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E1E079C2566AAE1005B79C7 /* UserListView.xib */; };
 		9E1E07A12566B7F9005B79C7 /* UserCell+FollowButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E1E079F2566B7F9005B79C7 /* UserCell+FollowButton.xib */; };
 		9E2478A72503658C007EBBEB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2478A62503658C007EBBEB /* LoginViewController.swift */; };
-		9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* PostFeedViewController.swift */; };
+		9E772B8624FE21B40044E328 /* FeedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E772B8524FE21B40044E328 /* FeedPostsViewController.swift */; };
 		9E7AE7CE255402F8005F11B6 /* TagEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */; };
 		9E7AE7D12554063E005F11B6 /* TagEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7CF2554063E005F11B6 /* TagEditorController.xib */; };
 		9E7AE7D32555466C005F11B6 /* UserLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */; };
@@ -73,7 +73,7 @@
 		9E1E079D2566AAE1005B79C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserListView.xib; sourceTree = "<group>"; };
 		9E1E07A02566B7F9005B79C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/UserCell+FollowButton.xib"; sourceTree = "<group>"; };
 		9E2478A62503658C007EBBEB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		9E772B8524FE21B40044E328 /* PostFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedViewController.swift; sourceTree = "<group>"; };
+		9E772B8524FE21B40044E328 /* FeedPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsViewController.swift; sourceTree = "<group>"; };
 		9E7AE7CD255402F8005F11B6 /* TagEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagEditorController.swift; sourceTree = "<group>"; };
 		9E7AE7D02554063E005F11B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TagEditorController.xib; sourceTree = "<group>"; };
 		9E7AE7D22555466C005F11B6 /* UserLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookupViewController.swift; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 				9EB6DB82250368C300C60EBF /* LoginView.xib */,
 				9EA023A3251B672D00D5703A /* SignupViewController.swift */,
 				9EA023A5251B681C00D5703A /* SignupView.xib */,
-				9E772B8524FE21B40044E328 /* PostFeedViewController.swift */,
+				9E772B8524FE21B40044E328 /* FeedPostsViewController.swift */,
 				9EB6DB8A2503AD7200C60EBF /* PostFeedCell.swift */,
 				9EB6DB872503A01F00C60EBF /* PostFeedCell.xib */,
 				9E1E079625669025005B79C7 /* UserPostsViewController.swift */,
@@ -321,7 +321,7 @@
 				9EAE9A86256A7EB700928DF6 /* CommentCell.swift in Sources */,
 				9EAE9A88256BA3CD00928DF6 /* PostEditorController.swift in Sources */,
 				9EB6DB8625036BFC00C60EBF /* TextField.swift in Sources */,
-				9E772B8624FE21B40044E328 /* PostFeedViewController.swift in Sources */,
+				9E772B8624FE21B40044E328 /* FeedPostsViewController.swift in Sources */,
 				9E11AD07250A5B8100275489 /* PostComposerViewController.swift in Sources */,
 				9E7AE7D32555466C005F11B6 /* UserLookupViewController.swift in Sources */,
 				9EDC2A3C24EE9DD500902B93 /* Tag.swift in Sources */,
