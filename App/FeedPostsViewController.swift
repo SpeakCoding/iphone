@@ -5,11 +5,19 @@ class FeedPostsViewController: UITableViewController {
     
     private var feed = Feed()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    init() {
+        super.init(style: UITableView.Style.plain)
         self.navigationItem.titleView = UIImageView(image: UIImage(named: "feed-logo"))
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.NewPostNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.PostDeletedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.FeedUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newCommentHasBeenCreated), name: Notification.Name.NewCommentNotification, object: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
         self.tableView.estimatedRowHeight = 503
@@ -25,11 +33,6 @@ class FeedPostsViewController: UITableViewController {
             self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         }
         self.refreshFeedPosts()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.NewPostNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.PostDeletedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(feedHasBeenUpdated), name: Notification.Name.FeedUpdatedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(newCommentHasBeenCreated), name: Notification.Name.NewCommentNotification, object: nil)
     }
     
     deinit {
@@ -68,5 +71,9 @@ class FeedPostsViewController: UITableViewController {
         postCell.setPost(self.feed.posts[indexPath.row])
         postCell.viewController = self
         return postCell
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

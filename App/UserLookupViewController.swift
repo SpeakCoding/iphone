@@ -52,8 +52,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.lookupRequestTask?.cancel()
-        self.lookupRequestTask = nil
+        self.cancelSearchTasks()
         self.completion(self.searchResults[indexPath.row])
     }
     
