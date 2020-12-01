@@ -3,6 +3,7 @@ import UIKit
 
 enum TabBarItemTag: Int {
     case home
+    case search
     case newPost
     case likedPosts
     case profile
@@ -54,6 +55,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         homeTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-home"), selectedImage: UIImage(named: "tab-bar-item-home-selected"))
         homeTabViewController.tabBarItem.tag = TabBarItemTag.home.rawValue
         
+        let userSearchViewController = UINavigationController(rootViewController: UserSearchViewController())
+        userSearchViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-search"), selectedImage: UIImage(named: "tab-bar-item-search-selected"))
+        userSearchViewController.tabBarItem.tag = TabBarItemTag.search.rawValue
+        
         let newPostTabViewController = UIViewController(nibName: nil, bundle: nil)
         newPostTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-post"), selectedImage: UIImage(named: "tab-bar-item-post-selected"))
         newPostTabViewController.tabBarItem.tag = TabBarItemTag.newPost.rawValue
@@ -68,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         // Set up the tab bar controller and display it in the app's window
         self.tabBarController = UITabBarController(nibName: nil, bundle: nil)
-        self.tabBarController.viewControllers = [homeTabViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
+        self.tabBarController.viewControllers = [homeTabViewController, userSearchViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
         self.tabBarController.delegate = self
     }
     
