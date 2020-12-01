@@ -29,7 +29,7 @@ class ServerAPI {
                 self.accessToken = metadata?["authentication_token"]
                 UserDefaults.standard.set(self.accessToken, forKey: "access token")
                 
-                let currentUser = User(json: userJSON)
+                let currentUser = User.instance(withJSON: userJSON)
                 User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
             } else {
@@ -46,7 +46,7 @@ class ServerAPI {
                 self.accessToken = metadata?["authentication_token"]
                 UserDefaults.standard.set(self.accessToken, forKey: "access token")
                 
-                let currentUser = User(json: userJSON)
+                let currentUser = User.instance(withJSON: userJSON)
                 User.setCurrentUser(currentUser)
                 completion(currentUser, nil)
             } else {
@@ -73,7 +73,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
-                let updatedUser = User(json: userJSON)
+                let updatedUser = User.instance(withJSON: userJSON)
                 User.setCurrentUser(updatedUser)
                 completion(updatedUser, nil)
             } else {
@@ -86,10 +86,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
-                let user = User(json: userJSON)
-                if user == User.current {
-                    User.setCurrentUser(user)
-                }
+                let user = User.instance(withJSON: userJSON)
                 Cache.shared.update(user: user)
                 completion(user, nil)
             } else {
@@ -108,7 +105,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSON = result as? [String: Any] {
-                user.update(json: userJSON)
+                let user = User.instance(withJSON: userJSON)
                 Cache.shared.update(user: user)
                 completion(user, nil)
             } else {
@@ -122,7 +119,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
-                    let user = User(json: userJSON)
+                    let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
@@ -138,7 +135,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
-                    let user = User(json: userJSON)
+                    let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
@@ -154,7 +151,7 @@ class ServerAPI {
         return performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
-                    let user = User(json: userJSON)
+                    let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
@@ -170,7 +167,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    Post(json: postJSON)
+                    Post.instance(withJSON: postJSON)
                 }
                 feed.posts = posts
                 Cache.shared.update(feed: feed)
@@ -186,7 +183,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    let post = Post(json: postJSON)
+                    let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
@@ -202,7 +199,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    let post = Post(json: postJSON)
+                    let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
@@ -218,7 +215,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
-                    let post = Post(json: postJSON)
+                    let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
@@ -234,7 +231,7 @@ class ServerAPI {
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
-                    let user = User(json: userJSON)
+                    let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
@@ -252,7 +249,7 @@ class ServerAPI {
         }
         let requestParameters = ["post": [
             "location": post.location as Any,
-            "description": post.caption,
+            "description": post.caption!,
             "image": "data:image/jpeg;base64,".appending(imageBase64String),
             "tags": post.tags.map { (tag) -> [String: Any] in
                 return [
@@ -265,8 +262,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                let post = Post(json: postJSON)
-                User.current?.numberOfPosts = post.user.numberOfPosts
+                let post = Post.instance(withJSON: postJSON)
                 Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
@@ -277,7 +273,7 @@ class ServerAPI {
     
     func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
-            "description": post.caption,
+            "description": post.caption!,
             "tags": post.tags.map { (tag) -> [String: Any] in
                 return [
                     "user_id": tag.user.id,
@@ -289,7 +285,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/posts/\(post.id).json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                let post = Post(json: postJSON)
+                let post = Post.instance(withJSON: postJSON)
                 Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
@@ -322,7 +318,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                post.update(json: postJSON)
+                let post = Post.instance(withJSON: postJSON)
                 Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
@@ -341,7 +337,7 @@ class ServerAPI {
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let postJSON = result as? [String: Any] {
-                post.update(json: postJSON)
+                let post = Post.instance(withJSON: postJSON)
                 Cache.shared.update(post: post)
                 completion(post, nil)
             } else {
@@ -351,14 +347,14 @@ class ServerAPI {
     }
     
     func createComment(_ comment: Comment, to post: Post, completion: @escaping ((Comment?, Error?) -> Void)) {
-        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text]]
+        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text!]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/comments.json", authorized: true, parameters: requestParameters)
         performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
             if let commentJSON = result as? [String: Any] {
-                let commment = Comment(json: commentJSON)
-                Cache.shared.update(comment: commment, post: post)
+                let comment = Comment.instance(withJSON: commentJSON)
+                Cache.shared.update(comment: comment, post: post)
                 post.comments.append(comment)
-                completion(commment, nil)
+                completion(comment, nil)
             } else {
                 completion(nil, error)
             }
@@ -459,9 +455,11 @@ class ServerAPI {
                         if result == nil {
                             if let firstErrorInfo = (responseJSON["errors"] as? [[String: Any]])?.first {
                                 reportedError = NSError(domain: "API", code: 1, userInfo: [NSLocalizedDescriptionKey: firstErrorInfo["detail"] as? String ?? "Unknown"])
+                                print("⚠️ Request \(request.httpMethod!) \(request.url!.path) failed: \(firstErrorInfo)")
                             } else {
                                 if let errorMessage = responseJSON["error"] as? String {
                                     reportedError = NSError(domain: "API", code: 1, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                                    print("⚠️ Request \(request.httpMethod!) \(request.url!.path) failed: \(errorMessage)")
                                 }
                             }
                         }
@@ -485,61 +483,71 @@ class ServerAPI {
 
 
 extension User {
-    convenience init(json: [String: Any]) {
-        let userName = json["full_name"] as! String
-        self.init(userName: userName)
-        self.id = json["id"] as! Int
+    class func instance(withJSON json: [String: Any]) -> User {
+        let user: User = self.instance(withID: json["id"] as! Int)
+        user.userName = (json["full_name"] as! String)
         if let pictureURI = json["portrait"] as? String {
-            self.profilePictureURL = URL(string: pictureURI)
+            user.profilePictureURL = URL(string: pictureURI)
+        } else {
+            user.profilePictureURL = nil
         }
-        self.bio = json["bio"] as? String
-        self.numberOfPosts = json["posts_count"] as! Int
-        self.update(json: json)
-    }
-    
-    func update(json: [String: Any]) {
-        self.numberOfFollowers = json["followers_count"] as! Int
-        self.numberOfFollowees = json["followees_count"] as! Int
+        user.bio = json["bio"] as? String
+        user.numberOfPosts = json["posts_count"] as! Int
+        user.numberOfFollowers = json["followers_count"] as! Int
+        user.numberOfFollowees = json["followees_count"] as! Int
         if let isFollower = json["is_follower"] as? Bool {
-            self.isFollower = isFollower
+            user.isFollower = isFollower
         }
         if let isFollowed = json["is_followee"] as? Bool {
-            self.isFollowed = isFollowed
+            user.isFollowed = isFollowed
         }
+        return user
     }
 }
 
 
 extension Post {
-    convenience init(json: [String: Any]) {
-        let date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
-        let user = User(json: json["user"] as! [String : Any])
-        let text = json["description"] as! String
-        var images: [Image]?
+    class func instance(withJSON json: [String: Any]) -> Post {
+        let post: Post = self.instance(withID: json["id"] as! Int)
+        post.date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
+        post.user = User.instance(withJSON: json["user"] as! [String : Any])
+        post.caption = (json["description"] as! String)
         if let imageURL = URL(string: json["image"] as! String) {
-            images = [Image(url: imageURL)]
+            post.images = [Image(url: imageURL)]
+        } else {
+            post.images = nil
         }
-        let location = json["location"] as? String
-        self.init(creationDate: date, author: user, postCaption: text, postImages: images, postVideo: nil, postLocation: location)
-        self.id = json["id"] as! Int
+        post.location = json["location"] as? String
         if let tags = json["tags"] as? [[String: Any]] {
-            self.tags = tags.map { Tag(json: $0) }
+            post.tags = tags.map { Tag(json: $0) }
+        } else {
+            post.tags = []
         }
         if let comments = json["comments"] as? [[String: Any]] {
-            self.comments = comments.map { Comment(json: $0) }
+            post.comments = comments.map { Comment.instance(withJSON: $0) }
+        } else {
+            post.comments = []
         }
         if let likerFolloweeJSON = json["liker_followee"] as? [String : Any] {
-            self.likerFollowee = User(json: likerFolloweeJSON)
+            post.likerFollowee = User.instance(withJSON: likerFolloweeJSON)
         } else {
-            self.likerFollowee = nil
+            post.likerFollowee = nil
         }
-        self.update(json: json)
+        post.numberOfLikes = json["likes_count"] as! Int
+        post.isLiked = json["liked"] as! Bool
+        post.isSaved = json["saved"] as! Bool
+        return post
     }
-    
-    func update(json: [String: Any]) {
-        self.numberOfLikes = json["likes_count"] as! Int
-        self.isLiked = json["liked"] as! Bool
-        self.isSaved = json["saved"] as! Bool
+}
+
+
+extension Comment {
+    class func instance(withJSON json: [String: Any]) -> Comment {
+        let comment: Comment = self.instance(withID: json["id"] as! Int)
+        comment.date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
+        comment.user = User.instance(withJSON: json["user"] as! [String : Any])
+        comment.text = (json["body"] as! String)
+        return comment
     }
 }
 
@@ -554,19 +562,8 @@ extension Image {
 
 extension Tag {
     convenience init(json: [String: Any]) {
-        let user = User(json: json["user"] as! [String : Any])
+        let user = User.instance(withJSON: json["user"] as! [String : Any])
         let point = Point(x: json["left"] as! Double, y: json["top"] as! Double)
         self.init(taggedUser: user, point: point)
-    }
-}
-
-
-extension Comment {
-    convenience init(json: [String: Any]) {
-        let date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
-        let user = User(json: json["user"] as! [String : Any])
-        let text = json["body"] as! String
-        self.init(date: date, user: user, text: text)
-        self.id = json["id"] as! Int
     }
 }

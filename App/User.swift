@@ -3,7 +3,7 @@ import Foundation
 
 class User: ModelObject {
     
-    var userName: String
+    var userName: String!
     var profilePictureURL: URL?
     var bio: String?
     var numberOfPosts = 0
@@ -12,7 +12,12 @@ class User: ModelObject {
     var isFollower = false
     var isFollowed = false
     
-    init(userName: String) {
+    required init(id: Int) {
+        super.init(id: id)
+    }
+    
+    convenience init(userName: String) {
+        self.init(id: 0)
         self.userName = userName
     }
     
@@ -37,8 +42,8 @@ class User: ModelObject {
         if currentUserID != 0 {
             current = Cache.shared.fetchUser(id: currentUserID)
             if current == nil {
-                current = User(userName: "")
-                current!.id = currentUserID
+                current = User.instance(withID: currentUserID)
+                current!.userName = ""
                 ServerAPI.shared.getUser(id: currentUserID, completion: {_,_ in })
             }
         }

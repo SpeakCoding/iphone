@@ -3,9 +3,9 @@ import Foundation
 
 class Post: ModelObject {
     
-    var date: Date
-    var user: User
-    var caption: String
+    var date: Date!
+    var user: User!
+    var caption: String!
     var images: [Image]?
     var video: Video?
     var location: String?
@@ -17,7 +17,12 @@ class Post: ModelObject {
     var isSaved = false
     var likerFollowee: User?
     
-    init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
+    required init(id: Int) {
+        super.init(id: id)
+    }
+    
+    convenience init(creationDate: Date, author: User, postCaption: String, postImages: [Image]?, postVideo: Video?, postLocation: String?) {
+        self.init(id: 0)
         self.date = creationDate
         self.user = author
         self.caption = postCaption

@@ -192,37 +192,37 @@ class Cache {
     }
     
     func fetchPost(id: Int) -> Post? {
-        if let matchingPost = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
-            return Post(row: matchingPost)
+        if let matchingPostInfo = database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE id=?", parameters: [id]).first {
+            return Post.instance(withSQLRow: matchingPostInfo)
         }
         return nil
     }
     
     func fetchUser(id: Int) -> User? {
-        if let matchingUser = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE id=?", parameters: [id]).first {
-            return User(row: matchingUser)
+        if let matchingUserInfo = database.executeQuery(sqlQuery: "SELECT * FROM users WHERE id=?", parameters: [id]).first {
+            return User.instance(withSQLRow: matchingUserInfo)
         }
         return nil
     }
     
     func fetchFeedPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts INNER JOIN feed ON posts.id=feed.post_id ORDER BY feed.position ASC", parameters: nil).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts INNER JOIN feed ON posts.id=feed.post_id ORDER BY feed.position ASC", parameters: nil).map { Post.instance(withSQLRow: $0) }
     }
     
     func fetchSavedPosts() -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY id DESC", parameters: nil).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE saved=1 ORDER BY id DESC", parameters: nil).map { Post.instance(withSQLRow: $0) }
     }
     
     func fetchPostsMadeBy(user: User) -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY id DESC", parameters: [user.id]).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE user_id=? ORDER BY id DESC", parameters: [user.id]).map { Post.instance(withSQLRow: $0) }
     }
     
     func fetchPostsWithTagged(user: User) -> [Post] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY id DESC", parameters: [user.id]).map { Post(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM posts WHERE EXISTS (SELECT post_id,user_id FROM tags WHERE post_id=posts.id AND user_id=?) ORDER BY id DESC", parameters: [user.id]).map { Post.instance(withSQLRow: $0) }
     }
     
     func fetchCommments(post: Post) -> [Comment] {
-        return database.executeQuery(sqlQuery: "SELECT * FROM comments WHERE post_id=? ORDER BY date ASC", parameters: [post.id]).map { Comment(row: $0) }
+        return database.executeQuery(sqlQuery: "SELECT * FROM comments WHERE post_id=? ORDER BY date ASC", parameters: [post.id]).map { Comment.instance(withSQLRow: $0) }
     }
     
     func delete(post: Post) {
@@ -235,54 +235,55 @@ class Cache {
 
 
 extension User {
-    convenience init(row: [String: Any?]) {
-        let name = row["user_name"] as! String
-        self.init(userName: name)
-        self.id = row["id"] as! Int
+    class func instance(withSQLRow row: [String: Any?]) -> User {
+        let user: User = self.instance(withID: row["id"] as! Int)
+        user.userName = (row["user_name"] as! String)
         if let pictureURI = row["profile_picture_url"] as? String {
-            self.profilePictureURL = URL(string: pictureURI)
+            user.profilePictureURL = URL(string: pictureURI)
         }
-        self.bio = row["bio"] as? String
-        self.numberOfPosts = row["number_of_posts"] as! Int
-        self.numberOfFollowers = row["followers_count"] as! Int
-        self.numberOfFollowees = row["followees_count"] as! Int
-        self.isFollower = (row["is_follower"] as! Int) != 0
-        self.isFollowed = (row["is_followed"] as! Int) != 0
+        user.bio = row["bio"] as? String
+        user.numberOfPosts = row["number_of_posts"] as! Int
+        user.numberOfFollowers = row["followers_count"] as! Int
+        user.numberOfFollowees = row["followees_count"] as! Int
+        user.isFollower = (row["is_follower"] as! Int) != 0
+        user.isFollowed = (row["is_followed"] as! Int) != 0
+        return user
     }
 }
 
 
 extension Post {
-    convenience init(row: [String: Any?]) {
-        let date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
-        let user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
-        let caption = row["caption"] as! String
-        var images: [Image]?
+    class func instance(withSQLRow row: [String: Any?]) -> Post {
+        let post: Post = self.instance(withID: row["id"] as! Int)
+        post.date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
+        post.user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
+        post.caption = (row["caption"] as! String)
         if let imageURI = row["image_url"] as? String {
             if let imageURL = URL(string: imageURI) {
-                images = [Image(url: imageURL)]
+                post.images = [Image(url: imageURL)]
             }
+        } else {
+            post.images = nil
         }
-        let location = row["location"] as? String
-        self.init(creationDate: date, author: user, postCaption: caption, postImages: images, postVideo: nil, postLocation: location)
-        self.id = row["id"] as! Int
-        self.numberOfLikes = row["number_of_likes"] as! Int
-        self.isLiked = (row["liked"] as! Int) != 0
-        self.isSaved = (row["saved"] as! Int) != 0
-        self.comments = Cache.shared.fetchCommments(post: self)
+        post.location = row["location"] as? String
+        post.numberOfLikes = row["number_of_likes"] as! Int
+        post.isLiked = (row["liked"] as! Int) != 0
+        post.isSaved = (row["saved"] as! Int) != 0
+        post.comments = Cache.shared.fetchCommments(post: post)
         if let likerFolloweeID = row["liker_followee_id"] as? Int {
-            self.likerFollowee = Cache.shared.fetchUser(id: likerFolloweeID)
+            post.likerFollowee = Cache.shared.fetchUser(id: likerFolloweeID)
         }
+        return post
     }
 }
 
 
 extension Comment {
-    convenience init(row: [String: Any?]) {
-        let date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
-        let user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
-        let text = row["text"] as! String
-        self.init(date: date, user: user, text: text)
-        self.id = row["id"] as! Int
+    class func instance(withSQLRow row: [String: Any?]) -> Comment {
+        let comment: Comment = self.instance(withID: row["id"] as! Int)
+        comment.date = Date(timeIntervalSinceReferenceDate: row["date"] as! TimeInterval)
+        comment.user = Cache.shared.fetchUser(id: row["user_id"] as! Int)!
+        comment.text = (row["text"] as! String)
+        return comment
     }
 }
