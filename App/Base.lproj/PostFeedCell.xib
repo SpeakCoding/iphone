@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -70,11 +71,6 @@
                             <action selector="addComment" destination="A6V-Dk-2ln" eventType="touchUpInside" id="fVa-mZ-yLp"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hur-8x-yOl">
-                        <rect key="frame" x="88" y="363" width="58" height="54"/>
-                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                        <state key="normal" image="button-plane"/>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jYv-1q-kOm">
                         <rect key="frame" x="276" y="369" width="42" height="42"/>
                         <inset key="contentEdgeInsets" minX="13" minY="10" maxX="13" maxY="10"/>
@@ -141,7 +137,6 @@
                 <constraints>
                     <constraint firstItem="OIH-jW-oKR" firstAttribute="leading" secondItem="j0p-QC-TPu" secondAttribute="leading" constant="15" id="2rx-7T-Hqm"/>
                     <constraint firstItem="eSN-gw-QzG" firstAttribute="top" secondItem="3xs-EP-1iu" secondAttribute="bottom" constant="14" id="4UI-r2-MjW"/>
-                    <constraint firstItem="Hur-8x-yOl" firstAttribute="leading" secondItem="bPL-zP-51o" secondAttribute="trailing" id="5nb-dm-rgM"/>
                     <constraint firstItem="TFi-vK-P2h" firstAttribute="bottom" secondItem="DoB-N1-N98" secondAttribute="bottom" constant="5" id="8iW-Y0-1FT"/>
                     <constraint firstItem="jYv-1q-kOm" firstAttribute="centerY" secondItem="cu6-Rx-tec" secondAttribute="centerY" id="9h7-Bg-Ksf"/>
                     <constraint firstItem="cu6-Rx-tec" firstAttribute="leading" secondItem="j0p-QC-TPu" secondAttribute="leading" constant="5" id="Cqb-up-ii9"/>
@@ -162,7 +157,6 @@
                     <constraint firstItem="Ht9-6C-9u6" firstAttribute="leading" secondItem="Hd5-ST-RMO" secondAttribute="leading" id="UgP-hn-7c3"/>
                     <constraint firstItem="xo1-Ji-pR8" firstAttribute="top" secondItem="DoB-N1-N98" secondAttribute="bottom" constant="6" id="WHR-pM-ws7"/>
                     <constraint firstItem="Y17-Bp-kQm" firstAttribute="top" secondItem="xo1-Ji-pR8" secondAttribute="top" id="ae3-wA-E8f"/>
-                    <constraint firstItem="Hur-8x-yOl" firstAttribute="centerY" secondItem="cu6-Rx-tec" secondAttribute="centerY" id="ag6-sh-pla"/>
                     <constraint firstItem="bPL-zP-51o" firstAttribute="centerY" secondItem="cu6-Rx-tec" secondAttribute="centerY" id="bgl-YC-dUP"/>
                     <constraint firstAttribute="trailing" secondItem="xo1-Ji-pR8" secondAttribute="trailing" constant="15" id="dkS-pn-3px"/>
                     <constraint firstItem="3xs-EP-1iu" firstAttribute="top" secondItem="j0p-QC-TPu" secondAttribute="top" constant="14" id="ePm-zR-l5k"/>
@@ -211,6 +205,5 @@
         <image name="button-ellipsis" width="13" height="3"/>
         <image name="button-like-off" width="22" height="19"/>
         <image name="button-like-on" width="22" height="19"/>
-        <image name="button-plane" width="19" height="17"/>
     </resources>
 </document>
