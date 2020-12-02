@@ -25,6 +25,9 @@ extension UIViewController {
                         self.dismiss(animated: true, completion: nil)
                         UIViewController.imagePickerDelegate = nil
                     }
+                    if picker.sourceType == UIImagePickerController.SourceType.camera {
+                        postComposer.navigationItem.hidesBackButton = true
+                    }
                     picker.pushViewController(postComposer, animated: true)
                     return
                 }
