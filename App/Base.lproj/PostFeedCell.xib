@@ -48,7 +48,7 @@
                             <action selector="showOptions" destination="A6V-Dk-2ln" eventType="touchUpInside" id="mph-CD-aKf"/>
                         </connections>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSN-gw-QzG" customClass="AsynchronousImageView" customModule="SpeakCoding" customModuleProvider="target">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSN-gw-QzG" customClass="AsynchronousImageView" customModule="SpeakCoding" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="64" width="320" height="300"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="300" id="9px-r4-j0L"/>
