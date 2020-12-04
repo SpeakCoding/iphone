@@ -173,6 +173,13 @@ class PostFeedCell: UITableViewCell {
         }
         return true
     }
+    
+    class var estimatedHeight: CGFloat {
+        get {
+            let prototypeCell = UINib(nibName: "PostFeedCell", bundle: nil).instantiate(withOwner: nil, options: nil).first as! UITableViewCell
+            return ceil(prototypeCell.contentView.systemLayoutSizeFitting(CGSize(width: UIScreen.main.bounds.width, height: CGFloat.greatestFiniteMagnitude), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel).height)
+        }
+    }
 }
 
 

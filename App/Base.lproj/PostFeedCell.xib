@@ -9,10 +9,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="A6V-Dk-2ln" customClass="PostFeedCell" customModule="SpeakCoding" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="A6V-Dk-2ln" id="j0p-QC-TPu">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9fB-gJ-tli" userLabel="User Profile Button">
@@ -48,14 +48,14 @@
                             <action selector="showOptions" destination="A6V-Dk-2ln" eventType="touchUpInside" id="mph-CD-aKf"/>
                         </connections>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSN-gw-QzG" customClass="AsynchronousImageView" customModule="SpeakCoding" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="64" width="320" height="300"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSN-gw-QzG" customClass="AsynchronousImageView" customModule="SpeakCoding" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="64" width="320" height="320"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="300" id="9px-r4-j0L"/>
+                            <constraint firstAttribute="width" secondItem="eSN-gw-QzG" secondAttribute="height" id="jY1-aP-Ch9"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cu6-Rx-tec">
-                        <rect key="frame" x="5" y="369" width="42" height="42"/>
+                        <rect key="frame" x="5" y="389" width="42" height="42"/>
                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                         <state key="normal" image="button-like-off"/>
                         <state key="selected" image="button-like-on"/>
@@ -64,7 +64,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPL-zP-51o">
-                        <rect key="frame" x="47" y="369" width="41" height="42"/>
+                        <rect key="frame" x="47" y="389" width="41" height="42"/>
                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                         <state key="normal" image="button-comment"/>
                         <connections>
@@ -72,7 +72,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jYv-1q-kOm">
-                        <rect key="frame" x="276" y="369" width="42" height="42"/>
+                        <rect key="frame" x="276" y="389" width="42" height="42"/>
                         <inset key="contentEdgeInsets" minX="13" minY="10" maxX="13" maxY="10"/>
                         <state key="normal" image="button-bookmark-off"/>
                         <state key="selected" image="button-bookmark-on"/>
@@ -81,7 +81,7 @@
                         </connections>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DoB-N1-N98">
-                        <rect key="frame" x="15" y="416" width="67" height="15"/>
+                        <rect key="frame" x="15" y="436" width="67" height="15"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mnl-Th-HE1" customClass="ProfilePictureView" customModule="SpeakCoding" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
@@ -99,13 +99,13 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y17-Bp-kQm" userLabel="Show All Comments Button">
-                        <rect key="frame" x="15" y="437" width="290" height="35"/>
+                        <rect key="frame" x="15" y="457" width="290" height="35"/>
                         <connections>
                             <action selector="showAllComments" destination="A6V-Dk-2ln" eventType="touchUpInside" id="PX0-di-DbG"/>
                         </connections>
                     </button>
                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="xo1-Ji-pR8">
-                        <rect key="frame" x="15" y="437" width="290" height="35"/>
+                        <rect key="frame" x="15" y="457" width="290" height="35"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Post text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5M3-Sx-g2E">
                                 <rect key="frame" x="0.0" y="0.0" width="50.5" height="14.5"/>
@@ -122,13 +122,13 @@
                         </subviews>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIH-jW-oKR">
-                        <rect key="frame" x="15" y="477" width="23" height="12"/>
+                        <rect key="frame" x="15" y="497" width="23" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" red="0.58431372550000005" green="0.61568627450000002" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFi-vK-P2h">
-                        <rect key="frame" x="0.0" y="411" width="97" height="25"/>
+                        <rect key="frame" x="0.0" y="431" width="97" height="25"/>
                         <connections>
                             <action selector="showLikers" destination="A6V-Dk-2ln" eventType="touchUpInside" id="UtX-2S-CQJ"/>
                         </connections>

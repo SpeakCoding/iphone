@@ -20,7 +20,7 @@ class FeedPostsViewController: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        self.tableView.estimatedRowHeight = 503
+        self.tableView.estimatedRowHeight = PostFeedCell.estimatedHeight
         self.tableView.separatorInset = UIEdgeInsets.zero
         
         let refreshControl = UIRefreshControl(frame: CGRect.zero)

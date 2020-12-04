@@ -116,7 +116,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
         self.tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
         self.tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         self.tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        self.tableView!.estimatedRowHeight = 503
+        self.tableView!.estimatedRowHeight = PostFeedCell.estimatedHeight
         self.tableView!.dataSource = self
         self.tableView!.delegate = self
         self.view.addSubview(self.tableView!)
