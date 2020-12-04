@@ -85,6 +85,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             tabBarController.presentImagePicker(completion: nil)
             return false
         }
+        if tabBarController.selectedViewController == viewController {
+            // The tab is already selected, scroll to top if possible
+            if let scrollView = self.findScrollViewToScrollToTop(in: viewController.view!) {
+                scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.adjustedContentInset.top), animated: true)
+                // Prevent the navigation controller from popping to root
+                return false
+            }
+        }
         return true
+    }
+    
+    private func findScrollViewToScrollToTop(in view: UIView) -> UIScrollView? {
+        for subview in view.subviews {
+            if let scrollView = subview as? UIScrollView {
+                if scrollView.scrollsToTop && scrollView.contentOffset.y > -scrollView.adjustedContentInset.top {
+                    return scrollView
+                }
+            }
+            if let scrollView = findScrollViewToScrollToTop(in: subview) {
+                return scrollView
+            }
+        }
+        return nil
     }
 }
