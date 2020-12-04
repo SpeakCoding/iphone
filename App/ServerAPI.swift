@@ -249,7 +249,7 @@ class ServerAPI {
         }
         let requestParameters = ["post": [
             "location": post.location as Any,
-            "description": post.caption!,
+            "caption": post.caption!,
             "image": "data:image/jpeg;base64,".appending(imageBase64String),
             "tags": post.tags.map { (tag) -> [String: Any] in
                 return [
@@ -273,7 +273,7 @@ class ServerAPI {
     
     func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
-            "description": post.caption!,
+            "caption": post.caption!,
             "tags": post.tags.map { (tag) -> [String: Any] in
                 return [
                     "user_id": tag.user.id,
@@ -511,7 +511,7 @@ extension Post {
         let post: Post = self.instance(withID: json["id"] as! Int)
         post.date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
         post.user = User.instance(withJSON: json["user"] as! [String : Any])
-        post.caption = (json["description"] as! String)
+        post.caption = (json["caption"] as! String)
         if let imageURL = URL(string: json["image"] as! String) {
             post.images = [Image(url: imageURL)]
         } else {
