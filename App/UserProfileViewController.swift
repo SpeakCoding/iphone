@@ -150,6 +150,17 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.present(navigationController, animated: true, completion: nil)
     }
     
+    @IBAction private func showAllPostsAsList() {
+        self.showAllPostsAsList(preselectedPostIndex: 0)
+    }
+    
+    private func showAllPostsAsList(preselectedPostIndex: Int) {
+        let postsViewController = UserPostsViewController(posts: self.posts, refreshClosure: nil)
+        postsViewController.title = "Posts"
+        postsViewController.selectedPostIndex = preselectedPostIndex
+        self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
+    
     @IBAction private func showFollowers() {
         let userListViewController = UserListViewController(UserKind.followers(self.user))
         self.navigationController?.pushViewController(userListViewController, animated: true)
@@ -204,10 +215,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let postsViewController = UserPostsViewController(posts: self.posts, refreshClosure: nil)
-        postsViewController.title = "Posts"
-        postsViewController.selectedPostIndex = indexPath.item
-        self.navigationController?.pushViewController(postsViewController, animated: true)
+        self.showAllPostsAsList(preselectedPostIndex: indexPath.item)
     }
     
     required init?(coder: NSCoder) {
