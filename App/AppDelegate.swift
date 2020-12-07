@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         newPostTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-post"), selectedImage: UIImage(named: "tab-bar-item-post-selected"))
         newPostTabViewController.tabBarItem.tag = TabBarItemTag.newPost.rawValue
         
-        let likedPostsTabViewController = UINavigationController(rootViewController: LikedPostsViewController())
+        let likedPostsTabViewController = UINavigationController(rootViewController: LikesViewController())
         likedPostsTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-likes"), selectedImage: UIImage(named: "tab-bar-item-likes-selected"))
         likedPostsTabViewController.tabBarItem.tag = TabBarItemTag.likedPosts.rawValue
         

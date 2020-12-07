@@ -361,6 +361,20 @@ class ServerAPI {
         }
     }
     
+    func getLikes(user: User, completion: @escaping (([Like]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/whats_new.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if let likeJSONs = result as? [[String: Any]] {
+                let likes = likeJSONs.map { (likeJSON) -> Like in
+                    return Like(json: likeJSON)
+                }
+                completion(likes, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
     // MARK: - Private stuff
     
     /**
@@ -565,5 +579,15 @@ extension Tag {
         let user = User.instance(withJSON: json["user"] as! [String : Any])
         let point = Point(x: json["left"] as! Double, y: json["top"] as! Double)
         self.init(taggedUser: user, point: point)
+    }
+}
+
+
+extension Like {
+    convenience init(json: [String: Any]) {
+        let date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
+        let user = User.instance(withJSON: json["user"] as! [String : Any])
+        let post = Post.instance(withJSON: json["post"] as! [String : Any])
+        self.init(date: date, user: user, post: post)
     }
 }
