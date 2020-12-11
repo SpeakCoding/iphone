@@ -32,14 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.tintColor = UIColor(named: "sc-blue")
         if User.current == nil {
-            let loginViewController = LoginViewController(emailAddress: nil) {
-                self.setupUI()
-                self.window!.rootViewController = self.tabBarController
-            }
-            let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
-            loginFlowNavigationController.modalPresentationStyle = .fullScreen
-            loginFlowNavigationController.isNavigationBarHidden = true
-            self.window!.rootViewController = loginFlowNavigationController
+            self.showLoginView()
         } else {
             self.setupUI()
             self.window!.rootViewController = self.tabBarController
@@ -47,6 +40,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window!.makeKeyAndVisible()
         
         return true
+    }
+    
+    func showLoginView() {
+        self.tabBarController = nil
+        
+        let loginViewController = LoginViewController(emailAddress: nil) {
+            self.setupUI()
+            self.window!.rootViewController = self.tabBarController
+        }
+        let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
+        loginFlowNavigationController.modalPresentationStyle = .fullScreen
+        loginFlowNavigationController.isNavigationBarHidden = true
+        self.window!.rootViewController = loginFlowNavigationController
     }
     
     private func setupUI() {

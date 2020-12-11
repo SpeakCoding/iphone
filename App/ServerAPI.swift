@@ -55,6 +55,17 @@ class ServerAPI {
         }
     }
     
+    func logOut(completion: @escaping ((Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/forget.json", authorized: true, parameters: nil)
+        performRequest(request: request) { (result: Any?, metadata: [String : String]?, error: Error?) in
+            if error == nil {
+                self.accessToken = nil
+                UserDefaults.standard.removeObject(forKey: "access token")
+            }
+            completion(error)
+        }
+    }
+    
     func updateProfile(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
         var userInfo = [String: String]()
         if name != nil {

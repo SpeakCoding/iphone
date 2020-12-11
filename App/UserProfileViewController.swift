@@ -22,6 +22,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         super.init(nibName: "UserProfileView", bundle: nil)
         
         if user == User.current {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "button-ellipsis"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(showOptions))
             NotificationCenter.default.addObserver(self, selector: #selector(newPostHasBeenCreated), name: Notification.Name.NewPostNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(postHasBeenDeleted), name: Notification.Name.PostDeletedNotification, object: nil)
         }
@@ -35,7 +36,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         super.viewDidLoad()
         
         if self.user == User.current {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "button-bookmark-off"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(showSavedPosts))
             self.followButton.isHidden = true
         } else {
             self.editProfileButton.isHidden = true
@@ -171,13 +171,40 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.navigationController?.pushViewController(userListViewController, animated: true)
     }
     
-    @objc private func showSavedPosts() {
-        let postsViewController = UserPostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
-            ServerAPI.shared.getSavedPosts(completion: completion)
-        }
-        postsViewController.title = "Saved posts"
-        postsViewController.placeholderText = "No saved posts"
-        self.navigationController?.pushViewController(postsViewController, animated: true)
+    @objc private func showOptions() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+        alert.addAction(UIAlertAction(title: "Show Saved Posts", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+            let postsViewController = UserPostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
+                ServerAPI.shared.getSavedPosts(completion: completion)
+            }
+            postsViewController.title = "Saved posts"
+            postsViewController.placeholderText = "No saved posts"
+            self.navigationController?.pushViewController(postsViewController, animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
+            self.confirmLogout()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func confirmLogout() {
+        let alert = UIAlertController(title: "Are you sure you want to log out?", message: nil, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.destructive, handler: { (_: UIAlertAction) in
+            ServerAPI.shared.logOut { (error: Error?) in
+                if error != nil {
+                    self.report(error: error)
+                } else {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.showLoginView()
+                    User.setCurrentUser(nil)
+                    ModelObject.purgeCachedInstances()
+                    Cache.shared.reset()
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc private func newPostHasBeenCreated(notification: NSNotification) {

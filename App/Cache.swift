@@ -17,16 +17,25 @@ class Cache {
             try? FileManager().createDirectory(at: cachesURL, withIntermediateDirectories: true, attributes: nil)
         }
         database = SQLiteDatabase(filePath: databasePath)
+        setUpDatabaseTables()
+    }
+    
+    func reset() {
+        database.close()
+        try? FileManager().removeItem(atPath: database.databaseFilePath)
+        setUpDatabaseTables()
+    }
+    
+    private func setUpDatabaseTables() {
         while true {
             guard database.open() else {
-                print("Could not open the cache database at \(databasePath)")
+                print("Could not open the cache database")
                 return
             }
             
             // Make sure the database version which we store in the "user_version" pragma is up-to-date
             let currentDatabaseVersion = 5
             let onDiskDatabaseVersion = database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
-            print("The cache database is version \(onDiskDatabaseVersion) at \(databasePath)")
             if onDiskDatabaseVersion == currentDatabaseVersion {
                 break
             }
@@ -39,7 +48,7 @@ class Cache {
             
             // The database schema is outdated, delete and recreate the database
             database.close()
-            try? FileManager().removeItem(atPath: databasePath)
+            try? FileManager().removeItem(atPath: database.databaseFilePath)
         }
         
         if !hasTable(tableName: "posts") {
@@ -89,19 +98,7 @@ class Cache {
             """
             database.executeUpdate(sqlQuery: query, values: nil)
         }
-        /*
-        if !hasTable(tableName: "likes") {
-            let query = """
-            CREATE TABLE likes (
-            "id" INTEGER PRIMARY KEY NOT NULL,
-            "date" REAL,
-            "user_id" INTEGER,
-            "post_id" INTEGER
-            )
-            """
-            database.executeUpdate(sqlQuery: query, values: nil)
-        }
-        */
+        
         if !hasTable(tableName: "comments") {
             let query = """
             CREATE TABLE comments (

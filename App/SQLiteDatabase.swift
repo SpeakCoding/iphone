@@ -8,18 +8,18 @@ internal let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.se
 
 class SQLiteDatabase {
     
-    private var dbFilePath: String
+    private(set) var databaseFilePath: String
     private var db: OpaquePointer?
     
     init(filePath: String) {
-        dbFilePath = filePath
+        databaseFilePath = filePath
     }
     
     func open() -> Bool {
         guard db == nil else {
             return true
         }
-        if sqlite3_open(dbFilePath, &db) == SQLITE_OK {
+        if sqlite3_open(databaseFilePath, &db) == SQLITE_OK {
             return true
         }
         print("Unable to open database")

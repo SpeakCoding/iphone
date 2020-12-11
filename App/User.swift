@@ -57,6 +57,8 @@ class User: ModelObject {
         if user != nil {
             UserDefaults.standard.set(user!.id, forKey: "current user ID")
             Cache.shared.update(user: user!)
+        } else {
+            UserDefaults.standard.removeObject(forKey: "current user ID")
         }
     }
 }

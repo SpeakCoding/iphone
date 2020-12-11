@@ -19,7 +19,7 @@ class ModelObject: Equatable {
         let myClassName = NSStringFromClass(self)
         var instancesOfMyClass = instanceStore[myClassName]
         if instancesOfMyClass == nil {
-            instancesOfMyClass = NSMapTable.init(keyOptions: NSPointerFunctions.Options.copyIn, valueOptions: NSPointerFunctions.Options.weakMemory)
+            instancesOfMyClass = NSMapTable(keyOptions: NSPointerFunctions.Options.copyIn, valueOptions: NSPointerFunctions.Options.weakMemory)
             instanceStore[myClassName] = instancesOfMyClass!
         }
         
@@ -30,5 +30,9 @@ class ModelObject: Equatable {
         let newInstance = self.init(id: id)
         instancesOfMyClass!.setObject(newInstance, forKey: NSNumber(integerLiteral: id))
         return newInstance as! T
+    }
+    
+    class func purgeCachedInstances() {
+        instanceStore.removeAll()
     }
 }
