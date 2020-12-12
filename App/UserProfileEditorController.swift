@@ -19,7 +19,7 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancel))
             self.navigationItem.leftBarButtonItem!.tintColor = UIColor.black
         }
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancel))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(save))
     }
     
     override func viewDidLoad() {
@@ -48,8 +48,15 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
     }
     
     @objc func save() {
+        let username = self.nameField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) ?? ""
+        if username.count == 0 {
+            self.report(error: NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "User name is required"]))
+            return
+        }
+        let bio = self.bioField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
         self.view.isUserInteractionEnabled = false
-        ServerAPI.shared.updateProfile(name: self.nameField.text, bio: self.bioField.text, profilePicture: self.newProfilePicture) { (user: User?, error: Error?) in
+        ServerAPI.shared.updateProfile(name: username, bio: bio, profilePicture: self.newProfilePicture) { (user: User?, error: Error?) in
             self.view.isUserInteractionEnabled = true
             if user != nil {
                 self.completion(true)
