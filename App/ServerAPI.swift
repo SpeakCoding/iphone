@@ -510,7 +510,8 @@ class ServerAPI {
 extension User {
     class func instance(withJSON json: [String: Any]) -> User {
         let user: User = self.instance(withID: json["id"] as! Int)
-        user.userName = (json["full_name"] as! String)
+        // full_name is nil immediately after registration, see signUp()
+        user.userName = (json["full_name"] as? String) ?? ""
         if let pictureURI = json["portrait"] as? String {
             user.profilePictureURL = URL(string: pictureURI)
         } else {
