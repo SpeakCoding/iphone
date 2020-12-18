@@ -22,6 +22,9 @@ class ServerAPI {
     static let shared = ServerAPI()
     
     func signUp(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
+        let requestParameters = ["user": ["email": emailAddress, "password": password]]
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
+        
         func processAuthorizationResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
@@ -34,13 +37,13 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let requestParameters = ["user": ["email": emailAddress, "password": password]]
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users.json", authorized: false, parameters: requestParameters)
         self.performRequest(request: request, completion: processAuthorizationResponse)
     }
     
     func logIn(emailAddress: String, password: String, completion: @escaping ((User?, Error?) -> Void)) {
+        let requestParameters = ["user": ["email": emailAddress, "password": password]]
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/authenticate.json", authorized: false, parameters: requestParameters)
+        
         func processAuthorizationResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSON = result as? [String: Any] {
                 self.accessToken = metadata?["authentication_token"]
@@ -53,13 +56,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let requestParameters = ["user": ["email": emailAddress, "password": password]]
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/authenticate.json", authorized: false, parameters: requestParameters)
         self.performRequest(request: request, completion: processAuthorizationResponse)
     }
     
     func logOut(completion: @escaping ((Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/forget.json", authorized: true, parameters: nil)
+        
         func processLogOutResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if error == nil {
                 self.accessToken = nil
@@ -67,22 +69,10 @@ class ServerAPI {
             }
             completion(error)
         }
-        
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/users/forget.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processLogOutResponse)
     }
     
     func updateProfile(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
-        func processUserResponse(result: Any?, metadata: [String : String]?, error: Error?) {
-            if let userJSON = result as? [String: Any] {
-                let updatedUser = User.instance(withJSON: userJSON)
-                User.setCurrentUser(updatedUser)
-                completion(updatedUser, nil)
-            } else {
-                completion(nil, error)
-            }
-        }
-        
         var userInfo = [String: String]()
         if name != nil {
             userInfo["full_name"] = name!
@@ -98,10 +88,22 @@ class ServerAPI {
         }
         let requestParameters = ["user": userInfo]
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/users/\(User.current!.id).json", authorized: true, parameters: requestParameters)
+        
+        func processUserResponse(result: Any?, metadata: [String : String]?, error: Error?) {
+            if let userJSON = result as? [String: Any] {
+                let updatedUser = User.instance(withJSON: userJSON)
+                User.setCurrentUser(updatedUser)
+                completion(updatedUser, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
         self.performRequest(request: request, completion: processUserResponse)
     }
     
     func getUser(id: Int, completion: @escaping ((User?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: true, parameters: nil)
+        
         func processUserResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSON = result as? [String: Any] {
                 let user = User.instance(withJSON: userJSON)
@@ -111,22 +113,10 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(id).json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processUserResponse)
     }
     
     func updateUserFollowed(user: User, completion: @escaping ((User?, Error?) -> Void)) {
-        func processUserResponse(result: Any?, metadata: [String : String]?, error: Error?) {
-            if let userJSON = result as? [String: Any] {
-                let user = User.instance(withJSON: userJSON)
-                Cache.shared.update(user: user)
-                completion(user, nil)
-            } else {
-                completion(nil, error)
-            }
-        }
-        
         let endpoint: String
         if user.isFollowed {
             endpoint = "/users/\(user.id)/follow.json"
@@ -134,10 +124,22 @@ class ServerAPI {
             endpoint = "/users/\(user.id)/unfollow.json"
         }
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
+        
+        func processUserResponse(result: Any?, metadata: [String : String]?, error: Error?) {
+            if let userJSON = result as? [String: Any] {
+                let user = User.instance(withJSON: userJSON)
+                Cache.shared.update(user: user)
+                completion(user, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
         self.performRequest(request: request, completion: processUserResponse)
     }
     
     func getFollowers(user: User, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followers.json", authorized: true, parameters: nil)
+        
         func processUsers(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
@@ -150,12 +152,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followers.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processUsers)
     }
     
     func getFollowees(user: User, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followees.json", authorized: true, parameters: nil)
+        
         func processUsers(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
@@ -168,12 +170,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/followees.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processUsers)
     }
     
     func findUsers(searchText: String, completion: @escaping (([User]?, Error?) -> Void)) -> URLSessionDataTask {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/search.json?query=\(searchText)", authorized: true, parameters: nil)
+        
         func processUsers(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
@@ -186,12 +188,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/search.json?query=\(searchText)", authorized: true, parameters: nil)
         return self.performRequest(request: request, completion: processUsers)
     }
     
     func getFeedPosts(feed: Feed, completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
+        
         func processPosts(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -204,12 +206,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processPosts)
     }
     
     func getSavedPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/saved.json", authorized: true, parameters: nil)
+        
         func processPosts(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -222,12 +224,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/saved.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processPosts)
     }
     
     func getPostsOf(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: true, parameters: nil)
+        
         func processPosts(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -240,12 +242,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/posts.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processPosts)
     }
     
     func getPostsWithTaggedUser(user: User, completion: @escaping (([Post]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/tagged.json?user_id=\(user.id)", authorized: true, parameters: nil)
+        
         func processPosts(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
                 let posts = postJSONs.map { (postJSON) -> Post in
@@ -258,12 +260,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/tagged.json?user_id=\(user.id)", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processPosts)
     }
     
     func getUsersWhoLiked(post: Post, completion: @escaping (([User]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/\(post.id)/likers.json", authorized: true, parameters: nil)
+        
         func processUsers(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
                 let users = userJSONs.map { (userJSON) -> User in
@@ -276,22 +278,10 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/posts/\(post.id)/likers.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processUsers)
     }
     
     func createPost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
-        func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
-            if let postJSON = result as? [String: Any] {
-                let post = Post.instance(withJSON: postJSON)
-                Cache.shared.update(post: post)
-                completion(post, nil)
-            } else {
-                completion(nil, error)
-            }
-        }
-        
         guard let imageBase64String = image.jpegData(compressionQuality: 0.7)?.base64EncodedString() else {
             completion(nil, NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image"]))
             return
@@ -309,10 +299,7 @@ class ServerAPI {
             }
         ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
-        self.performRequest(request: request, completion: processPost)
-    }
-    
-    func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
+        
         func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSON = result as? [String: Any] {
                 let post = Post.instance(withJSON: postJSON)
@@ -322,7 +309,10 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
+        self.performRequest(request: request, completion: processPost)
+    }
+    
+    func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
         let requestParameters = ["post": [
             "caption": post.caption!,
             "tags": post.tags.map { (tag) -> [String: Any] in
@@ -334,10 +324,22 @@ class ServerAPI {
             }
             ]]
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/posts/\(post.id).json", authorized: true, parameters: requestParameters)
+        
+        func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
+            if let postJSON = result as? [String: Any] {
+                let post = Post.instance(withJSON: postJSON)
+                Cache.shared.update(post: post)
+                completion(post, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
         self.performRequest(request: request, completion: processPost)
     }
     
     func deletePost(_ post: Post, completion: @escaping ((Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.DELETE, endpoint: "/posts/\(post.id).json", authorized: true, parameters: nil)
+        
         func processResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if error == nil {
                 Cache.shared.delete(post: post)
@@ -348,22 +350,10 @@ class ServerAPI {
             }
             completion(error)
         }
-        
-        let request = makeRequest(method: HTTPMethod.DELETE, endpoint: "/posts/\(post.id).json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processResponse)
     }
     
     func updatePostLike(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
-        func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
-            if let postJSON = result as? [String: Any] {
-                let post = Post.instance(withJSON: postJSON)
-                Cache.shared.update(post: post)
-                completion(post, nil)
-            } else {
-                completion(nil, error)
-            }
-        }
-        
         let endpoint: String
         if post.isLiked {
             endpoint = "/posts/\(post.id)/like.json"
@@ -371,10 +361,7 @@ class ServerAPI {
             endpoint = "/posts/\(post.id)/unlike.json"
         }
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
-        self.performRequest(request: request, completion: processPost)
-    }
-    
-    func updatePostSaved(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
+        
         func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSON = result as? [String: Any] {
                 let post = Post.instance(withJSON: postJSON)
@@ -384,7 +371,10 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
+        self.performRequest(request: request, completion: processPost)
+    }
+    
+    func updatePostSaved(_ post: Post, completion: @escaping ((Post?, Error?) -> Void)) {
         let endpoint: String
         if post.isSaved {
             endpoint = "/posts/\(post.id)/save.json"
@@ -392,10 +382,23 @@ class ServerAPI {
             endpoint = "/posts/\(post.id)/unsave.json"
         }
         let request = makeRequest(method: HTTPMethod.POST, endpoint: endpoint, authorized: true, parameters: nil)
+        
+        func processPost(result: Any?, metadata: [String : String]?, error: Error?) {
+            if let postJSON = result as? [String: Any] {
+                let post = Post.instance(withJSON: postJSON)
+                Cache.shared.update(post: post)
+                completion(post, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
         self.performRequest(request: request, completion: processPost)
     }
     
     func createComment(_ comment: Comment, to post: Post, completion: @escaping ((Comment?, Error?) -> Void)) {
+        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text!]]
+        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/comments.json", authorized: true, parameters: requestParameters)
+        
         func processComment(result: Any?, metadata: [String : String]?, error: Error?) {
             if let commentJSON = result as? [String: Any] {
                 let comment = Comment.instance(withJSON: commentJSON)
@@ -406,13 +409,12 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text!]]
-        let request = makeRequest(method: HTTPMethod.POST, endpoint: "/comments.json", authorized: true, parameters: requestParameters)
         self.performRequest(request: request, completion: processComment)
     }
     
     func getLikes(user: User, completion: @escaping (([Like]?, Error?) -> Void)) {
+        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/whats_new.json", authorized: true, parameters: nil)
+        
         func processLikes(result: Any?, metadata: [String : String]?, error: Error?) {
             if let likeJSONs = result as? [[String: Any]] {
                 let likes = likeJSONs.map { (likeJSON) -> Like in
@@ -423,8 +425,6 @@ class ServerAPI {
                 completion(nil, error)
             }
         }
-        
-        let request = makeRequest(method: HTTPMethod.GET, endpoint: "/users/\(user.id)/whats_new.json", authorized: true, parameters: nil)
         self.performRequest(request: request, completion: processLikes)
     }
     
