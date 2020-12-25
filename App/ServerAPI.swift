@@ -142,11 +142,12 @@ class ServerAPI {
         
         func processUsersResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
-                let users = userJSONs.map { (userJSON) -> User in
+                func userFromJSON(userJSON: [String: Any]) -> User {
                     let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
+                let users = userJSONs.map(userFromJSON)
                 completion(users, nil)
             } else {
                 completion(nil, error)
@@ -160,11 +161,12 @@ class ServerAPI {
         
         func processUsersResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
-                let users = userJSONs.map { (userJSON) -> User in
+                func userFromJSON(userJSON: [String: Any]) -> User {
                     let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
+                let users = userJSONs.map(userFromJSON)
                 completion(users, nil)
             } else {
                 completion(nil, error)
@@ -178,11 +180,12 @@ class ServerAPI {
         
         func processUsersResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
-                let users = userJSONs.map { (userJSON) -> User in
+                func userFromJSON(userJSON: [String: Any]) -> User {
                     let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
+                let users = userJSONs.map(userFromJSON)
                 completion(users, nil)
             } else {
                 completion(nil, error)
@@ -196,9 +199,10 @@ class ServerAPI {
         
         func processPostsResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
-                let posts = postJSONs.map { (postJSON) -> Post in
-                    Post.instance(withJSON: postJSON)
+                func postFromJSON(postJSON: [String: Any]) -> Post {
+                    return Post.instance(withJSON: postJSON)
                 }
+                let posts = postJSONs.map(postFromJSON)
                 feed.posts = posts
                 Cache.shared.update(feed: feed)
                 completion(posts, nil)
@@ -214,11 +218,12 @@ class ServerAPI {
         
         func processPostsResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
-                let posts = postJSONs.map { (postJSON) -> Post in
+                func postFromJSON(postJSON: [String: Any]) -> Post {
                     let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
+                let posts = postJSONs.map(postFromJSON)
                 completion(posts, nil)
             } else {
                 completion(nil, error)
@@ -232,11 +237,12 @@ class ServerAPI {
         
         func processPostsResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
-                let posts = postJSONs.map { (postJSON) -> Post in
+                func postFromJSON(postJSON: [String: Any]) -> Post {
                     let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
+                let posts = postJSONs.map(postFromJSON)
                 completion(posts, nil)
             } else {
                 completion(nil, error)
@@ -250,11 +256,12 @@ class ServerAPI {
         
         func processPostsResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let postJSONs = result as? [[String: Any]] {
-                let posts = postJSONs.map { (postJSON) -> Post in
+                func postFromJSON(postJSON: [String: Any]) -> Post {
                     let post = Post.instance(withJSON: postJSON)
                     Cache.shared.update(post: post)
                     return post
                 }
+                let posts = postJSONs.map(postFromJSON)
                 completion(posts, nil)
             } else {
                 completion(nil, error)
@@ -268,11 +275,12 @@ class ServerAPI {
         
         func processUsersResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let userJSONs = result as? [[String: Any]] {
-                let users = userJSONs.map { (userJSON) -> User in
+                func userFromJSON(userJSON: [String: Any]) -> User {
                     let user = User.instance(withJSON: userJSON)
                     Cache.shared.update(user: user)
                     return user
                 }
+                let users = userJSONs.map(userFromJSON)
                 completion(users, nil)
             } else {
                 completion(nil, error)
@@ -286,17 +294,19 @@ class ServerAPI {
             completion(nil, NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid image"]))
             return
         }
+        
+        func tagToJSON(tag: Tag) -> [String: Any] {
+            return [
+                "user_id": tag.user.id,
+                "left": tag.point.x,
+                "top": tag.point.y
+            ]
+        }
         let requestParameters = ["post": [
             "location": post.location as Any,
             "caption": post.caption!,
             "image": "data:image/jpeg;base64,".appending(imageBase64String),
-            "tags": post.tags.map { (tag) -> [String: Any] in
-                return [
-                    "user_id": tag.user.id,
-                    "left": tag.point.x,
-                    "top": tag.point.y
-                ]
-            }
+            "tags": post.tags.map(tagToJSON)
         ]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/posts.json", authorized: true, parameters: requestParameters)
         
@@ -313,16 +323,17 @@ class ServerAPI {
     }
     
     func updatePost(_ post: Post, image: UIImage, completion: @escaping ((Post?, Error?) -> Void)) {
+        func tagToJSON(tag: Tag) -> [String: Any] {
+            return [
+                "user_id": tag.user.id,
+                "left": tag.point.x,
+                "top": tag.point.y
+            ]
+        }
         let requestParameters = ["post": [
             "caption": post.caption!,
-            "tags": post.tags.map { (tag) -> [String: Any] in
-                return [
-                    "user_id": tag.user.id,
-                    "left": tag.point.x,
-                    "top": tag.point.y
-                ]
-            }
-            ]]
+            "tags": post.tags.map(tagToJSON)
+        ]]
         let request = makeRequest(method: HTTPMethod.PUT, endpoint: "/posts/\(post.id).json", authorized: true, parameters: requestParameters)
         
         func processPostResponse(result: Any?, metadata: [String : String]?, error: Error?) {
@@ -417,9 +428,10 @@ class ServerAPI {
         
         func processLikesResponse(result: Any?, metadata: [String : String]?, error: Error?) {
             if let likeJSONs = result as? [[String: Any]] {
-                let likes = likeJSONs.map { (likeJSON) -> Like in
+                func likeFromJSON(likeJSON: [String: Any]) -> Like {
                     return Like(json: likeJSON)
                 }
+                let likes = likeJSONs.map(likeFromJSON)
                 completion(likes, nil)
             } else {
                 completion(nil, error)
