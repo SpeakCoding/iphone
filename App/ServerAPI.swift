@@ -566,8 +566,8 @@ extension User {
     class func instance(withJSON json: [String: Any]) -> User {
         let user: User = self.instance(withID: json["id"] as! Int)
         // full_name is nil immediately after registration, see signUp()
-        user.userName = (json["full_name"] as? String) ?? ""
-        if let pictureURI = json["portrait"] as? String {
+        user.userName = (json["user_name"] as? String) ?? ""
+        if let pictureURI = json["profile_picture"] as? String {
             user.profilePictureURL = URL(string: pictureURI)
         } else {
             user.profilePictureURL = nil
@@ -627,7 +627,7 @@ extension Comment {
         let comment: Comment = self.instance(withID: json["id"] as! Int)
         comment.date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
         comment.user = User.instance(withJSON: json["user"] as! [String : Any])
-        comment.text = (json["body"] as! String)
+        comment.text = (json["text"] as! String)
         return comment
     }
 }
