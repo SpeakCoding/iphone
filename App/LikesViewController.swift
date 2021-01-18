@@ -24,13 +24,14 @@ class LikesViewController: UITableViewController {
     }
     
     @objc private func refreshLikes() {
-        ServerAPI.shared.getLikes(user: User.current!) { (likes: [Like]?, error: Error?) in
+        func processLikesRequestResult(likes: [Like]?, error: Error?) {
             self.refreshControl!.endRefreshing()
             if likes != nil {
                 self.likes = likes!
                 self.tableView.reloadData()
             }
         }
+        ServerAPI.shared.getLikes(user: User.current!, completion: processLikesRequestResult)
     }
     
     // MARK: - UITableViewDataSource

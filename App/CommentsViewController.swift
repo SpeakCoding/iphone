@@ -81,15 +81,18 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         let comment = Comment(date: Date(), user: User.current!, text: commentText)
-        ServerAPI.shared.createComment(comment, to: self.post) { (newComment: Comment?, error: Error?) in
+        func processCommentCreationRequestResult(newComment: Comment?, error: Error?) {
             if newComment != nil {
                 let insertedIndexPath = IndexPath(row: self.comments.count, section: 0)
                 self.comments.append(newComment!)
                 self.tableView.insertRows(at: [insertedIndexPath], with: UITableView.RowAnimation.automatic)
                 self.tableView.scrollToRow(at: insertedIndexPath, at: UITableView.ScrollPosition.bottom, animated: true)
                 NotificationCenter.default.post(name: Notification.Name.NewCommentNotification, object: self.post)
+            } else {
+                self.report(error: error)
             }
         }
+        ServerAPI.shared.createComment(comment, to: self.post, completion: processCommentCreationRequestResult)
         self.textField.text = ""
         self.textField.postButton.isEnabled = false
     }

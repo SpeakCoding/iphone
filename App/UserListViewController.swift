@@ -26,36 +26,35 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.tableView.register(UINib(nibName: "UserCell+FollowButton", bundle: nil), forCellReuseIdentifier: "User cell")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
-        
         self.placeholderLabel.isHidden = true
-        switch self.mode {
-        case .followers(let user):
-            self.title = "Followers"
-            ServerAPI.shared.getFollowers(user: user, completion: self.displayAllUsers)
-        case .followees(let user):
-            self.title = "Following"
-            ServerAPI.shared.getFollowees(user: user, completion: self.displayAllUsers)
-        case .likers(let post):
-            self.title = "Likes"
-            ServerAPI.shared.getUsersWhoLiked(post: post, completion: self.displayAllUsers)
-        }
-    }
-    
-    func displayAllUsers(users: [User]?, error: Error?) {
-        if users != nil {
-            self.users = users!
-            self.tableView.reloadData()
-            self.updatePlaceholderVisibility()
-            
-            if self.placeholderLabel.isHidden && self.searchBar == nil {
-                self.searchBar = UISearchBar(frame: CGRect.zero)
-                self.searchBar!.placeholder = "User name"
-                self.searchBar!.sizeToFit()
-                self.searchBar!.delegate = self
-                self.tableView.tableHeaderView = self.searchBar!
+        func processUsersRequestResult(users: [User]?, error: Error?) {
+            if users != nil {
+                self.users = users!
+                self.tableView.reloadData()
+                self.updatePlaceholderVisibility()
+                
+                if self.placeholderLabel.isHidden && self.searchBar == nil {
+                    self.searchBar = UISearchBar(frame: CGRect.zero)
+                    self.searchBar!.placeholder = "User name"
+                    self.searchBar!.sizeToFit()
+                    self.searchBar!.delegate = self
+                    self.tableView.tableHeaderView = self.searchBar!
+                }
+            } else {
+                self.report(error: error)
             }
-        } else {
-            self.report(error: error)
+        }
+        
+        switch self.mode {
+            case .followers(let user):
+                self.title = "Followers"
+                ServerAPI.shared.getFollowers(user: user, completion: processUsersRequestResult)
+            case .followees(let user):
+                self.title = "Following"
+                ServerAPI.shared.getFollowees(user: user, completion: processUsersRequestResult)
+            case .likers(let post):
+                self.title = "Likes"
+                ServerAPI.shared.getUsersWhoLiked(post: post, completion: processUsersRequestResult)
         }
     }
     
@@ -91,9 +90,9 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count > 0 {
-            self.filteredUsers = self.users.filter({ (user: User) -> Bool in
+            self.filteredUsers = self.users.filter { (user: User) -> Bool in
                 return user.userName.lowercased().contains(searchText.lowercased())
-            })
+            }
         } else {
             self.filteredUsers = nil
         }

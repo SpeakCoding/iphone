@@ -90,13 +90,14 @@ class PostEditorController: UIViewController, UITextViewDelegate {
     @objc private func saveChanges() {
         self.post.caption = self.textView.text
         self.post.tags = self.tags
-        ServerAPI.shared.updatePost(self.post, image: self.postImageView.image!) { (updatedPost: Post?, error: Error?) in
+        func processPostUpdateRequestResult(updatedPost: Post?, error: Error?) {
             if updatedPost != nil {
                 self.completion(updatedPost!)
             } else {
                 self.report(error: error)
             }
         }
+        ServerAPI.shared.updatePost(self.post, image: self.postImageView.image!, completion: processPostUpdateRequestResult)
     }
     
     @objc private func keyboardWillChangeFrame(notification: Notification) {

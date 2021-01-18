@@ -16,7 +16,7 @@ extension UIViewController {
     
     private static var imagePickerDelegate: ImagePickerDelegate? = nil
     func presentImagePicker(completion: ((UIImage) -> Void)?) {
-        let delegate = ImagePickerDelegate(presentingViewController: self) { (image: UIImage?, picker: UIImagePickerController) -> Void in
+        func handlePickedImage(image: UIImage?, picker: UIImagePickerController) {
             if image != nil {
                 if completion != nil {
                     completion!(image!)
@@ -35,29 +35,33 @@ extension UIViewController {
             self.dismiss(animated: true, completion: nil)
             UIViewController.imagePickerDelegate = nil
         }
+        let delegate = ImagePickerDelegate(presentingViewController: self, completion: handlePickedImage)
         UIViewController.imagePickerDelegate = delegate
         
         let cameraIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
         let libraryIsAvailable = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary)
         if cameraIsAvailable || libraryIsAvailable {
+            func takePhoto(_: UIAlertAction?) {
+                delegate.presentImagePicker(source: UIImagePickerController.SourceType.camera)
+            }
+            func selectPhoto(_: UIAlertAction?) {
+                delegate.presentImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
+            }
+            
             // Show the image picker/camera immediately if only one of them is available
             if cameraIsAvailable && !libraryIsAvailable {
-                delegate.presentImagePicker(source: UIImagePickerController.SourceType.camera)
+                takePhoto(nil)
                 return
             }
             if libraryIsAvailable && !cameraIsAvailable {
-                delegate.presentImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
+                selectPhoto(nil)
                 return
             }
             
             // Ask the user what to show, the image picker or the camera
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-            alert.addAction(UIAlertAction(title: "Take a photo", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                delegate.presentImagePicker(source: UIImagePickerController.SourceType.camera)
-            }))
-            alert.addAction(UIAlertAction(title: "Upload from library", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                delegate.presentImagePicker(source: UIImagePickerController.SourceType.photoLibrary)
-            }))
+            alert.addAction(UIAlertAction(title: "Take a photo", style: UIAlertAction.Style.default, handler: takePhoto))
+            alert.addAction(UIAlertAction(title: "Upload from library", style: UIAlertAction.Style.default, handler: selectPhoto))
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {

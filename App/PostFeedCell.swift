@@ -81,7 +81,7 @@ class PostFeedCell: UITableViewCell {
         self.updateLikes()
         
         let thePostToUpdate = self.post!
-        ServerAPI.shared.updatePostLike(self.post, completion: { (updatedPost: Post?, error: Error?) in
+        func processUpdatePostRequestResult(updatedPost: Post?, error: Error?) {
             if error != nil {
                 self.viewController?.report(error: error)
                 thePostToUpdate.toggleLike()
@@ -89,7 +89,8 @@ class PostFeedCell: UITableViewCell {
             if self.post == thePostToUpdate {
                 self.setPost(thePostToUpdate)
             }
-        })
+        }
+        ServerAPI.shared.updatePostLike(self.post, completion: processUpdatePostRequestResult)
     }
     
     @IBAction private func toggleSaved() {
@@ -97,7 +98,7 @@ class PostFeedCell: UITableViewCell {
         self.bookmarkButton.isSelected = self.post.isSaved
         
         let thePostToUpdate = self.post!
-        ServerAPI.shared.updatePostSaved(self.post, completion: { (updatedPost: Post?, error: Error?) in
+        func processUpdatePostRequestResult(updatedPost: Post?, error: Error?) {
             if error != nil {
                 self.viewController?.report(error: error)
                 thePostToUpdate.toggleSaved()
@@ -105,7 +106,8 @@ class PostFeedCell: UITableViewCell {
             if self.post == thePostToUpdate {
                 self.setPost(thePostToUpdate)
             }
-        })
+        }
+        ServerAPI.shared.updatePostSaved(self.post, completion: processUpdatePostRequestResult)
     }
     
     @IBAction private func addComment() {
@@ -126,12 +128,12 @@ class PostFeedCell: UITableViewCell {
     }
     
     @IBAction private func showOptions() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        if self.post.user == User.current {
-            alert.addAction(UIAlertAction(title: "Edit Post", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-                let postEditor = PostEditorController(post: self.post, cachedPostImage: self.postImageView.image) { (updatedPost: Post?) in
+        func editPost(_: UIAlertAction) {
+            func handleUpdatedPost(updatedPost: Post?) {
+                if updatedPost != nil {
+                    // Find the UITableView containing the cell and reload it
                     var view = self as UIView?
-                    while !(view is UITableView) {
+                    while !(view is UITableView || view == nil) {
                         view = view?.superview
                     }
                     if let tableView = (view as? UITableView) {
@@ -139,29 +141,42 @@ class PostFeedCell: UITableViewCell {
                     }
                     self.viewController?.dismiss(animated: true, completion: nil)
                 }
-                let navigationController = UINavigationController(rootViewController: postEditor)
-                navigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-                navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-                self.viewController?.present(navigationController, animated: true, completion: nil)
-            }))
-            alert.addAction(UIAlertAction(title: "Delete Post", style: UIAlertAction.Style.destructive, handler: { (_: UIAlertAction) in
-                ServerAPI.shared.deletePost(self.post) { (error: Error?) in
-                    if error == nil {
-                        NotificationCenter.default.post(name: Notification.Name.PostDeletedNotification, object: self.post)
-                    } else {
-                        self.viewController?.report(error: error)
-                    }
+            }
+            let postEditor = PostEditorController(post: self.post, cachedPostImage: self.postImageView.image, completion: handleUpdatedPost)
+            let navigationController = UINavigationController(rootViewController: postEditor)
+            navigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+            self.viewController?.present(navigationController, animated: true, completion: nil)
+        }
+        
+        func deletePost(_: UIAlertAction) {
+            func processDeletePostRequestResult(error: Error?) {
+                if error == nil {
+                    NotificationCenter.default.post(name: Notification.Name.PostDeletedNotification, object: self.post)
+                } else {
+                    self.viewController?.report(error: error)
                 }
-            }))
+            }
+            ServerAPI.shared.deletePost(self.post, completion: processDeletePostRequestResult)
+        }
+        
+        func toggleLike(_: UIAlertAction) {
+            self.toggleLike()
+        }
+        
+        func toggleSaved(_: UIAlertAction) {
+            self.toggleSaved()
+        }
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+        if self.post.user == User.current {
+            alert.addAction(UIAlertAction(title: "Edit Post", style: UIAlertAction.Style.default, handler: editPost))
+            alert.addAction(UIAlertAction(title: "Delete Post", style: UIAlertAction.Style.destructive, handler: deletePost))
         } else {
             let likeActionTitle = self.post.isLiked ? "Unlike" : "Like"
-            alert.addAction(UIAlertAction(title: likeActionTitle, style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-                self.toggleLike()
-            }))
+            alert.addAction(UIAlertAction(title: likeActionTitle, style: UIAlertAction.Style.default, handler: toggleLike))
             let saveActionTitle = self.post.isSaved ? "Remove from Saved" : "Save"
-            alert.addAction(UIAlertAction(title: saveActionTitle, style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-                self.toggleSaved()
-            }))
+            alert.addAction(UIAlertAction(title: saveActionTitle, style: UIAlertAction.Style.default, handler: toggleSaved))
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.viewController?.present(alert, animated: true, completion: nil)

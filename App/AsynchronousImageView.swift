@@ -56,7 +56,7 @@ class AsynchronousImageView: UIImageView {
         self.image = nil
         
         // Start downloading the new image
-        self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!) { (downloadedData: Data?, response: URLResponse?, error: Error?) in
+        func processImageRequestResult(downloadedData: Data?, response: URLResponse?, error: Error?) {
             // If we have cancelled the task with self.imageDownloadTask?.cancel(), do nothing
             if error != nil && (error! as NSError).code == NSURLErrorCancelled {
                 return
@@ -75,6 +75,7 @@ class AsynchronousImageView: UIImageView {
                 } // else showImageAsynchronously() was called again while a previous image was still being downloaded
             }
         }
+        self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!, completionHandler: processImageRequestResult)
         self.imageDownloadTask?.resume()
     }
 }

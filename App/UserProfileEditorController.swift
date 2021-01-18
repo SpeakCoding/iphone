@@ -56,7 +56,7 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
         let bio = self.bioField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         self.view.isUserInteractionEnabled = false
-        ServerAPI.shared.updateProfile(name: username, bio: bio, profilePicture: self.newProfilePicture) { (user: User?, error: Error?) in
+        func processProfileUpdateRequestResult(user: User?, error: Error?) {
             self.view.isUserInteractionEnabled = true
             if user != nil {
                 self.completion(true)
@@ -64,6 +64,7 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
                 self.report(error: error)
             }
         }
+        ServerAPI.shared.updateProfile(name: username, bio: bio, profilePicture: self.newProfilePicture, completion: processProfileUpdateRequestResult)
     }
     
     override func viewWillAppear(_ animated: Bool) {

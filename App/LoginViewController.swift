@@ -75,7 +75,7 @@ class LoginViewController: UIViewController {
         
         self.errorLabel.isHidden = true
         self.view.isUserInteractionEnabled = false
-        ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+        func processLogInRequestResult(user: User?, error: Error?) {
             self.view.isUserInteractionEnabled = true
             if user != nil {
                 self.completion()
@@ -83,6 +83,8 @@ class LoginViewController: UIViewController {
                 self.report(error: error)
             }
         }
+        
+        ServerAPI.shared.logIn(emailAddress: emailAddress!, password: password!, completion: processLogInRequestResult)
     }
     
     // These functions perform input validation and return an error message if any

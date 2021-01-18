@@ -40,7 +40,7 @@ class UserCell: UITableViewCell {
         self.followButton?.isSelected = self.user.isFollowed
         
         let theUserToUpdate = self.user!
-        ServerAPI.shared.updateUserFollowed(user: self.user) { (user: User?, error: Error?) in
+        func processUserUpdateRequestResult(user: User?, error: Error?) {
             if user != nil {
                 NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
             }
@@ -51,5 +51,6 @@ class UserCell: UITableViewCell {
                 }
             }
         }
+        ServerAPI.shared.updateUserFollowed(user: self.user, completion: processUserUpdateRequestResult)
     }
 }

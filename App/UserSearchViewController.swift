@@ -101,7 +101,7 @@ class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
         self.placeholderView.isHidden = false
         self.placeholderLabel.isHidden = true
         self.activityIndicator.startAnimating()
-        self.lookupRequestTask = ServerAPI.shared.findUsers(searchText: searchText) { (matchingUsers: [User]?, error: Error?) in
+        func processUserLookupRequestResult(matchingUsers: [User]?, error: Error?) {
             if matchingUsers != nil {
                 self.searchResults = matchingUsers!
                 self.tableView.reloadData()
@@ -117,9 +117,9 @@ class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
                     self.placeholderLabel.isHidden = false
                     self.activityIndicator.stopAnimating()
                 }
-                return
             }
         }
+        self.lookupRequestTask = ServerAPI.shared.findUsers(searchText: searchText, completion: processUserLookupRequestResult)
     }
     
     @objc private func keyboardWillChangeFrame(notification: Notification) {

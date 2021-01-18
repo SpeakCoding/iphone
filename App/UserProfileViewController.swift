@@ -71,7 +71,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     private func refreshUserInformation() {
-        ServerAPI.shared.getUser(id: self.user.id) { (user: User?, error: Error?) in
+        func processUserRequestResult(user: User?, error: Error?) {
             if user != nil {
                 self.user = user!
                 self.displayUserInformation()
@@ -79,6 +79,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
                 self.report(error: error)
             }
         }
+        ServerAPI.shared.getUser(id: self.user.id, completion: processUserRequestResult)
     }
     
     private func updateFollowButtonState() {
@@ -94,22 +95,17 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     private func refreshPosts() {
+        func processPostsRequestResult(posts: [Post]?, error: Error?) {
+            if posts != nil {
+                self.setDisplayedPosts(posts: posts!)
+            } else {
+                self.report(error: error)
+            }
+        }
         if self.postsViewModeControl.selectedSegmentIndex == 0 {
-            ServerAPI.shared.getPostsOf(user: user) { (posts: [Post]?, error: Error?) in
-                if posts != nil {
-                    self.setDisplayedPosts(posts: posts!)
-                } else {
-                    self.report(error: error)
-                }
-            }
+            ServerAPI.shared.getPostsOf(user: user, completion: processPostsRequestResult)
         } else {
-            ServerAPI.shared.getPostsWithTaggedUser(user: user) { (posts: [Post]?, error: Error?) in
-                if posts != nil {
-                    self.setDisplayedPosts(posts: posts!)
-                } else {
-                    self.report(error: error)
-                }
-            }
+            ServerAPI.shared.getPostsWithTaggedUser(user: user, completion: processPostsRequestResult)
         }
     }
     
@@ -126,7 +122,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.user.toggleFollowed()
         self.updateFollowButtonState()
         
-        ServerAPI.shared.updateUserFollowed(user: self.user) { (user: User?, error: Error?) in
+        func processUserUpdateRequestResult(user: User?, error: Error?) {
             if user != nil {
                 NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
             }
@@ -136,15 +132,17 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             }
             self.displayUserInformation()
         }
+        ServerAPI.shared.updateUserFollowed(user: self.user, completion: processUserUpdateRequestResult)
     }
     
     @IBAction private func editProfile() {
-        let profileEditor = UserProfileEditorController() { (profileUpdated: Bool) in
+        func handleUserProfileUpdate(profileUpdated: Bool) {
             if profileUpdated {
                 self.displayUserInformation()
             }
             self.dismiss(animated: true, completion: nil)
         }
+        let profileEditor = UserProfileEditorController(completion: handleUserProfileUpdate)
         let navigationController = UINavigationController(rootViewController: profileEditor)
         navigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         self.present(navigationController, animated: true, completion: nil)
@@ -173,25 +171,25 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     @objc private func showOptions() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        alert.addAction(UIAlertAction(title: "Show Saved Posts", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-            let postsViewController = UserPostsViewController(posts: Cache.shared.fetchSavedPosts()) { (completion: @escaping ([Post]?, Error?) -> Void) in
-                ServerAPI.shared.getSavedPosts(completion: completion)
-            }
-            postsViewController.title = "Saved posts"
-            postsViewController.placeholderText = "No saved posts"
-            self.navigationController?.pushViewController(postsViewController, animated: true)
-        }))
-        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.default, handler: { (_: UIAlertAction) in
-            self.confirmLogout()
-        }))
+        alert.addAction(UIAlertAction(title: "Show Saved Posts", style: UIAlertAction.Style.default, handler: showSavedPosts))
+        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.default, handler: confirmLogout))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func confirmLogout() {
+    private func showSavedPosts(_: UIAlertAction) {
+        let postsViewController = UserPostsViewController(posts: Cache.shared.fetchSavedPosts(), refreshClosure: { (completion: @escaping ([Post]?, Error?) -> Void) in
+            ServerAPI.shared.getSavedPosts(completion: completion)
+        })
+        postsViewController.title = "Saved posts"
+        postsViewController.placeholderText = "No saved posts"
+        self.navigationController?.pushViewController(postsViewController, animated: true)
+    }
+    
+    private func confirmLogout(_: UIAlertAction) {
         let alert = UIAlertController(title: "Are you sure you want to log out?", message: nil, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.destructive, handler: { (_: UIAlertAction) in
-            ServerAPI.shared.logOut { (error: Error?) in
+            func processLogOutRequestResult(error: Error?) {
                 if error != nil {
                     self.report(error: error)
                 } else {
@@ -202,6 +200,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
                     Cache.shared.reset()
                 }
             }
+            ServerAPI.shared.logOut(completion: processLogOutRequestResult)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)

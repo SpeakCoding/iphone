@@ -74,7 +74,7 @@ class SignupViewController: UIViewController {
         
         self.errorLabel.isHidden = true
         self.view.isUserInteractionEnabled = false
-        ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!) { (user: User?, error: Error?) in
+        func processSignUpRequestResult(user: User?, error: Error?) {
             self.view.isUserInteractionEnabled = true
             if user != nil {
                 let profileEditor = UserProfileEditorController() { (profileUpdated: Bool) in
@@ -85,6 +85,8 @@ class SignupViewController: UIViewController {
                 self.report(error: error)
             }
         }
+        
+        ServerAPI.shared.signUp(emailAddress: emailAddress!, password: password!, completion: processSignUpRequestResult)
     }
     
     // These functions perform input validation and return an error message if any

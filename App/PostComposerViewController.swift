@@ -50,12 +50,13 @@ class PostComposerViewController: UIViewController {
     }
     
     @IBAction private func tagPeople() {
-        let userTagger = TagEditorController(image: self.image, tags: self.tags) { (tags: [Tag]) in
+        func handleCreatedTags(tags: [Tag]) {
             self.tags = tags
             self.tagCountLabel.text = "(\(tags.count))"
             self.tagCountLabel.isHidden = (tags.count == 0)
             self.navigationController?.popToViewController(self, animated: true)
         }
+        let userTagger = TagEditorController(image: self.image, tags: self.tags, completion: handleCreatedTags)
         self.navigationController?.pushViewController(userTagger, animated: true)
     }
     
@@ -68,7 +69,7 @@ class PostComposerViewController: UIViewController {
         let location = self.locationField.text
         let newPost = Post(creationDate: Date(), author: User.current!, postCaption: self.textView.text, postImages: nil, postVideo: nil, postLocation: location)
         newPost.tags = self.tags
-        ServerAPI.shared.createPost(newPost, image: self.image) { (createdPost: Post?, error: Error?) in
+        func processPostCreationRequestResult(createdPost: Post?, error: Error?) {
             spinner.stopAnimating()
             self.navigationItem.rightBarButtonItem = shareButton
             if createdPost != nil {
@@ -78,6 +79,7 @@ class PostComposerViewController: UIViewController {
                 self.report(error: error)
             }
         }
+        ServerAPI.shared.createPost(newPost, image: self.image, completion: processPostCreationRequestResult)
     }
     
     required init?(coder: NSCoder) {
