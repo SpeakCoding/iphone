@@ -75,7 +75,7 @@ class ServerAPI {
     func updateProfile(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
         var userInfo = [String: String]()
         if name != nil {
-            userInfo["full_name"] = name!
+            userInfo["user_name"] = name!
         }
         if bio != nil {
             userInfo["bio"] = bio!
@@ -83,7 +83,7 @@ class ServerAPI {
         if profilePicture != nil {
             if let imageBase64String = profilePicture!.jpegData(compressionQuality: 0.7)?.base64EncodedString() {
                 let imageDataURI = "data:image/jpeg;base64,".appending(imageBase64String)
-                userInfo["portrait"] = imageDataURI
+                userInfo["profile_picture"] = imageDataURI
             }
         }
         let requestParameters = ["user": userInfo]
@@ -407,7 +407,7 @@ class ServerAPI {
     }
     
     func createComment(_ comment: Comment, to post: Post, completion: @escaping ((Comment?, Error?) -> Void)) {
-        let requestParameters = ["comment": ["post_id": post.id, "body": comment.text!]]
+        let requestParameters = ["comment": ["post_id": post.id, "text": comment.text!]]
         let request = makeRequest(method: HTTPMethod.POST, endpoint: "/comments.json", authorized: true, parameters: requestParameters)
         
         func processCommentResponse(result: Any?, metadata: [String : String]?, error: Error?) {
@@ -565,7 +565,7 @@ class ServerAPI {
 extension User {
     class func instance(withJSON json: [String: Any]) -> User {
         let user: User = self.instance(withID: json["id"] as! Int)
-        // full_name is nil immediately after registration, see signUp()
+        // user_name is nil immediately after registration, see signUp()
         user.userName = (json["user_name"] as? String) ?? ""
         if let pictureURI = json["profile_picture"] as? String {
             user.profilePictureURL = URL(string: pictureURI)
