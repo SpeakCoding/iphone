@@ -115,8 +115,8 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
     private func displayPostsAsList() {
         self.tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
         self.tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-        self.tableView!.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        self.tableView!.estimatedRowHeight = PostFeedCell.estimatedHeight
+        self.tableView!.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView!.estimatedRowHeight = PostFeedView.estimatedHeight
         self.tableView!.dataSource = self
         self.tableView!.delegate = self
         self.view.addSubview(self.tableView!)
@@ -170,7 +170,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedCell
+        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedView
         postCell.setPost(self.posts[indexPath.row])
         postCell.viewController = self
         return postCell

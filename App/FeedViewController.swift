@@ -1,7 +1,7 @@
 import UIKit
 
 
-class FeedPostsViewController: UITableViewController {
+class FeedViewController: UITableViewController {
     
     private var feed = Feed()
     
@@ -19,8 +19,8 @@ class FeedPostsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UINib(nibName: "PostFeedCell", bundle: nil), forCellReuseIdentifier: "Post cell")
-        self.tableView.estimatedRowHeight = PostFeedCell.estimatedHeight
+        self.tableView.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView.estimatedRowHeight = PostFeedView.estimatedHeight
         self.tableView.separatorInset = UIEdgeInsets.zero
         
         let refreshControl = UIRefreshControl(frame: CGRect.zero)
@@ -68,7 +68,7 @@ class FeedPostsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedCell
+        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedView
         postCell.setPost(self.feed.posts[indexPath.row])
         postCell.viewController = self
         return postCell
