@@ -15,15 +15,15 @@ class LikesViewController: UITableViewController {
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         
         let refreshControl = UIRefreshControl(frame: CGRect.zero)
-        refreshControl.addTarget(self, action: #selector(refreshLikes), for: UIControl.Event.valueChanged)
+        refreshControl.addTarget(self, action: #selector(updateLikes), for: UIControl.Event.valueChanged)
         refreshControl.layer.zPosition = -1
         self.refreshControl = refreshControl
         
         self.refreshControl!.beginRefreshing()
-        self.refreshLikes()
+        self.updateLikes()
     }
     
-    @objc private func refreshLikes() {
+    @objc private func updateLikes() {
         func processLikesRequestResult(likes: [Like]?, error: Error?) {
             self.refreshControl!.endRefreshing()
             if likes != nil {

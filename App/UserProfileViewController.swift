@@ -46,7 +46,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         }
         
         self.displayUserInformation()
-        self.refreshUserInformation()
+        self.updateUserInformation()
         
         self.gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
         let cellWidth = UIScreen.main.bounds.size.width / 3.0
@@ -70,7 +70,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.bioLabel.text = self.user.bio
     }
     
-    private func refreshUserInformation() {
+    private func updateUserInformation() {
         func processUserRequestResult(user: User?, error: Error?) {
             if user != nil {
                 self.user = user!
@@ -94,7 +94,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.placeholderLabel.isHidden = (posts.count > 0)
     }
     
-    private func refreshPosts() {
+    private func updatePosts() {
         func processPostsRequestResult(posts: [Post]?, error: Error?) {
             if posts != nil {
                 self.setDisplayedPosts(posts: posts!)
@@ -115,7 +115,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         } else {
             self.setDisplayedPosts(posts: Cache.shared.fetchPostsWithTagged(user: user))
         }
-        self.refreshPosts()
+        self.updatePosts()
     }
     
     @IBAction private func toggleFollow() {

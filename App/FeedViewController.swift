@@ -24,7 +24,7 @@ class FeedViewController: UITableViewController {
         self.tableView.separatorInset = UIEdgeInsets.zero
         
         let refreshControl = UIRefreshControl(frame: CGRect.zero)
-        refreshControl.addTarget(self, action: #selector(refreshFeedPosts), for: UIControl.Event.valueChanged)
+        refreshControl.addTarget(self, action: #selector(updateFeedPosts), for: UIControl.Event.valueChanged)
         refreshControl.layer.zPosition = -1
         self.refreshControl = refreshControl
         
@@ -32,14 +32,14 @@ class FeedViewController: UITableViewController {
             self.refreshControl!.beginRefreshing()
             self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         }
-        self.refreshFeedPosts()
+        self.updateFeedPosts()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc private func refreshFeedPosts() {
+    @objc private func updateFeedPosts() {
         func processFeedRequestResult(posts: [Post]?, error: Error?) {
             self.refreshControl!.endRefreshing()
             if posts != nil {
@@ -51,7 +51,7 @@ class FeedViewController: UITableViewController {
     }
     
     @objc private func feedHasBeenUpdated(notification: NSNotification) {
-        self.refreshFeedPosts()
+        self.updateFeedPosts()
     }
     
     @objc private func newCommentHasBeenCreated(notification: NSNotification) {
