@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserLookupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class UsersLookupViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     private var completion: (User?) -> Void
     private var searchResults = [User]()
@@ -14,7 +14,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     
     init(completion: @escaping (User?) -> Void) {
         self.completion = completion
-        super.init(nibName: "UserLookupView", bundle: nil)
+        super.init(nibName: "UsersLookupView", bundle: nil)
         self.modalPresentationStyle = .fullScreen
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
@@ -26,7 +26,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "User cell")
+        self.tableView.register(UINib(nibName: "UserCellView", bundle: nil), forCellReuseIdentifier: "user")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.placeholderView.isHidden = true
     }
@@ -44,7 +44,7 @@ class UserLookupViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "User cell", for: indexPath) as! UserCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! UserCellView
         tableViewCell.setUser(self.searchResults[indexPath.row])
         return tableViewCell
     }

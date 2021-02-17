@@ -1,7 +1,7 @@
 import UIKit
 
 
-class PostTileCell: UICollectionViewCell {
+class PostTileView: UICollectionViewCell {
     
     var imageView: AsynchronousImageView
     

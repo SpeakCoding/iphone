@@ -7,7 +7,7 @@ enum UserKind {
     case likers(Post)
 }
 
-class UserListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class UsersListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     private var mode: UserKind
     private var users = [User]()
@@ -18,13 +18,13 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     init(_ userKind: UserKind) {
         self.mode = userKind
-        super.init(nibName: "UserListView", bundle: nil)
+        super.init(nibName: "UsersListView", bundle: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UINib(nibName: "UserCell+FollowButton", bundle: nil), forCellReuseIdentifier: "User cell")
+        self.tableView.register(UINib(nibName: "UserCellView+FollowButton", bundle: nil), forCellReuseIdentifier: "user")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.placeholderLabel.isHidden = true
         func processUsersRequestResult(users: [User]?, error: Error?) {
@@ -74,7 +74,7 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "User cell", for: indexPath) as! UserCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! UserCellView
         tableViewCell.setUser(self.displayedUsers[indexPath.row])
         return tableViewCell
     }

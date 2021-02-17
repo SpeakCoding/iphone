@@ -38,7 +38,7 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.postDetailsHeaderView.frame.size = self.postDetailsHeaderView.systemLayoutSizeFitting(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat.greatestFiniteMagnitude), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
         self.tableView.tableHeaderView = self.postDetailsHeaderView
         
-        self.tableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "Comment cell")
+        self.tableView.register(UINib(nibName: "CommentCellView", bundle: nil), forCellReuseIdentifier: "comment")
         self.profilePictureView.showImageAsynchronously(imageURL: User.current?.profilePictureURL)
         self.textField.background = UIImage(named: "comment-field")
         self.textField.postButton.addTarget(self, action: #selector(sendComment), for: UIControl.Event.touchUpInside)
@@ -109,7 +109,7 @@ class CommentsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "Comment cell", for: indexPath) as! CommentCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath) as! CommentCellView
         tableViewCell.setComment(self.comments[indexPath.row])
         tableViewCell.viewController = self
         return tableViewCell

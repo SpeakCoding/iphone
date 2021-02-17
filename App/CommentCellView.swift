@@ -1,7 +1,7 @@
 import UIKit
 
 
-class CommentCell: UITableViewCell {
+class CommentCellView: UITableViewCell {
     
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var commentTextLabel: UILabel!

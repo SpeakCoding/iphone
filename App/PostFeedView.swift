@@ -122,8 +122,8 @@ class PostFeedView: UITableViewCell {
     
     @IBAction private func showLikers() {
         if self.post.numberOfLikes > 0 {
-            let userListViewController = UserListViewController(UserKind.likers(self.post))
-            self.viewController?.navigationController?.pushViewController(userListViewController, animated: true)
+            let usersListViewController = UsersListViewController(UserKind.likers(self.post))
+            self.viewController?.navigationController?.pushViewController(usersListViewController, animated: true)
         }
     }
     

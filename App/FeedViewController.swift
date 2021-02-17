@@ -19,7 +19,7 @@ class FeedViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "post")
         self.tableView.estimatedRowHeight = PostFeedView.estimatedHeight
         self.tableView.separatorInset = UIEdgeInsets.zero
         
@@ -68,7 +68,7 @@ class FeedViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedView
+        let postCell = tableView.dequeueReusableCell(withIdentifier: "post", for: indexPath) as! PostFeedView
         postCell.setPost(self.feed.posts[indexPath.row])
         postCell.viewController = self
         return postCell

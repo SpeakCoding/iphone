@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
+class UsersSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
     
     private var searchResults = [User]()
     private var lookupRequestTask: URLSessionDataTask?
@@ -14,7 +14,7 @@ class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
     
     init() {
         self.searchBar = UISearchBar(frame: CGRect.zero)
-        super.init(nibName: "UserSearchView", bundle: nil)
+        super.init(nibName: "UsersSearchView", bundle: nil)
         
         self.searchBar.placeholder = "Search for a person"
         self.searchBar.showsCancelButton = true
@@ -32,7 +32,7 @@ class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "User cell")
+        self.tableView.register(UINib(nibName: "UserCellView", bundle: nil), forCellReuseIdentifier: "user")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.placeholderView.isHidden = true
     }
@@ -53,7 +53,7 @@ class UserSearchViewController: UIViewController, UISearchBarDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "User cell", for: indexPath) as! UserCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! UserCellView
         tableViewCell.setUser(self.searchResults[indexPath.row])
         return tableViewCell
     }

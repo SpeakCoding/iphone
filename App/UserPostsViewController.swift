@@ -81,7 +81,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
             
             self.gridView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
             self.gridView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-            self.gridView!.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
+            self.gridView!.register(PostTileView.self, forCellWithReuseIdentifier: "post")
             self.gridView!.dataSource = self
             self.gridView!.delegate = self
             self.gridView!.backgroundColor = UIColor.white
@@ -115,7 +115,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
     private func displayPostsAsList() {
         self.tableView = UITableView(frame: self.view.bounds, style: UITableView.Style.plain)
         self.tableView!.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
-        self.tableView!.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "Post cell")
+        self.tableView!.register(UINib(nibName: "PostFeedView", bundle: nil), forCellReuseIdentifier: "post")
         self.tableView!.estimatedRowHeight = PostFeedView.estimatedHeight
         self.tableView!.dataSource = self
         self.tableView!.delegate = self
@@ -149,7 +149,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Post cell", for: indexPath) as! PostTileCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "post", for: indexPath) as! PostTileView
         cell.imageView.showImageAsynchronously(imageURL: self.posts[indexPath.item].images?.first?.url)
         return cell
     }
@@ -170,7 +170,7 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let postCell = tableView.dequeueReusableCell(withIdentifier: "Post cell", for: indexPath) as! PostFeedView
+        let postCell = tableView.dequeueReusableCell(withIdentifier: "post", for: indexPath) as! PostFeedView
         postCell.setPost(self.posts[indexPath.row])
         postCell.viewController = self
         return postCell

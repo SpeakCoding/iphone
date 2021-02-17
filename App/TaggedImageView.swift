@@ -69,14 +69,14 @@ class TaggedImageView: AsynchronousImageView {
             // Create a new callout view
             if let viewController = self.viewController {
                 let relativePoint = self.convertToRelative(point: point)
-                let userLookupViewController = UserLookupViewController { (user: User?) in
+                let usersLookupViewController = UsersLookupViewController { (user: User?) in
                     if user != nil {
                         let newTag = Tag(taggedUser: user!, point: relativePoint)
                         self.tags.append(newTag)
                     }
                     viewController.dismiss(animated: true, completion: nil)
                 }
-                viewController.present(userLookupViewController, animated: true, completion: nil)
+                viewController.present(usersLookupViewController, animated: true, completion: nil)
             }
         }
     }

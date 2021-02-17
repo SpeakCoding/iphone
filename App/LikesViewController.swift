@@ -9,7 +9,7 @@ class LikesViewController: UITableViewController {
         super.viewDidLoad()
         
         self.navigationItem.title = "Likes"
-        self.tableView.register(UINib(nibName: "LikeCell", bundle: nil), forCellReuseIdentifier: "Like cell")
+        self.tableView.register(UINib(nibName: "LikeCellView", bundle: nil), forCellReuseIdentifier: "like")
         self.tableView.rowHeight = 62
         self.tableView.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -41,7 +41,7 @@ class LikesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let likeCell = tableView.dequeueReusableCell(withIdentifier: "Like cell", for: indexPath) as! LikeCell
+        let likeCell = tableView.dequeueReusableCell(withIdentifier: "like", for: indexPath) as! LikeCellView
         likeCell.setLike(self.likes[indexPath.row])
         return likeCell
     }

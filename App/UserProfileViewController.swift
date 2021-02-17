@@ -48,7 +48,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         self.displayUserInformation()
         self.updateUserInformation()
         
-        self.gridView.register(PostTileCell.self, forCellWithReuseIdentifier: "Post cell")
+        self.gridView.register(PostTileView.self, forCellWithReuseIdentifier: "post")
         let cellWidth = UIScreen.main.bounds.size.width / 3.0
         let layout = self.gridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
@@ -160,13 +160,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func showFollowers() {
-        let userListViewController = UserListViewController(UserKind.followers(self.user))
-        self.navigationController?.pushViewController(userListViewController, animated: true)
+        let usersListViewController = UsersListViewController(UserKind.followers(self.user))
+        self.navigationController?.pushViewController(usersListViewController, animated: true)
     }
     
     @IBAction private func showFollowees() {
-        let userListViewController = UserListViewController(UserKind.followees(self.user))
-        self.navigationController?.pushViewController(userListViewController, animated: true)
+        let usersListViewController = UsersListViewController(UserKind.followees(self.user))
+        self.navigationController?.pushViewController(usersListViewController, animated: true)
     }
     
     @objc private func showOptions() {
@@ -233,7 +233,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Post cell", for: indexPath) as! PostTileCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "post", for: indexPath) as! PostTileView
         cell.imageView.showImageAsynchronously(imageURL: self.posts[indexPath.item].images?.first?.url)
         return cell
     }

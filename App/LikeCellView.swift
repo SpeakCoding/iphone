@@ -1,7 +1,7 @@
 import UIKit
 
 
-class LikeCell: UITableViewCell {
+class LikeCellView: UITableViewCell {
     
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var userNameLabel: UILabel!

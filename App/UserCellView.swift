@@ -1,7 +1,7 @@
 import UIKit
 
 
-class UserCell: UITableViewCell {
+class UserCellView: UITableViewCell {
     
     @IBOutlet private var profilePictureView: ProfilePictureView!
     @IBOutlet private var userNameLabel: UILabel!
