@@ -31,7 +31,7 @@ class LikesViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-        ServerAPI.shared.getLikes(user: User.current!, completion: processLikesRequestResult)
+        User.current?.getLikes(completion: processLikesRequestResult)
     }
     
     // MARK: - UITableViewDataSource

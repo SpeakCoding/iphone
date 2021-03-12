@@ -40,14 +40,14 @@ class FeedViewController: UITableViewController {
     }
     
     @objc private func updateFeedPosts() {
-        func processFeedRequestResult(posts: [Post]?, error: Error?) {
+        func processFeedRequestResult(error: Error?) {
             self.refreshControl!.endRefreshing()
-            if posts != nil {
+            if error == nil {
                 self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
                 self.tableView.reloadData()
             }
         }
-        ServerAPI.shared.getFeedPosts(feed: self.feed, completion: processFeedRequestResult)
+        self.feed.getPosts(completion: processFeedRequestResult)
     }
     
     @objc private func feedHasBeenUpdated(notification: NSNotification) {

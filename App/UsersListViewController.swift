@@ -48,13 +48,13 @@ class UsersListViewController: UIViewController, UITableViewDataSource, UITableV
         switch self.mode {
             case .followers(let user):
                 self.title = "Followers"
-                ServerAPI.shared.getFollowers(user: user, completion: processUsersRequestResult)
+                user.getFollowers(completion: processUsersRequestResult)
             case .followees(let user):
                 self.title = "Following"
-                ServerAPI.shared.getFollowees(user: user, completion: processUsersRequestResult)
+                user.getFollowees(completion: processUsersRequestResult)
             case .likers(let post):
                 self.title = "Likes"
-                ServerAPI.shared.getUsersWhoLiked(post: post, completion: processUsersRequestResult)
+                post.getUsersWhoLiked(completion: processUsersRequestResult)
         }
     }
     

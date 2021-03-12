@@ -77,37 +77,31 @@ class PostFeedView: UITableViewCell {
     }
     
     @IBAction private func toggleLike() {
-        self.post.toggleLike()
-        self.updateLikes()
-        
         let thePostToUpdate = self.post!
-        func processUpdatePostRequestResult(updatedPost: Post?, error: Error?) {
+        func processUpdatePostRequestResult(error: Error?) {
             if error != nil {
                 self.viewController?.report(error: error)
-                thePostToUpdate.toggleLike()
             }
             if self.post == thePostToUpdate {
                 self.setPost(thePostToUpdate)
             }
         }
-        ServerAPI.shared.updatePostLike(self.post, completion: processUpdatePostRequestResult)
+        self.post.toggleLike(completion: processUpdatePostRequestResult)
+        self.updateLikes()
     }
     
     @IBAction private func toggleSaved() {
-        self.post.toggleSaved()
-        self.bookmarkButton.isSelected = self.post.isSaved
-        
-        let thePostToUpdate = self.post!
-        func processUpdatePostRequestResult(updatedPost: Post?, error: Error?) {
+         let thePostToUpdate = self.post!
+        func processUpdatePostRequestResult(error: Error?) {
             if error != nil {
                 self.viewController?.report(error: error)
-                thePostToUpdate.toggleSaved()
             }
             if self.post == thePostToUpdate {
                 self.setPost(thePostToUpdate)
             }
         }
-        ServerAPI.shared.updatePostSaved(self.post, completion: processUpdatePostRequestResult)
+        self.post.toggleSaved(completion: processUpdatePostRequestResult)
+        self.bookmarkButton.isSelected = self.post.isSaved
     }
     
     @IBAction private func addComment() {
@@ -157,7 +151,7 @@ class PostFeedView: UITableViewCell {
                     self.viewController?.report(error: error)
                 }
             }
-            ServerAPI.shared.deletePost(self.post, completion: processDeletePostRequestResult)
+            self.post.delete(completion: processDeletePostRequestResult)
         }
         
         func toggleLike(_: UIAlertAction) {

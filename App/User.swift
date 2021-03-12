@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 
 class User: ModelObject {
@@ -21,7 +21,9 @@ class User: ModelObject {
         self.userName = userName
     }
     
-    func toggleFollowed() {
+    func toggleFollowed(completion: @escaping ((Error?) -> Void)) {
+        let wasFollowed = self.isFollowed
+        let formerNumberOfFollowers = self.numberOfFollowers
         if self.isFollowed {
             self.isFollowed = false
             self.numberOfFollowers -= 1
@@ -30,6 +32,36 @@ class User: ModelObject {
             self.numberOfFollowers += 1
         }
         Cache.shared.update(user: self)
+        
+        func processUserUpdateRequestResult(error: Error?) {
+            if error != nil {
+                self.isFollowed = wasFollowed
+                self.numberOfFollowers = formerNumberOfFollowers
+            }
+            Cache.shared.update(user: self)
+            completion(error)
+        }
+        ServerAPI.shared.updateUserFollowed(user: self, completion: processUserUpdateRequestResult)
+    }
+    
+    func getPosts(completion: @escaping (([Post]?, Error?) -> Void)) {
+        ServerAPI.shared.getPostsOf(user: self, completion: completion)
+    }
+    
+    func getPostsWhereTagged(completion: @escaping (([Post]?, Error?) -> Void)) {
+        ServerAPI.shared.getPostsWithTaggedUser(user: self, completion: completion)
+    }
+    
+    func getFollowers(completion: @escaping (([User]?, Error?) -> Void)) {
+        ServerAPI.shared.getFollowers(user: self, completion: completion)
+    }
+    
+    func getFollowees(completion: @escaping (([User]?, Error?) -> Void)) {
+        ServerAPI.shared.getFollowees(user: self, completion: completion)
+    }
+    
+    func getLikes(completion: @escaping (([Like]?, Error?) -> Void)) {
+        ServerAPI.shared.getLikes(user: self, completion: completion)
     }
     
     static var current: User?

@@ -36,21 +36,17 @@ class UserCellView: UITableViewCell {
     }
     
     @IBAction func toggleFollow() {
-        self.user.toggleFollowed()
-        self.followButton?.isSelected = self.user.isFollowed
-        
         let theUserToUpdate = self.user!
-        func processUserUpdateRequestResult(user: User?, error: Error?) {
-            if user != nil {
-                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
-            }
+        func processUserUpdateRequestResult(error: Error?) {
             if error != nil {
-                theUserToUpdate.toggleFollowed()
                 if self.user == theUserToUpdate {
                     self.followButton?.isSelected = self.user.isFollowed
                 }
+            } else {
+                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
             }
         }
-        ServerAPI.shared.updateUserFollowed(user: self.user, completion: processUserUpdateRequestResult)
+        self.user.toggleFollowed(completion: processUserUpdateRequestResult)
+        self.followButton?.isSelected = self.user.isFollowed
     }
 }

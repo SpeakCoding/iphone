@@ -103,9 +103,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             }
         }
         if self.postsViewModeControl.selectedSegmentIndex == 0 {
-            ServerAPI.shared.getPostsOf(user: user, completion: processPostsRequestResult)
+            self.user.getPosts(completion: processPostsRequestResult)
         } else {
-            ServerAPI.shared.getPostsWithTaggedUser(user: user, completion: processPostsRequestResult)
+            self.user.getPostsWhereTagged(completion: processPostsRequestResult)
         }
     }
     
@@ -119,20 +119,16 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func toggleFollow() {
-        self.user.toggleFollowed()
-        self.updateFollowButtonState()
-        
-        func processUserUpdateRequestResult(user: User?, error: Error?) {
-            if user != nil {
-                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
-            }
+        func processUserUpdateRequestResult(error: Error?) {
             if error != nil {
                 self.report(error: error)
-                self.user.toggleFollowed()
+            } else {
+                NotificationCenter.default.post(name: Notification.Name.FeedUpdatedNotification, object: nil)
             }
             self.displayUserInformation()
         }
-        ServerAPI.shared.updateUserFollowed(user: self.user, completion: processUserUpdateRequestResult)
+        self.user.toggleFollowed(completion: processUserUpdateRequestResult)
+        self.updateFollowButtonState()
     }
     
     @IBAction private func editProfile() {
