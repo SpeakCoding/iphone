@@ -149,7 +149,9 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     @IBAction private func showAllPostsAsList() {
-        self.showAllPostsAsList(preselectedPostIndex: 0)
+        if self.posts.count > 0 {
+            self.showAllPostsAsList(preselectedPostIndex: 0)
+        }
     }
     
     private func showAllPostsAsList(preselectedPostIndex: Int) {
