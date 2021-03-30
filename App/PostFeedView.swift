@@ -139,8 +139,8 @@ class PostFeedView: UITableViewCell {
                     if let tableView = (view as? UITableView) {
                         tableView.reloadData()
                     }
-                    self.viewController?.dismiss(animated: true, completion: nil)
                 }
+                self.viewController?.dismiss(animated: true, completion: nil)
             }
             let postEditor = PostEditorController(post: self.post, cachedPostImage: self.postImageView.image, completion: handleUpdatedPost)
             let navigationController = UINavigationController(rootViewController: postEditor)
