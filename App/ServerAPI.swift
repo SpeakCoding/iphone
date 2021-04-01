@@ -592,7 +592,11 @@ extension Post {
         let post: Post = self.instance(withID: json["id"] as! Int)
         post.date = Date(timeIntervalSince1970: TimeInterval(json["created_at"] as! Int))
         post.user = User.instance(withJSON: json["user"] as! [String : Any])
-        post.caption = (json["caption"] as! String)
+        if let caption = json["caption"] as? String {
+            post.caption = caption
+        } else {
+            post.caption = ""
+        }
         if let imageURL = URL(string: json["image"] as! String) {
             post.images = [Image(url: imageURL)]
         } else {
