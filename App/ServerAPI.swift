@@ -458,7 +458,7 @@ class ServerAPI {
         case PATCH
     }
     
-    private let baseURLString = "https://api.speakcoding.co"
+    private let baseURLString = "https://instagram.speakcoding.co"
     private var session: URLSession
     private var accessToken: String?
     
