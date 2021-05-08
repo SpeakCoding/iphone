@@ -24,7 +24,7 @@ class PostEditorController: UIViewController, UITextViewDelegate {
         super.init(nibName: "PostEditorController", bundle: nil)
         self.title = "Edit post"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelEditing))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(saveChanges))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(postUpdate))
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
@@ -87,7 +87,7 @@ class PostEditorController: UIViewController, UITextViewDelegate {
         self.completion(nil)
     }
     
-    @objc private func saveChanges() {
+    @objc private func postUpdate() {
         self.post.caption = self.textView.text
         self.post.tags = self.tags
         func processPostUpdateRequestResult(updatedPost: Post?, error: Error?) {
