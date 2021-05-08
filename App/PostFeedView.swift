@@ -25,7 +25,7 @@ class PostFeedView: UITableViewCell {
         self.doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLike))
         self.doubleTapRecognizer.numberOfTapsRequired = 2
         self.doubleTapRecognizer.delegate = self
-        self.contentView.addGestureRecognizer(self.doubleTapRecognizer)
+        self.addGestureRecognizer(self.doubleTapRecognizer)
     }
     
     var post: Post!
