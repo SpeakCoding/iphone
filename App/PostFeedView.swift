@@ -18,6 +18,7 @@ class PostFeedView: UITableViewCell {
     @IBOutlet private var dateLabel: UILabel!
     private var doubleTapRecognizer: UITapGestureRecognizer!
     weak var viewController: UIViewController?
+    var post: Post!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,7 +29,6 @@ class PostFeedView: UITableViewCell {
         self.addGestureRecognizer(self.doubleTapRecognizer)
     }
     
-    var post: Post!
     func setPost(_ newPost: Post) {
         self.post = newPost
         
