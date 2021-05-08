@@ -27,28 +27,9 @@ class Cache {
     }
     
     private func setUpDatabaseTables() {
-        while true {
-            guard self.database.open() else {
-                print("Could not open the cache database")
-                return
-            }
-            
-            // Make sure the database version which we store in the "user_version" pragma is up-to-date
-            let currentDatabaseVersion = 5
-            let onDiskDatabaseVersion = self.database.executeQuery(sqlQuery: "PRAGMA user_version", parameters: nil).first!["user_version"] as! Int
-            if onDiskDatabaseVersion == currentDatabaseVersion {
-                break
-            }
-            
-            if onDiskDatabaseVersion == 0 && !hasTable(tableName: "posts") {
-                // The database has just been created, the "user_version" pragma is not set yet
-                self.database.executeUpdate(sqlQuery: "PRAGMA user_version = \(currentDatabaseVersion)", values: nil)
-                break
-            }
-            
-            // The database schema is outdated, delete and recreate the database
-            self.database.close()
-            try? FileManager().removeItem(atPath: self.database.databaseFilePath)
+        guard self.database.open() else {
+            print("Could not open the cache database")
+            return
         }
         
         if !self.hasTable(tableName: "posts") {
