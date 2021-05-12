@@ -35,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             self.showLoginView()
         } else {
             self.setupTabsView()
-            self.window!.rootViewController = self.tabBarController
         }
         self.window!.makeKeyAndVisible()
         
@@ -45,10 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func showLoginView() {
         self.tabBarController = nil
         
-        let loginViewController = LoginViewController(emailAddress: nil) {
-            self.setupTabsView()
-            self.window!.rootViewController = self.tabBarController
-        }
+        let loginViewController = LoginViewController(emailAddress: nil, completion: self.setupTabsView)
         let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
         loginFlowNavigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         loginFlowNavigationController.isNavigationBarHidden = true
@@ -81,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.tabBarController = UITabBarController(nibName: nil, bundle: nil)
         self.tabBarController.viewControllers = [homeTabViewController, usersSearchViewController, newPostTabViewController, likedPostsTabViewController, profileTabViewController]
         self.tabBarController.delegate = self
+        self.window!.rootViewController = self.tabBarController
     }
     
     // MARK: - UITabBarControllerDelegate
