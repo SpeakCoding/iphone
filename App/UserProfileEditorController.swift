@@ -64,7 +64,7 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
                 self.report(error: error)
             }
         }
-        ServerAPI.shared.updateProfile(name: username, bio: bio, profilePicture: self.newProfilePicture, completion: processProfileUpdateRequestResult)
+        ServerAPI.shared.updateUser(name: username, bio: bio, profilePicture: self.newProfilePicture, completion: processProfileUpdateRequestResult)
     }
     
     override func viewWillAppear(_ animated: Bool) {

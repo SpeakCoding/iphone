@@ -72,7 +72,7 @@ class ServerAPI {
         self.performRequest(request: request, completion: processLogOutResponse)
     }
     
-    func updateProfile(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
+    func updateUser(name: String?, bio: String?, profilePicture: UIImage?, completion: @escaping ((User?, Error?) -> Void)) {
         var userInfo = [String: String]()
         if name != nil {
             userInfo["user_name"] = name!

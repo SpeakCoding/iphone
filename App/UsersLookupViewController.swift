@@ -15,7 +15,7 @@ class UsersLookupViewController: UIViewController, UITableViewDataSource, UITabl
     init(completion: @escaping (User?) -> Void) {
         self.completion = completion
         super.init(nibName: "UsersLookupView", bundle: nil)
-        self.modalPresentationStyle = .fullScreen
+        self.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     

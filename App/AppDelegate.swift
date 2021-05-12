@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if User.current == nil {
             self.showLoginView()
         } else {
-            self.setupUI()
+            self.setupTabsView()
             self.window!.rootViewController = self.tabBarController
         }
         self.window!.makeKeyAndVisible()
@@ -46,16 +46,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.tabBarController = nil
         
         let loginViewController = LoginViewController(emailAddress: nil) {
-            self.setupUI()
+            self.setupTabsView()
             self.window!.rootViewController = self.tabBarController
         }
         let loginFlowNavigationController = UINavigationController(rootViewController: loginViewController)
-        loginFlowNavigationController.modalPresentationStyle = .fullScreen
+        loginFlowNavigationController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         loginFlowNavigationController.isNavigationBarHidden = true
         self.window!.rootViewController = loginFlowNavigationController
     }
     
-    private func setupUI() {
+    private func setupTabsView() {
         // Set up view controllers behind the tab bar items
         let homeTabViewController = UINavigationController(rootViewController: FeedViewController())
         homeTabViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab-bar-item-home"), selectedImage: UIImage(named: "tab-bar-item-home-selected"))
