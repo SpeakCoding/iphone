@@ -1,23 +1,15 @@
 import UIKit
 
 
-enum UserKind {
-    case followers(User)
-    case followees(User)
-    case likers(Post)
-}
-
 class UsersListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
-    private var mode: UserKind
     private var users = [User]()
     private var filteredUsers: [User]?
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var placeholderLabel: UILabel!
     private var searchBar: UISearchBar?
     
-    init(_ userKind: UserKind) {
-        self.mode = userKind
+    init() {
         super.init(nibName: "UsersListView", bundle: nil)
     }
     
@@ -27,34 +19,29 @@ class UsersListViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.register(UINib(nibName: "UserCellView+FollowButton", bundle: nil), forCellReuseIdentifier: "user")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.placeholderLabel.isHidden = true
-        func processUsersRequestResult(users: [User]?, error: Error?) {
-            if users != nil {
-                self.users = users!
-                self.tableView.reloadData()
-                self.updatePlaceholderVisibility()
-                
-                if self.placeholderLabel.isHidden && self.searchBar == nil {
-                    self.searchBar = UISearchBar(frame: CGRect.zero)
-                    self.searchBar!.placeholder = "User name"
-                    self.searchBar!.sizeToFit()
-                    self.searchBar!.delegate = self
-                    self.tableView.tableHeaderView = self.searchBar!
-                }
-            } else {
-                self.report(error: error)
-            }
-        }
         
-        switch self.mode {
-            case .followers(let user):
-                self.title = "Followers"
-                user.getFollowers(completion: processUsersRequestResult)
-            case .followees(let user):
-                self.title = "Following"
-                user.getFollowees(completion: processUsersRequestResult)
-            case .likers(let post):
-                self.title = "Likes"
-                post.getUsersWhoLiked(completion: processUsersRequestResult)
+        self.getUsers()
+    }
+    
+    internal func getUsers() {
+        fatalError("Concrete subclasses must override this function")
+    }
+    
+    internal func processUsersRequestResult(users: [User]?, error: Error?) {
+        if users != nil {
+            self.users = users!
+            self.tableView.reloadData()
+            self.updatePlaceholderVisibility()
+            
+            if self.placeholderLabel.isHidden && self.searchBar == nil {
+                self.searchBar = UISearchBar(frame: CGRect.zero)
+                self.searchBar!.placeholder = "User name"
+                self.searchBar!.sizeToFit()
+                self.searchBar!.delegate = self
+                self.tableView.tableHeaderView = self.searchBar!
+            }
+        } else {
+            self.report(error: error)
         }
     }
     
@@ -114,5 +101,62 @@ class UsersListViewController: UIViewController, UITableViewDataSource, UITableV
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
+    }
+}
+
+
+class FollowersListViewController: UsersListViewController {
+    private var user: User
+    
+    init(user: User) {
+        self.user = user
+        super.init()
+        self.title = "Followers"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    
+    override func getUsers() {
+        self.user.getFollowers(completion: processUsersRequestResult)
+    }
+}
+
+
+class FolloweesListViewController: UsersListViewController {
+    private var user: User
+    
+    init(user: User) {
+        self.user = user
+        super.init()
+        self.title = "Following"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    
+    override func getUsers() {
+        self.user.getFollowees(completion: processUsersRequestResult)
+    }
+}
+
+
+class PostLikersListViewController: UsersListViewController {
+    private var post: Post
+    
+    init(post: Post) {
+        self.post = post
+        super.init()
+        self.title = "Likes"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    
+    override func getUsers() {
+        self.post.getUsersWhoLiked(completion: processUsersRequestResult)
     }
 }
