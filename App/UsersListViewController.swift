@@ -90,8 +90,12 @@ class UsersListViewController: UIViewController, UITableViewDataSource, UITableV
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count > 0 {
-            self.filteredUsers = self.users.filter { (user: User) -> Bool in
-                return user.userName.lowercased().contains(searchText.lowercased())
+            let lowercaseSearchText = searchText.lowercased()
+            var matchingUsers = [User]()
+            for user in self.users {
+                if user.userName.lowercased().contains(lowercaseSearchText) {
+                    matchingUsers.append(user)
+                }
             }
         } else {
             self.filteredUsers = nil

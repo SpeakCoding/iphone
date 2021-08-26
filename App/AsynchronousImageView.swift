@@ -10,19 +10,15 @@ import UIKit
  meaning it receives a result some time later.
  */
 class AsynchronousImageView: UIImageView {
-    
-    private static let imageCache: ImageCache = {
-        let imageCacheURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first!.appendingPathComponent("Images")
-        return ImageCache(__memoryCapacity: 0, diskCapacity: 50 * 1024 * 1024, directoryURL: imageCacheURL)
-    }()
-    
-    private static let session: URLSession = {
+    private static func createSession() -> URLSession {
         let configuration = URLSessionConfiguration.default
         configuration.urlCache = AsynchronousImageView.imageCache
         configuration.requestCachePolicy = URLRequest.CachePolicy.returnCacheDataElseLoad
         return URLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
-    }()
-    
+    }
+    private static let session: URLSession = createSession()
+    private static let imageCache: ImageCache = ImageCache()
+
     private var currentImageURL: URL?
     private var imageDownloadTask: URLSessionDataTask?
     
@@ -64,7 +60,7 @@ class AsynchronousImageView: UIImageView {
             
             // The completion closure is called on a secondary thread,
             // make sure we assign the image on the main thread
-            DispatchQueue.main.async {
+            func setImageOnMainThread() {
                 if self.currentImageURL == imageURL {
                     if (downloadedData != nil) {
                         if let uiImage = UIImage(data: downloadedData!) {
@@ -74,6 +70,7 @@ class AsynchronousImageView: UIImageView {
                     self.imageDownloadTask = nil
                 } // else showImageAsynchronously() was called again while a previous image was still being downloaded
             }
+            DispatchQueue.main.async(execute: setImageOnMainThread)
         }
         self.imageDownloadTask = AsynchronousImageView.session.dataTask(with: self.currentImageURL!, completionHandler: processImageRequestResult)
         self.imageDownloadTask?.resume()
@@ -82,6 +79,11 @@ class AsynchronousImageView: UIImageView {
 
 
 class ImageCache: URLCache {
+    convenience override init() {
+        let imageCacheURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first!.appendingPathComponent("Images")
+        self.init(__memoryCapacity: 0, diskCapacity: 50 * 1024 * 1024, directoryURL: imageCacheURL)
+    }
+    
     override func storeCachedResponse(_ cachedResponse: CachedURLResponse, for dataTask: URLSessionDataTask) {
         // By default the URLCache processes HTTP redirections by associating the received data with the last request made.
         // That is, if the server redirects to a random URL for every image request (say, in the name of security),

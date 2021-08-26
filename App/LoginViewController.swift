@@ -41,9 +41,10 @@ class LoginViewController: UIViewController {
         layoutMargins.top = 0
         layoutMargins.bottom = max(keyboardTopOffset, 0)
         self.view.layoutMargins = layoutMargins
-        UIView.animate(withDuration: animationDuration) {
+        func animateLayout() {
             self.view.layoutIfNeeded()
         }
+        UIView.animate(withDuration: animationDuration, animations: animateLayout)
     }
     
     // This function is called when the Sign Up button is pressed

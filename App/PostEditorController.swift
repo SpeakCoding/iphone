@@ -76,10 +76,11 @@ class PostEditorController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction private func tagPeople() {
-        let userTagger = TagEditorController(image: self.postImageView.image!, tags: self.tags) { (tags: [Tag]) in
-            self.tags = tags
+        func updateTags (newTags: [Tag]) {
+            self.tags = newTags
             self.navigationController?.popToViewController(self, animated: true)
         }
+        let userTagger = TagEditorController(image: self.postImageView.image!, tags: self.tags, completion: updateTags)
         self.navigationController?.pushViewController(userTagger, animated: true)
     }
     
@@ -103,9 +104,10 @@ class PostEditorController: UIViewController, UITextViewDelegate {
         let keyboardFrameInWindow = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let keyboardTopOffset = self.view.bounds.maxY - self.view.convert(keyboardFrameInWindow, from: nil).minY
         self.scrollViewBottomOffset.constant = max(keyboardTopOffset, 0)
-        UIView.animate(withDuration: animationDuration) {
+        func animateLayout() {
             self.view.layoutIfNeeded()
         }
+        UIView.animate(withDuration: animationDuration, animations: animateLayout)
     }
     
     required init?(coder: NSCoder) {

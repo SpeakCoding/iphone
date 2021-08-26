@@ -42,12 +42,13 @@ class UserPostsViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
         if let refreshClosure = self.refreshClosure {
-            refreshClosure({ (posts: [Post]?, error: Error?) in
+            func processPostsRequestResult(posts: [Post]?, error: Error?) {
                 if posts != nil {
                     self.posts = posts!
                     self.updateDisplayedPosts()
                 }
-            })
+            }
+            refreshClosure(processPostsRequestResult)
         }
     }
     

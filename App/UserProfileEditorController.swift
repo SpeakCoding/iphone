@@ -37,10 +37,11 @@ class UserProfileEditorController: UIViewController, UIAdaptivePresentationContr
     }
     
     @IBAction func changeProfilePicture() {
-        self.presentImagePicker { (image: UIImage) in
+        func showNewProfilePicture(image: UIImage) {
             self.profilePictureView.image = image
             self.newProfilePicture = image
         }
+        self.presentImagePicker(completion: showNewProfilePicture)
     }
     
     @objc func cancel() {

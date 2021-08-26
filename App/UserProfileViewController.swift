@@ -186,22 +186,24 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     
     private func confirmLogout(_: UIAlertAction) {
         let alert = UIAlertController(title: "Are you sure you want to log out?", message: nil, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.destructive, handler: { (_: UIAlertAction) in
-            func processLogOutRequestResult(error: Error?) {
-                if error != nil {
-                    self.report(error: error)
-                } else {
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.showLoginView()
-                    User.setCurrentUser(nil)
-                    ModelObject.purgeCachedInstances()
-                    Cache.shared.reset()
-                }
-            }
-            ServerAPI.shared.logOut(completion: processLogOutRequestResult)
-        }))
+        alert.addAction(UIAlertAction(title: "Log Out", style: UIAlertAction.Style.destructive, handler: logout))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func logout(_: UIAlertAction) {
+        func processLogOutRequestResult(error: Error?) {
+            if error != nil {
+                self.report(error: error)
+            } else {
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.showLoginView()
+                User.setCurrentUser(nil)
+                ModelObject.purgeCachedInstances()
+                Cache.shared.reset()
+            }
+        }
+        ServerAPI.shared.logOut(completion: processLogOutRequestResult)
     }
     
     @objc private func newPostHasBeenCreated(notification: NSNotification) {

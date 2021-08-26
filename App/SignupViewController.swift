@@ -41,9 +41,10 @@ class SignupViewController: UIViewController {
         layoutMargins.top = 0
         layoutMargins.bottom = max(keyboardTopOffset, 0)
         self.view.layoutMargins = layoutMargins
-        UIView.animate(withDuration: animationDuration) {
+        func animateLayout() {
             self.view.layoutIfNeeded()
         }
+        UIView.animate(withDuration: animationDuration, animations: animateLayout)
     }
     
     @IBAction private func logIn() {
