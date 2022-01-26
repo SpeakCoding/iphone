@@ -1,4 +1,5 @@
 import UIKit
+import Amplitude
 
 
 enum TabBarItemTag: Int {
@@ -37,6 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             self.setupTabsView()
         }
         self.window!.makeKeyAndVisible()
+        
+        let amplitude = Amplitude.instance()
+        amplitude.trackingSessionEvents = true
+        amplitude.initializeApiKey("ac02c1be6e17c79c7dc63418252d9a29")
+        amplitude.trackingSessionEvents = true
+        amplitude.logEvent("appstart")
         
         return true
     }

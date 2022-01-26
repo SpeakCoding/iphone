@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,6 +24,7 @@
 		9E7AE7D625554A17005F11B6 /* UsersLookupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D425554A17005F11B6 /* UsersLookupView.xib */; };
 		9E7AE7D825555B27005F11B6 /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D725555B27005F11B6 /* UserCellView.swift */; };
 		9E7AE7DB255578E2005F11B6 /* UserCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E7AE7D9255578E2005F11B6 /* UserCellView.xib */; };
+		9E97637E27A15690001AB1CC /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 9E97637D27A15690001AB1CC /* Amplitude */; };
 		9EA023A4251B672D00D5703A /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA023A3251B672D00D5703A /* SignupViewController.swift */; };
 		9EA023A7251B681C00D5703A /* SignupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EA023A5251B681C00D5703A /* SignupView.xib */; };
 		9EA2590D2521E8610056047B /* UserProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA2590C2521E8610056047B /* UserProfileEditorController.swift */; };
@@ -137,6 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E97637E27A15690001AB1CC /* Amplitude in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +244,9 @@
 			dependencies = (
 			);
 			name = SpeakCoding;
+			packageProductDependencies = (
+				9E97637D27A15690001AB1CC /* Amplitude */,
+			);
 			productName = Instacarat;
 			productReference = 9EDC2A1624EE976900902B93 /* SpeakCoding.app */;
 			productType = "com.apple.product-type.application";
@@ -263,7 +268,7 @@
 				};
 			};
 			buildConfigurationList = 9EDC2A1124EE976900902B93 /* Build configuration list for PBXProject "SpeakCoding" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -271,6 +276,9 @@
 				Base,
 			);
 			mainGroup = 9EDC2A0D24EE976900902B93;
+			packageReferences = (
+				9E97637C27A15690001AB1CC /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
+			);
 			productRefGroup = 9EDC2A1724EE976900902B93 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -672,6 +680,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9E97637C27A15690001AB1CC /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9E97637D27A15690001AB1CC /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E97637C27A15690001AB1CC /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9EDC2A0E24EE976900902B93 /* Project object */;
 }

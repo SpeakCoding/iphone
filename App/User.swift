@@ -1,4 +1,5 @@
 import UIKit
+import Amplitude
 
 
 class User: ModelObject {
@@ -89,8 +90,10 @@ class User: ModelObject {
         if user != nil {
             UserDefaults.standard.set(user!.id, forKey: "current user ID")
             Cache.shared.update(user: user!)
+            Amplitude.instance().setUserId(String(user!.id))
         } else {
             UserDefaults.standard.removeObject(forKey: "current user ID")
+            Amplitude.instance().setUserId(nil)
         }
     }
 }
